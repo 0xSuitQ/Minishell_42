@@ -1,7 +1,7 @@
 #include "../includes/lexer.h"
 #include "../includes/parser.h"
 
-int	count_tokens(char *str)
+int	substring_counter(char *str)
 {
 	int	i;
 	int	counter;
@@ -20,35 +20,14 @@ int	count_tokens(char *str)
 	return (counter);
 }
 
-char	**split_into_tokens(char *str)
-{
-	char	**words;
-	int		i;
-	int		j;
-
-	i = 0;
-	words = malloc(sizeof(char *) * count_tokens(str) + 1);
-	while (*str)
-	{
-		while (*str && ((*str >= 9 && *str <= 13) || *str == 32))
-			str++;
-		if (*str)
-			words[i++] = str_sepdup(str);
-		while (*str && !((*str >= 9 && *str <= 13) || *str == 32))
-			str++;
-	}
-	words[i] = 0;
-	return (words);
-}
-
-void *create_token(t_lexer *token, int index, t_token tok, char *str) {
+void	*create_token(t_lexer *token, int index, t_token tok, char *str) {
     token->i = index;
 	if (token)
 		token->token = tok;
 	else
 		token->token = NULL;
 	if (str)
-    	token->str = ft_strdup(str); // mind freeing it
+    	token->str = ft_strdup(str); // TODO: mind to freeing it
 	else
 		token->str = NULL;
     token->next = NULL;
@@ -61,7 +40,7 @@ t_lexer	*tokenize(char **words, char *str)
 	int		i;
 
 	i = 0;
-	tokens = malloc((count_tokens(str) + 1) * sizeof(t_lexer));
+	tokens = malloc(sizeof(t_lexer) * (substring_counter(str) + 1));
 	// TODO Error handling for malloc
 	while (words[i])
 	{
@@ -94,6 +73,27 @@ t_lexer	*tokenize(char **words, char *str)
 	return (tokens);
 }
 
+char	**split_by_whitespace(char *str)
+{
+	char	**words;
+	int		i;
+	int		j;
+
+	i = 0;
+	words = malloc(sizeof(char *) * substring_counter(str) + 1);
+	while (*str)
+	{
+		while (*str && ((*str >= 9 && *str <= 13) || *str == 32))
+			str++;
+		if (*str)
+			words[i++] = str_sepdup(str);
+		while (*str && !((*str >= 9 && *str <= 13) || *str == 32))
+			str++;
+	}
+	words[i] = 0;
+	return (words);
+}
+
 t_lexer *lexer(char *str)
 {
 	t_lexer	*tokens;
@@ -101,7 +101,7 @@ t_lexer *lexer(char *str)
 	int		i;
 
 	i = 0;
-	words = split_into_tokens(str);
+	words = split_by_whitespace(str);
 	//tokenizer
 	
 	return (tokens);
