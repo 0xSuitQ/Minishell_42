@@ -20,7 +20,7 @@ int	substring_counter(char *str)
 	return (counter);
 }
 
-void	*create_token(t_lexer *token, int index, t_token tok, char *str) {
+void	*create_node(t_lexer *token, int index, t_token tok, char *str) {
     token->i = index;
 	if (token)
 		token->token = tok;
@@ -36,6 +36,24 @@ void	*create_token(t_lexer *token, int index, t_token tok, char *str) {
 
 t_lexer	*tokenize(char **words, char *str)
 {
+	t_lexer		*lexer_list;
+	static void	*special_char[5][2] = {
+		{"|", PIPE},
+		{"<", LESS},
+		{"<<", LESS_LESS},
+		{">", GREAT},
+		{">>", GREAT_GREAT}
+	};
+	static int	i = 0;
+
+	lexer_list = malloc(sizeof(t_lexer) * (substring_counter(str) + 1));
+	// TODO Error handling for malloc
+	
+	while 
+}
+
+t_lexer	*tokenize(char **words, char *str)
+{
 	t_lexer	*tokens;
 	int		i;
 
@@ -46,23 +64,23 @@ t_lexer	*tokenize(char **words, char *str)
 	{
 		if (strcmp(words[i], "|") == 0)
 		{
-			create_token(&tokens[i], i, PIPE, NULL); // Not sure if we have to send &tokens[i] in there
+			create_node(&tokens[i], i, PIPE, NULL); // Not sure if we have to send &tokens[i] in there
 		}
 		else if (strcmp(words[i], "<") == 0)
 		{
-			create_token(&tokens[i], i, LESS, NULL);
+			create_node(&tokens[i], i, LESS, NULL);
 		}
 		else if (strcmp(words[i], "<<") == 0)
 		{
-			create_token(&tokens[i], i, LESS_LESS, NULL);
+			create_node(&tokens[i], i, LESS_LESS, NULL);
 		}
 		else if (strcmp(words[i], ">") == 0)
 		{
-			create_token(&tokens[i], i, GREAT, NULL);
+			create_node(&tokens[i], i, GREAT, NULL);
 		}
 		else if (strcmp(words[i], ">>") == 0)
 		{
-			create_token(&tokens[i], i, GREAT_GREAT, NULL);
+			create_node(&tokens[i], i, GREAT_GREAT, NULL);
 		}
 		if (i == 0)
 			continue;
