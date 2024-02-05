@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:02 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/05 17:53:48 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/05 18:16:14 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,19 @@ int	substring_counter(char *str)
 	return (counter);
 }
 
-void	create_node(t_lexer **list, int index, t_token_list tok, char *str)
+void	create_node(t_lexer **list, int index, t_token_list tok, char *sub_str)
 {
 	t_lexer	*new_node;
 	
 	new_node = malloc(sizeof(t_lexer));
 	if (!new_node)
 		return ;
-	printf("test: %d\n", index);
-	new_node->i = index;
+	new_node->index = index;
 	new_node->token = tok;
-	if (str)
-		new_node->str = ft_strdup(str); // TODO: mind to freeing it
+	if (sub_str)
+		new_node->sub_str = ft_strdup(sub_str); // TODO: mind to freeing it
 	else
-		new_node->str = NULL;
+		new_node->sub_str = NULL;
 	if (index == 0)
 	{
 		*list = new_node;
@@ -98,44 +97,6 @@ void	tokenize(char **words, t_lexer	**lexer_list)
 			create_node(lexer_list, i, 0, words[i]);
 	}
 }
-
-/*t_lexer	*tokenize(char **words, char *str)
-{
-	t_lexer	*lexer_list;
-	int		i;
-
-	i = 0;
-	
-	while (words[i])
-	{
-		if (strcmp(words[i], "|") == 0)
-		{
-			create_node(&lexer_list, i, PIPE, NULL); // Not sure if we have to send &tokens[i] in there
-		}
-		else if (strcmp(words[i], "<") == 0)
-		{
-			create_node(&lexer_list, i, LESS, NULL);
-		}
-		else if (strcmp(words[i], "<<") == 0)
-		{
-			create_node(&lexer_list, i, LESS_LESS, NULL);
-		}
-		else if (strcmp(words[i], ">") == 0)
-		{
-			create_node(&lexer_list, i, GREAT, NULL);
-		}
-		else if (strcmp(words[i], ">>") == 0)
-		{
-			create_node(&lexer_list, i, GREAT_GREAT, NULL);
-		}
-		if (i == 0)
-			continue;
-		else
-			create_node(lexer_list, i, NULL, words[i]); // TODO
-		i++;
-	}
-	return (lexer_list);
-}*/
 
 char	**split_by_whitespace(char *input)
 {
@@ -183,8 +144,8 @@ t_lexer *lexer(char *input)
 	// TEST
 	while (lexer_list)
 	{
-		printf("str of the lexer list number %d: %s\n", lexer_list->i, lexer_list->str);
-		printf("token of the lexer list number %d: %u\n", lexer_list->i, lexer_list->token);
+		printf("str of the lexer list number %d: %s\n", lexer_list->index, lexer_list->sub_str);
+		printf("token of the lexer list number %d: %u\n", lexer_list->index, lexer_list->token);
 		//if (lexer_list[i].token == GREAT)
 		//	write(1, "TEST CHECK\n", 12);
 		printf("------------------\n");

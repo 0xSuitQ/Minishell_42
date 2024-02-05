@@ -1,19 +1,16 @@
-#include "../includes/utils.h"
-// #include "../includes/minishell.h"
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 12:05:33 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/11/06 12:06:36 by vtouffet         ###   ########.fr       */
+/*   Updated: 2024/02/05 18:05:17 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "../includes/minishell.h"
 
 static	int	str_sep_len(char const *s)
 {
