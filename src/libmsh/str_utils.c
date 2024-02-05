@@ -1,16 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils1.c                                           :+:      :+:    :+:   */
+/*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/06 12:05:33 by vtouffet          #+#    #+#             */
-/*   Updated: 2024/02/05 18:35:01 by psimcak          ###   ########.fr       */
+/*   Created: 2024/02/05 19:54:47 by psimcak           #+#    #+#             */
+/*   Updated: 2024/02/05 20:08:01 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
+
+int	substring_counter(char *str)
+{
+	int	i;
+	int	counter;
+
+	i = 0;
+	counter = 0;
+	while (str[i])
+	{
+		while (str[i] && ((str[i] >= 9 && str[i] <= 13) || str[i] == 32))
+			i++;
+		if (str[i])
+			counter++;
+		while (str[i] && (!((str[i] >= 9 && str[i] <= 13) || str[i] == 32)))
+			i++;
+	}
+	return (counter);
+}
 
 static	int	str_sep_len(char const *s)
 {
@@ -22,7 +41,7 @@ static	int	str_sep_len(char const *s)
 	return (i);
 }
 
-char	*str_sepdup(char *s)
+char	*ft_str_sepdup(char *s)
 {
 	char	*word;
 	int		i;
@@ -44,7 +63,7 @@ char	*str_sepdup(char *s)
 
 int	ft_strcmp(char *s1, char *s2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
@@ -58,10 +77,12 @@ char	*ft_strdup(char *src)
 	int		len;
 	char	*str;
 
+	if (!src)
+		return (NULL);
 	len = 0;
 	while (src[len])
 		len++;
-	str = (char*)malloc(sizeof(*str) * (len + 1));
+	str = (char *)malloc(sizeof(*str) * (len + 1));
 	i = 0;
 	while (i < len)
 	{
