@@ -9,3 +9,7 @@ it is our first team work in Git, so there is cheat sheet 4 us.
 - git merge "name-of-your-branch"
 - git branch -d "name-of-your-branch" = delete local branch
 - git push origin --delete "name-of-your-branch" = delete branch from (GitHub)
+Im in outdated branch and I want to pull the main branch:
+- git checkout "name-of-your-branch" = move to my branch
+- git fetch origin = downloads changes from distance branches but does not apply into our local branches
+- git reset --hard origin/main = reset our branch to main branch !!this deletes all our local changes
