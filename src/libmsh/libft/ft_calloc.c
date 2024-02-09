@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/09 14:48:45 by psimcak          ###   ########.fr       */
+/*   Created: 2024/02/07 17:12:09 by psimcak           #+#    #+#             */
+/*   Updated: 2024/02/09 13:52:21 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
-// Definition and initialization
-int	g_signal = 0;
-
-int	minishell_loop()
+static void	ft_bzero(void *s, size_t n)
 {
-	return (0);
+	while (n && s)
+		((char *)s)[--n] = 0;
 }
 
-int	main(int argc, char **argv, char **envp)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	char	*input;
+	size_t	alloc_mem_size;
+	void	*ptr;
 
-	input = "ls -l > file.txt";
-	if (argc != 1 || argv[1])
-	{
-		ft_putstr_fd("Error: Minishell doesn't take any arguments.\n", 2);
+	if (nmemb && ((size_t)(-1) / nmemb) < size)
 		return (0);
-	}
-	lexer(input);
-	return (0);
+	alloc_mem_size = nmemb * size;
+	ptr = (void *)malloc(alloc_mem_size);
+	if (!ptr)
+		return (0);
+	ft_bzero(ptr, alloc_mem_size);
+	return (ptr);
 }

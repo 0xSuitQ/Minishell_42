@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/05 20:31:31 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/09 14:45:20 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,17 @@
 # define MINISHELL_H
 
 /******************** iMport **********************/
-# include <stdio.h>
-# include <unistd.h>
-# include <stdarg.h>
-# include <stddef.h>
-# include <stdlib.h>
+# include <stdio.h>		// printf, perror
+# include <unistd.h>	// write
+# include <stdarg.h>	// 
+# include <stddef.h>	// 
+# include <stdlib.h>	// malloc, free, exit, getenv
+# include <signal.h>	// signal
+
+/********* DECLARATION OF GLOBAL VARIABLE *********/
+// declare it in .h file allow us to use it anywhere where we include msh.h
+// extern = this exists
+extern int	g_signal;
 
 /******************** LEXER **********************/
 typedef enum s_token_list
@@ -45,19 +51,25 @@ typedef struct s_lexer
 	struct s_lexer	*prev;
 }	t_lexer;
 
+typedef struct s_main_tools
+{
+	char	**argv;
+}	t_main_tools;
+
+
 /******************** PARSER **********************/
+typedef struct s_simple_cmd
+{
+	char			*sub_str; // str of the command
+	// command itself
+	t_token_list	token;
+	struct s_simple_cmd	*next;
+	struct s_simple_cmd	*prev;
+}	s_simple_cmd;
 
 /******************** LIBMSH **********************/
-// LEXER
-t_lexer	*lexer(char *input);
-// UTILS 1
-char	*ft_str_sepdup(char *s);
-int		ft_strcmp(char *s1, char *s2);
-char	*ft_strdup(char *src);
-// SUBSTRING COUNTER
-int		substring_counter(char *str);
-// CREATE_LIST
-void	create_list(t_lexer **list, int index, t_token_list tok, char *sub_str);
+// LIBFT
+void	*ft_calloc(size_t nmemb, size_t size);
 // PRINTF
 int		ft_printf(const char *format, ...);
 void	ft_putchar_and_strlen(char c, int *count);
@@ -66,6 +78,21 @@ void	ft_putstr(char *str, int *count);
 void	ft_u_int_to_str(unsigned int u, int *count);
 void	ft_int_to_hex(char specifier, unsigned int uint_num, int *count);
 void	ft_pointer(unsigned long u_int_num, int *count);
+// ARRAY DUPLICATOR
+char	**ft_arrdup(char **arr);
+// LEXER
+t_lexer	*lexer(char *input);
+// STRING UTILS
+char	*ft_str_sepdup(char *s);
+int		ft_strcmp(char *s1, char *s2);
+char	*ft_strdup(char *src);
+void	ft_putstr_fd(char *s, int fd);
+// FREE UTILS
+void	free_arr(char **split_arr);
+// SUBSTRING COUNTER
+int		substring_counter(char *str);
+// CREATE_LIST
+void	create_list(t_lexer **list, int index, t_token_list tok, char *sub_str);
 
 /******************** MACROS **********************/
 # define TOKEN_NUM		5

@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_utils.c                                        :+:      :+:    :+:   */
+/*   utils_str.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:54:47 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/05 20:08:01 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/07 17:50:21 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static	int	ft_str_sep_len(char const *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] && !((s[i] >= 9 && s[i] <= 13) || s[i] == 32))
+		i++;
+	return (i);
+}
 
 int	substring_counter(char *str)
 {
@@ -31,16 +41,6 @@ int	substring_counter(char *str)
 	return (counter);
 }
 
-static	int	str_sep_len(char const *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] && !((s[i] >= 9 && s[i] <= 13) || s[i] == 32))
-		i++;
-	return (i);
-}
-
 char	*ft_str_sepdup(char *s)
 {
 	char	*word;
@@ -48,7 +48,7 @@ char	*ft_str_sepdup(char *s)
 	int		len;
 
 	i = 0;
-	len = str_sep_len(s);
+	len = ft_str_sep_len(s);
 	word = (char *)malloc((len + 1) * sizeof(char));
 	if (!word)
 		return (NULL);
