@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:54:47 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/07 17:50:21 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/10 20:17:36 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,13 @@ char	*ft_strdup(char *src)
 	len = 0;
 	while (src[len])
 		len++;
-	str = (char *)malloc(sizeof(*str) * (len + 1));
+	str = (char *)malloc(sizeof(char) * (len + 1));
 	i = 0;
 	while (i < len)
 	{
 		str[i] = src[i];
 		i++;
 	}
+	str[i] = '\0';
 	return (str);
 }

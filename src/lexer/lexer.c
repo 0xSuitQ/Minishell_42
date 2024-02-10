@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:02 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/05 20:31:55 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/10 19:58:28 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,11 @@ t_lexer	*lexer(char *input)
 	// TEST
 	while (lexer_list)
 	{
-		ft_printf("str of the lexer list number %d: %s\n", lexer_list->index, lexer_list->sub_str);
-		ft_printf("token of the lexer list number %d: %d\n", lexer_list->index, lexer_list->token);
+		printf("str of the lexer list number %d: %s\n", lexer_list->index, lexer_list->sub_str);
+		printf("token of the lexer list number %d: %d\n", lexer_list->index, lexer_list->token);
 		//if (lexer_list[i].token == GREAT)
 		//	write(1, "TEST CHECK\n", 12);
-		ft_printf("------------------\n");
+		printf("------------------\n");
 		lexer_list = lexer_list->next;
 	}
 	return (lexer_list);
