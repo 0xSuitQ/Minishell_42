@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/10 20:25:16 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/12 07:43:38 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,20 @@ void	reset_loop(t_main_tools *tools)
 // */
 int	minishell_loop(t_main_tools *tools)
 {
+	t_lexer		*lexer_list;
+
 	tools->envp = "hehe";
-	lexer(readline("temp >_ "));
-	reset_loop(tools);
+	lexer_list = lexer(readline("temp >_ "));
+	// reset_loop(tools);
+
+	// TEST
+	while (lexer_list)
+	{
+		printf("str of the lexer list number\t %d: %s\n", lexer_list->index, lexer_list->sub_str);
+		printf("token of the lexer list number\t %d: %d\n", lexer_list->index, lexer_list->token);
+		printf("------------------\n");
+		lexer_list = lexer_list->next;
+	}
 	return (0);
 }
 

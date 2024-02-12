@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:02 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/10 19:58:28 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/12 07:37:20 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static void	tokenize(char **words, t_lexer	**lexer_list)
 		found = 0;
 		while (++j < TOKEN_NUM)
 		{
-			if (ft_strcmp(words[i], tokens[j].str_symbol) == 0)
+			if (ft_strcmp(words[i], tokens[j].str_sym) == 0)
 			{
-				create_list(lexer_list, i, tokens[j].type, NULL);
+				create_list(lexer_list, i, tokens[j].type, tokens[j].str_sym);
 				found = 1;
 			}
 		}
 		if (!found)
-			create_list(lexer_list, i, 0, words[i]);
+			create_list(lexer_list, i, tokens[j].type, words[i]);
 	}
 }
 
@@ -72,16 +72,5 @@ t_lexer	*lexer(char *input)
 	lexer_list = NULL;
 	words = split_by_whitespace(input);
 	tokenize(words, &lexer_list); // TODO free
-
-	// TEST
-	while (lexer_list)
-	{
-		printf("str of the lexer list number %d: %s\n", lexer_list->index, lexer_list->sub_str);
-		printf("token of the lexer list number %d: %d\n", lexer_list->index, lexer_list->token);
-		//if (lexer_list[i].token == GREAT)
-		//	write(1, "TEST CHECK\n", 12);
-		printf("------------------\n");
-		lexer_list = lexer_list->next;
-	}
 	return (lexer_list);
 }
