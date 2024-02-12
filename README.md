@@ -16,3 +16,19 @@ it is our first team work in Git, so there is cheat sheet 4 us.
 - Textbook: [Writing your own shell](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf)
 - [Shell syntax](https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html)
 - Code Inspiration on [GitHub](https://github.com/maiadegraaf/minishell)
+
+## Project plan
+1 - create lexer and basic main
+2 - create parser
+3 - manage signals (after creating execution)
+utils, libraries, header(s) do during the coding
+
+## Notes
+### Signals
+signal = "If this signal happens, do this instead of what you'd normally do."
+				(SIGINT)		(handle_sigint)
+SIGINT
+signal that is typically sent to a program when the interrupt key (Ctrl + C) 
+is pressed. By default, this signal terminates a program.
+
+### Other notes

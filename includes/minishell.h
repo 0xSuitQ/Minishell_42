@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/12 07:35:27 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/12 09:44:13 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,12 @@ void	ft_pointer(unsigned long u_int_num, int *count);
 char	**ft_arrdup(char **arr);
 // LEXER
 t_lexer	*lexer(char *input);
-// STRING UTILS
+// ***** UTILS ***** //
 char	*ft_str_sepdup(char *s);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strdup(char *src);
-// FREE UTILS
 void	free_arr(char **split_arr);
+void	ft_putstr_fd_exit(char *message, int fd_num, int exit_num);
 // SUBSTRING COUNTER
 int		substring_counter(char *str);
 // CREATE_LIST
