@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:02 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/12 09:43:52 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/14 16:19:38 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,10 @@ static char	**split_by_whitespace(char *input)
 t_lexer	*lexer(char *input)
 {
 	char		**words;
-	int			i;
 	t_lexer		*lexer_list;
 
 	if (input == NULL)
-		ft_putstr_fd_exit("NULL as input", STDOUT, 0);
-	i = 0;
+		ft_putstr_fd_exit("exit", STDOUT, EXIT_SUCCESS);
 	lexer_list = NULL;
 	words = split_by_whitespace(input);
 	tokenize(words, &lexer_list); // TODO free
