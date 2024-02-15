@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:09:30 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/14 20:54:41 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/15 17:17:56 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,22 +182,22 @@ void	check_redirection(t_simple_cmd **cmd, t_lexer *current_lexer)
 	}
 }
 
-void	check_cmds(t_simple_cmd **cmd, t_lexer **current_lexer)
+void	check_cmds(t_simple_cmd **cmd, t_lexer *current_lexer)
 {
 	int i;
 
 	i = 0;
-	while (*current_lexer)
+	while (current_lexer)
 	{
-		if ((*current_lexer)->token == PIPE)
+		if (current_lexer->token == PIPE)
 		{
 			*cmd = (*cmd)->next;
 			i = 0;
 		}
-		else if ((*current_lexer)->flag == INVISIBLE)
-			*current_lexer = (*current_lexer)->next;
-		(*cmd)->str[i++] = ft_strdup((*current_lexer)->sub_str);
-		*current_lexer = (*current_lexer)->next;
+		else if (current_lexer->flag == INVISIBLE)
+			current_lexer = current_lexer->next;
+		(*cmd)->str[i++] = ft_strdup(current_lexer->sub_str);
+		current_lexer = current_lexer->next;
 	}
 	(*cmd)->str[i] = NULL;
 }
@@ -216,12 +216,12 @@ void	parser(t_main_tools *tools)
 	first_node_not_pipe(lex_head);
 	create_simple_cmd(&s_cmd_list, lexer_list);
 	check_pipes(&s_cmd_list, lexer_list);
-	lexer_list = lex_head;
+	lexer_list = lex_head;	// do we have to reset the pointer?
 	s_cmd_list = scmd_head;
 	check_redirection(&s_cmd_list, lexer_list);
 	lexer_list = lex_head;
 	s_cmd_list = scmd_head;
-	check_cmds(&s_cmd_list, &lexer_list);
+	check_cmds(&s_cmd_list, lexer_list);
 	// FREE T_LEXER LIST
 }
 

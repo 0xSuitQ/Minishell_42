@@ -6,12 +6,18 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:02 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/14 16:19:38 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/15 16:20:09 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/*
+tokienize() is a function that takes a list of words and creates a lexer list.
+It iterates through the words and checks if the word is a token. If it is, it
+creates a new node in the lexer list with the token type and the word. If it is
+not, it creates a new node with the token type 0 and the word.
+*/
 static void	tokenize(char **words, t_lexer	**lexer_list)
 {
 	static int				i = -1;
@@ -36,10 +42,14 @@ static void	tokenize(char **words, t_lexer	**lexer_list)
 			}
 		}
 		if (!found)
-			create_list(lexer_list, i, tokens[j].type, words[i]);
+			create_list(lexer_list, i, 0, words[i]);
 	}
 }
 
+/*
+split_by_whitespace() is a function that takes a string and splits it into words
+by whitespace. It returns a list of words.
+*/
 static char	**split_by_whitespace(char *input)
 {
 	char	**words;
@@ -62,6 +72,11 @@ static char	**split_by_whitespace(char *input)
 	return (words);
 }
 
+/*
+lexer() is a function that takes a string and returns a lexer list. It first
+splits the string into words, then tokenizes the words and creates a lexer list.
+It is the hub of all lexer functions.
+*/
 t_lexer	*lexer(char *input)
 {
 	char		**words;
