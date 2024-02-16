@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:09:30 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/15 17:17:56 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/16 13:51:26 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,9 +212,9 @@ void	parser(t_main_tools *tools)
 	lexer_list = tools->lexer_list;
 	s_cmd_list = tools->simple_cmd_list;
 	lex_head = lexer_list;
-	scmd_head = s_cmd_list;
 	first_node_not_pipe(lex_head);
 	create_simple_cmd(&s_cmd_list, lexer_list);
+	scmd_head = s_cmd_list;
 	check_pipes(&s_cmd_list, lexer_list);
 	lexer_list = lex_head;	// do we have to reset the pointer?
 	s_cmd_list = scmd_head;
