@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:09:30 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/17 18:13:33 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/17 18:28:38 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*token_to_str(t_lexer *token)
 
 	i = -1;
 	while (++i < TOKEN_NUM)
-		if (token->token == tokens[i].type)
+		if (token && token->token == tokens[i].type)
 			return (tokens[i].str_sym);
 	return ("newline"); // if !token
 }
@@ -241,10 +241,7 @@ void	parser(t_main_tools *tools)
 	s_cmd_list = scmd_head;
 	check_cmds(&s_cmd_list, lexer_list);
 	/*
-	printf("s_cmd_list: %p\n", s_cmd_list);
-	printf("----------------------------\n");
 	lexer_list = lex_head;
-	printf("***************************\n");
 	s_cmd_list = scmd_head;
 	// FREE T_LEXER LIST
 	s_cmd_list = scmd_head;
