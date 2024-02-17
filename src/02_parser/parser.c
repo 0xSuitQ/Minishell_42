@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:09:30 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/17 18:00:28 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/17 18:13:33 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,14 @@ void	first_node_not_pipe(t_lexer *lex_head)
 		STDOUT, 0);
 } // check for consecutive pipes '| |'
 
-void	validate_and_append_redirection(t_simple_cmd **cmd, t_lexer **current_lexer)
+void	validate_and_append_redirection(t_simple_cmd **cmd, t_lexer ***current_lexer)
 {
 	t_lexer	*the_arg;
 	t_lexer	*next_arg;
 
-	if (!(*current_lexer) || !(*cmd))
+	if (!(**current_lexer) || !(*cmd))
 		return ;
-	the_arg = *current_lexer;
+	the_arg = **current_lexer;
 	next_arg = the_arg->next;
 
 	if ((!next_arg || next_arg->token != 0) && the_arg)
@@ -100,7 +100,7 @@ void	validate_and_append_redirection(t_simple_cmd **cmd, t_lexer **current_lexer
 	if (next_arg)
 	{
 		append_redirection(cmd, next_arg);
-		*current_lexer = next_arg; // Move lexer pointer forward
+		**current_lexer = next_arg; // Move lexer pointer forward
 		// arent we moving the pointer twice? OR isnt it unnecessary?
 	}
 }
@@ -160,15 +160,15 @@ void	check_pipes(t_simple_cmd **cmd, t_lexer *lexer_list)
 	}
 }
 
-void	check_redirection(t_simple_cmd **cmd, t_lexer *lexer_list)
+void	check_redirection(t_simple_cmd **cmd, t_lexer **lexer_list)
 {
-	while (lexer_list)
+	while (*lexer_list)
 	{
-		if (lexer_list->token && lexer_list->token != PIPE)
+		if ((*lexer_list)->token && (*lexer_list)->token != PIPE)
 			validate_and_append_redirection(cmd, &lexer_list);
-		else if (lexer_list->token == PIPE)
+		else if ((*lexer_list)->token == PIPE)
 			*cmd = (*cmd)->next;
-		lexer_list = lexer_list->next;
+		*lexer_list = (*lexer_list)->next;
 	}
 }
 
@@ -236,21 +236,25 @@ void	parser(t_main_tools *tools)
 	scmd_head = s_cmd_list;
 	check_pipes(&s_cmd_list, lexer_list);
 	lexer_list = lex_head;
-	// s_cmd_list = scmd_head;
-	printf("s_cmd_list: %p\n", s_cmd_list);
-	check_redirection(&s_cmd_list, lexer_list);
-	lexer_list = lex_head;
+	s_cmd_list = scmd_head;
+	check_redirection(&s_cmd_list, &lexer_list);
 	s_cmd_list = scmd_head;
 	check_cmds(&s_cmd_list, lexer_list);
-	int count = 0;
+	/*
+	printf("s_cmd_list: %p\n", s_cmd_list);
+	printf("----------------------------\n");
+	lexer_list = lex_head;
+	printf("***************************\n");
 	s_cmd_list = scmd_head;
+	// FREE T_LEXER LIST
+	s_cmd_list = scmd_head;
+	print_simple_cmds(s_cmd_list);
+	*/
+	int count = 0;
 	while (s_cmd_list)
 	{
 		count++;
 		s_cmd_list = s_cmd_list->next;
 	}
 	printf("count: %d\n", count);
-	// FREE T_LEXER LIST
-	s_cmd_list = scmd_head;
-	print_simple_cmds(s_cmd_list);
 }
