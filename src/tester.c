@@ -17,13 +17,13 @@ void	tester(t_main_tools *tools)
 		}
 	if (!simple_cmds)
 		return ;
-	while (simple_cmds->redirections)
+	while (simple_cmds->lexer_list)
 	{
 		printf("token: \t\t%i\nsub_str: \t%s\nflag: \t\t%d\n",\
-		simple_cmds->redirections->token, simple_cmds->redirections->sub_str,\
-		simple_cmds->redirections->flag);
+		simple_cmds->lexer_list->token, simple_cmds->lexer_list->sub_str,\
+		simple_cmds->lexer_list->flag);
 		printf("------------------------\n");
-		//printf("and next redirection in the list: %s---", simple_cmds->redirections->next->sub_str);
-		simple_cmds->redirections = simple_cmds->redirections->next;
+		//printf("and next redirection in the list: %s---", simple_cmds->lexer_list->next->sub_str);
+		simple_cmds->lexer_list = simple_cmds->lexer_list->next;
 	}
 }

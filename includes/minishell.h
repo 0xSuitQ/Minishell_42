@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/14 18:58:38 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/16 15:47:49 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_lexer
 typedef struct s_simple_cmd
 {
 	char				**str; // str of the command
-	t_lexer				*redirections;
+	t_lexer				*lexer_list;
 	struct s_simple_cmd	*next;
 	struct s_simple_cmd	*prev;
 }	t_simple_cmd;
