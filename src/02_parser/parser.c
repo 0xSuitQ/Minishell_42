@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:09:30 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/16 17:59:24 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/17 18:00:28 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,14 @@ void	parser(t_main_tools *tools)
 	lexer_list = lex_head;
 	s_cmd_list = scmd_head;
 	check_cmds(&s_cmd_list, lexer_list);
+	int count = 0;
+	s_cmd_list = scmd_head;
+	while (s_cmd_list)
+	{
+		count++;
+		s_cmd_list = s_cmd_list->next;
+	}
+	printf("count: %d\n", count);
 	// FREE T_LEXER LIST
 	s_cmd_list = scmd_head;
 	print_simple_cmds(s_cmd_list);
