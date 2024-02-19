@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:09:30 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/17 18:28:38 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/19 11:09:45 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,27 @@ int	count_args(t_lexer *lexer_list)
 	return (i);
 }
 
-void	append_redirection(t_simple_cmd **cmd, t_lexer *redirection)
+t_lexer	*append_redirection(t_simple_cmd **cmd, t_lexer *arg)
 {
-	t_lexer	*new_redirection;
+	t_lexer	*new_arg;
 	t_lexer	*last;
 	
-	new_redirection = malloc(sizeof(t_lexer));
-	if (!new_redirection)
-		return ;
-	*new_redirection = *redirection;
-	new_redirection->next = NULL;
-	new_redirection->prev = NULL;
+	new_arg = malloc(sizeof(t_lexer));
+	if (!new_arg)
+		return (NULL);
+	*new_arg = *arg;
+	new_arg->next = NULL;
+	new_arg->prev = NULL;
 	if (!(*cmd)->lexer_list)
-		(*cmd)->lexer_list = new_redirection;
+		(*cmd)->lexer_list = new_arg;
 	else
 	{
 		last = get_last_node((*cmd)->lexer_list);
-		last->next = new_redirection;
-		new_redirection->prev = last;
+		last->next = new_arg;
+		new_arg->prev = last;
 	}
-	new_redirection->flag = INVISIBLE;
+	new_arg->flag = INVISIBLE;
+	return (new_arg);
 }
 
 void	first_node_not_pipe(t_lexer *lex_head)
@@ -96,10 +97,10 @@ void	validate_and_append_redirection(t_simple_cmd **cmd, t_lexer ***current_lexe
 			return; // Exit on error for non-existing file
 		}
 	}
-	append_redirection(cmd, the_arg);
+	the_arg = append_redirection(cmd, the_arg);
 	if (next_arg)
 	{
-		append_redirection(cmd, next_arg);
+		next_arg = append_redirection(cmd, next_arg);
 		**current_lexer = next_arg; // Move lexer pointer forward
 		// arent we moving the pointer twice? OR isnt it unnecessary?
 	}
@@ -174,22 +175,40 @@ void	check_redirection(t_simple_cmd **cmd, t_lexer **lexer_list)
 
 void	check_cmds(t_simple_cmd **cmd, t_lexer *lexer_list)
 {
+	t_simple_cmd *head;
 	int i;
 
-	i = 0;
+	head = *cmd;
+	i = -1;
 	while (lexer_list)
 	{
 		if (lexer_list->token == PIPE)
 		{
+			(*cmd)->str[i] = NULL;
 			*cmd = (*cmd)->next;
-			i = 0;
+			printf("cmd pointer: %p\n", *cmd); // delete
+			i = -1;
 		}
 		else if (lexer_list->flag == INVISIBLE)
 			lexer_list = lexer_list->next;
-		(*cmd)->str[i++] = ft_strdup(lexer_list->sub_str);
+		(*cmd)->str[++i] = ft_strdup(lexer_list->sub_str);
 		lexer_list = lexer_list->next;
 	}
+	if (i == -1)
+		i++;
 	(*cmd)->str[i] = NULL;
+	
+	*cmd = head;
+	int j;
+	while (*cmd)
+	{
+		j = 0;
+		while((*cmd)->str[j])
+			printf("%s ", (*cmd)->str[j++]);
+		printf("\n");
+		*cmd = (*cmd)->next;
+	}
+	*cmd = head;
 }
 
 void check_redirections_tokens(t_simple_cmd *cmd) 
@@ -235,10 +254,10 @@ void	parser(t_main_tools *tools)
 	init_simple_cmd(&s_cmd_list, lexer_list);
 	scmd_head = s_cmd_list;
 	check_pipes(&s_cmd_list, lexer_list);
-	lexer_list = lex_head;
 	s_cmd_list = scmd_head;
 	check_redirection(&s_cmd_list, &lexer_list);
 	s_cmd_list = scmd_head;
+	lexer_list = lex_head;
 	check_cmds(&s_cmd_list, lexer_list);
 	/*
 	lexer_list = lex_head;
@@ -247,11 +266,13 @@ void	parser(t_main_tools *tools)
 	s_cmd_list = scmd_head;
 	print_simple_cmds(s_cmd_list);
 	*/
-	int count = 0;
-	while (s_cmd_list)
-	{
-		count++;
-		s_cmd_list = s_cmd_list->next;
-	}
-	printf("count: %d\n", count);
+	// int count = 0;
+	// while (s_cmd_list)
+	// {
+	// 	count++;
+	// 	s_cmd_list = s_cmd_list->next;
+	// }
+	// printf("count: %d\n", count);
+	// print the simple commands
+	// s_cmd_list = scmd_head;
 }
