@@ -6,18 +6,19 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/20 17:57:26 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/20 18:06:50 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-void	tester(t_main_tools *tools, int signpost); // ZAKOMENTOVAT
+// ZAKOMENTOVAT
+void	tester(t_main_tools *tools, int signpost);
 
 /*
 	@brief:
 	token_to_str function returns the string representation of the token.
 	It uses 2D array of strings and token_list enum to find the right string
-	and macro to find the right token.
+	and macro to find the right token. If !token, it returns "newline".
 */
 char	*token_to_str(t_lexer *token)
 {
@@ -32,7 +33,7 @@ char	*token_to_str(t_lexer *token)
 	while (++i < TOKEN_NUM)
 		if (token && token->token == tokens[i].type)
 			return (tokens[i].str_sym);
-	return ("newline"); // if !token
+	return ("newline");
 }
 
 /*
@@ -54,7 +55,7 @@ t_lexer	*append_redirection(t_simple_cmd **cmd, t_lexer *arg)
 {
 	t_lexer	*new_arg;
 	t_lexer	*last;
-	
+
 	new_arg = malloc(sizeof(t_lexer));
 	if (!new_arg)
 		return (NULL);
@@ -80,7 +81,7 @@ t_lexer	*append_redirection(t_simple_cmd **cmd, t_lexer *arg)
 	If the redirection is a '<' and the file does not exist, it Print&Error.
 	Otherwise, it appends the redirection to the lexer_list.
 */
-void	validate_and_append_redirection(t_simple_cmd **cmd, t_lexer **current_lexer)
+void	validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer)
 {
 	t_lexer	*the_arg;
 	t_lexer	*next_arg;
@@ -97,7 +98,7 @@ void	validate_and_append_redirection(t_simple_cmd **cmd, t_lexer **current_lexer
 		if (access(next_arg->sub_str, F_OK) == -1)
 		{
 			ft_printf("no such file or directory: %s\n", next_arg->sub_str);
-			return; // Exit on error for non-existing file
+			return ; // Exit on error for non-existing file
 		}
 	}
 	the_arg = append_redirection(cmd, the_arg);
@@ -124,7 +125,7 @@ void	redirection_pipe_word(t_simple_cmd **cmd, t_lexer *lexer_list)
 	{
 		if (tmp->token && tmp->token != PIPE)
 		{
-			validate_and_append_redirection(cmd, &tmp);
+			validate_redirection(cmd, &tmp);
 		}
 		if (tmp->token == PIPE)
 		{
@@ -145,7 +146,7 @@ void	redirection_pipe_word(t_simple_cmd **cmd, t_lexer *lexer_list)
 */
 int	count_args(t_lexer *lexer_list)
 {
-	int		counter;
+	int	counter;
 
 	counter = 0;
 	while (lexer_list && lexer_list->token != PIPE)
@@ -154,7 +155,6 @@ int	count_args(t_lexer *lexer_list)
 			counter++;
 		lexer_list = lexer_list->next;
 	}
-	// printf("count_args output: %d\n", counter);
 	return (counter);
 }
 
@@ -289,7 +289,7 @@ void	parser(t_main_tools *tools)
 	init_simple_cmds(&s_cmd_list, lexer_list);
 	tools->simple_cmd_list = s_cmd_list;
 	redirection_pipe_word(&s_cmd_list, lexer_list);
-	
+
 	// WIP:
 	// check_cmds(&s_cmd_list, lexer_list);
 }
