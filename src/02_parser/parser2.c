@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/20 10:37:16 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/20 11:44:25 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,17 @@ char	*token_to_str(t_lexer *token)
 		if (token && token->token == tokens[i].type)
 			return (tokens[i].str_sym);
 	return ("newline"); // if !token
+}
+
+/*
+	@brief:
+	unexpected_token_officer is a member of the ERROR_POLICE. It prints an error
+	message with the unexpected token and exits the program.
+*/
+void	unexpected_token_officer(t_lexer *head)
+{
+	ft_printf("syntax error near unexpected token `%s'", token_to_str(head));
+	ft_putstr_fd_exit("\n", STDOUT, 0);
 }
 
 /*
@@ -58,7 +69,10 @@ t_lexer	*append_redirection(t_simple_cmd **cmd, t_lexer *arg)
 }
 
 /*
-	
+	@brief:
+	If the next_arg dosn't exist || isn't a word, it Print&Error the program.
+	If the redirection is a '<' and the file does not exist, it Print&Error.
+	Otherwise, it appends the redirection to the lexer_list.
 */
 void	validate_and_append_redirection(t_simple_cmd **cmd, t_lexer **current_lexer)
 {
@@ -71,10 +85,7 @@ void	validate_and_append_redirection(t_simple_cmd **cmd, t_lexer **current_lexer
 	next_arg = the_arg->next;
 
 	if ((!next_arg || next_arg->token != 0) && the_arg)
-	{
-		ft_printf("syntax error near unexpected token `%s'", token_to_str(next_arg));
-		ft_putstr_fd_exit("\n", STDOUT, 0);
-	}
+		unexpected_token_officer(next_arg);
 	if (the_arg->token == LESS)
 	{
 		if (access(next_arg->sub_str, F_OK) == -1)
@@ -83,16 +94,11 @@ void	validate_and_append_redirection(t_simple_cmd **cmd, t_lexer **current_lexer
 			return; // Exit on error for non-existing file
 		}
 	}
-	// (*current_lexer)->flag = INVISIBLE;
-	printf("**********\n");
 	the_arg = append_redirection(cmd, the_arg);
 	if (next_arg)
 	{
 		next_arg = append_redirection(cmd, next_arg);
-		// (*current_lexer)->flag = INVISIBLE;
-		printf("+++++++++++\n");
-		*current_lexer = next_arg; // Move lexer pointer forward
-		// arent we moving the pointer twice? OR isnt it unnecessary?
+		*current_lexer = next_arg;
 	}
 }
 
@@ -103,24 +109,26 @@ void	validate_and_append_redirection(t_simple_cmd **cmd, t_lexer **current_lexer
 	if the token is anything else (word), it moves to the next node of the list
 	of lexer_list
 */
-void	check_redirection(t_simple_cmd **cmd, t_lexer *lexer_list)
+void	redirection_pipe_word(t_simple_cmd **cmd, t_lexer *lexer_list)
 {
 	t_lexer	*tmp;
 
 	tmp = lexer_list;
 	while (tmp)
 	{
-		printf("tmp->token: %i tmp->sub_str: %s\n", tmp->token, tmp->sub_str);
 		if (tmp->token && tmp->token != PIPE)
 		{
 			tmp->flag = INVISIBLE;
 			// validate_and_append_redirection(cmd, &tmp);
 		}
 		if (tmp->token == PIPE)
+		{
+			if (tmp->next->token == PIPE)
+				unexpected_token_officer(tmp);
 			*cmd = (*cmd)->next;
+		}
 		tmp = tmp->next;
 	}
-	printf("------------------\n");
 }
 
 /*
@@ -256,8 +264,7 @@ void	init_simple_cmds(t_simple_cmd **cmd_list, t_lexer *lexer_list)
 void	first_node_not_pipe(t_lexer *lex_head)
 {
 	if (lex_head->token == PIPE)
-		ft_putstr_fd_exit("syntax error near unexpected token `|'\n",
-		STDOUT, 0);
+		unexpected_token_officer(lex_head);
 }
 
 /*
@@ -273,9 +280,8 @@ void	parser(t_main_tools *tools)
 	s_cmd_list = tools->simple_cmd_list;
 	first_node_not_pipe(lexer_list);
 	init_simple_cmds(&s_cmd_list, lexer_list);
-	check_redirection(&s_cmd_list, lexer_list);
 	tools->simple_cmd_list = s_cmd_list;
-	tester(tools, CMD_LIST);
+	redirection_pipe_word(&s_cmd_list, lexer_list);
 	
 	// WIP:
 	// check_cmds(&s_cmd_list, lexer_list);
