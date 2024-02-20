@@ -6,11 +6,12 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/19 19:42:04 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/20 10:37:16 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+void	tester(t_main_tools *tools, int signpost); // ZAKOMENTOVAT
 
 /*
 
@@ -53,7 +54,6 @@ t_lexer	*append_redirection(t_simple_cmd **cmd, t_lexer *arg)
 		last->next = new_arg;
 		new_arg->prev = last;
 	}
-	printf("hehehe\n");
 	return (new_arg);
 }
 
@@ -83,14 +83,13 @@ void	validate_and_append_redirection(t_simple_cmd **cmd, t_lexer **current_lexer
 			return; // Exit on error for non-existing file
 		}
 	}
-	(*current_lexer)->flag = INVISIBLE;
+	// (*current_lexer)->flag = INVISIBLE;
 	printf("**********\n");
 	the_arg = append_redirection(cmd, the_arg);
-	printf("flag of the arg: %d\n", the_arg->flag);
 	if (next_arg)
 	{
 		next_arg = append_redirection(cmd, next_arg);
-		(*current_lexer)->flag = INVISIBLE;
+		// (*current_lexer)->flag = INVISIBLE;
 		printf("+++++++++++\n");
 		*current_lexer = next_arg; // Move lexer pointer forward
 		// arent we moving the pointer twice? OR isnt it unnecessary?
@@ -109,16 +108,19 @@ void	check_redirection(t_simple_cmd **cmd, t_lexer *lexer_list)
 	t_lexer	*tmp;
 
 	tmp = lexer_list;
-	printf("adress of tmp: %p\n", tmp);
-	printf("adress of lexer_list: %p\n", lexer_list);
 	while (tmp)
 	{
+		printf("tmp->token: %i tmp->sub_str: %s\n", tmp->token, tmp->sub_str);
 		if (tmp->token && tmp->token != PIPE)
-			validate_and_append_redirection(cmd, &tmp);
-		else if (tmp->token == PIPE)
+		{
+			tmp->flag = INVISIBLE;
+			// validate_and_append_redirection(cmd, &tmp);
+		}
+		if (tmp->token == PIPE)
 			*cmd = (*cmd)->next;
 		tmp = tmp->next;
 	}
+	printf("------------------\n");
 }
 
 /*
@@ -139,7 +141,7 @@ int	count_args(t_lexer *lexer_list)
 			counter++;
 		lexer_list = lexer_list->next;
 	}
-	printf("count_args output: %d\n", counter);
+	// printf("count_args output: %d\n", counter);
 	return (counter);
 }
 
@@ -180,7 +182,7 @@ void	init_first_scmd(t_simple_cmd **list, t_simple_cmd *new_node)
 void	connect_node_to_list(t_simple_cmd **list, t_simple_cmd *new_node)
 {
 	new_node->prev = get_last_cmd_node(list);
-	(*list)->next = new_node;
+	new_node->prev->next = new_node;
 }
 
 /*
@@ -196,17 +198,26 @@ void	connect_node_to_list(t_simple_cmd **list, t_simple_cmd *new_node)
 void	init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list)
 {
 	t_simple_cmd	*new_node;
-	int				arg_size;
+	int				i;
 
-	arg_size = count_args(lexer_list);
 	new_node = malloc(sizeof(t_simple_cmd));
 	if (!new_node)
 		return ;
-	new_node->str = malloc((arg_size + 1) * sizeof(char *));
+	new_node->arg_count = count_args(lexer_list);
+	new_node->str = malloc((new_node->arg_count + 1) * sizeof(char *));
 	if (!new_node->str)
 	{
 		free(new_node);
 		return ;
+	}
+	i = -1;
+	while (++i < new_node->arg_count)
+		new_node->str[i] = NULL;
+	i = -1;
+	while (++i < new_node->arg_count)
+	{
+		new_node->str[i] = ft_strdup(lexer_list->sub_str);
+		lexer_list = lexer_list->next;
 	}
 	if (*cmd_list == NULL)
 		init_first_scmd(cmd_list, new_node);
@@ -263,14 +274,9 @@ void	parser(t_main_tools *tools)
 	first_node_not_pipe(lexer_list);
 	init_simple_cmds(&s_cmd_list, lexer_list);
 	check_redirection(&s_cmd_list, lexer_list);
+	tools->simple_cmd_list = s_cmd_list;
+	tester(tools, CMD_LIST);
 	
-	// delete this
-	t_lexer	*tmp = lexer_list;
-	while(tmp)
-	{
-		printf("lexer_list->flag: %d\n", tmp->flag);
-		tmp = tmp->next;
-	}
 	// WIP:
 	// check_cmds(&s_cmd_list, lexer_list);
 }

@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/16 15:47:49 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/20 10:32:21 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_lexer
 typedef struct s_simple_cmd
 {
 	char				**str; // str of the command
+	int					arg_count;
 	t_lexer				*lexer_list;
 	struct s_simple_cmd	*next;
 	struct s_simple_cmd	*prev;
@@ -109,6 +110,9 @@ int		substring_counter(char *str);
 
 # define INVISIBLE		0
 # define VISIBLE		1
+
+# define LEXER_LIST		0
+# define CMD_LIST		1
 
 # define TOKEN_NUM		5
 # define HEREDOC_MSG	BOLD_BLUE"> "END
