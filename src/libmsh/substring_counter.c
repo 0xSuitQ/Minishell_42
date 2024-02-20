@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   substring_counter.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/09 13:44:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/12 09:42:11 by psimcak          ###   ########.fr       */
+/*   Created: 2024/02/12 09:50:39 by psimcak           #+#    #+#             */
+/*   Updated: 2024/02/12 09:54:34 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-static int	ft_strlen(const char *str)
+int	substring_counter(char *str)
 {
 	int	i;
+	int	counter;
 
 	i = 0;
+	counter = 0;
 	while (str[i])
-		i++;
-	return (i);
-}
-
-void	ft_putstr_fd(char *str, int fd)
-{
-	write(fd, str, ft_strlen(str));
-	write(fd, "\n", 1);
+	{
+		while (str[i] && ((str[i] >= 9 && str[i] <= 13) || str[i] == 32))
+			i++;
+		if (str[i])
+			counter++;
+		while (str[i] && (!((str[i] >= 9 && str[i] <= 13) || str[i] == 32)))
+			i++;
+	}
+	return (counter);
 }

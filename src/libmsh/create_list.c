@@ -6,13 +6,13 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:43:01 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/05 20:08:10 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/14 18:49:55 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static t_lexer	*get_last_node(t_lexer *list_head)
+t_lexer	*get_last_node(t_lexer *list_head)
 {
 	if (list_head == NULL)
 		return (NULL);
@@ -44,5 +44,6 @@ void	create_list(t_lexer **list, int index, t_token_list tok, char *sub_str)
 	new_node->sub_str = ft_strdup(sub_str); // TODO: mind to freeing it
 	new_node->index = index;
 	new_node->token = tok;
+	new_node->flag = VISIBLE;
 	new_node->next = NULL;
 }

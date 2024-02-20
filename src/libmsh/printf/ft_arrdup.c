@@ -1,29 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_arrdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/09 13:44:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/12 09:42:11 by psimcak          ###   ########.fr       */
+/*   Created: 2024/02/07 17:09:33 by psimcak           #+#    #+#             */
+/*   Updated: 2024/02/09 16:23:08 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-static int	ft_strlen(const char *str)
+char	**ft_arrdup(char **arr)
 {
-	int	i;
+	char			**output_arr;
+	static size_t	i = 0;
+	static int		j = -1;
 
-	i = 0;
-	while (str[i])
+	while (arr[i])
 		i++;
-	return (i);
-}
-
-void	ft_putstr_fd(char *str, int fd)
-{
-	write(fd, str, ft_strlen(str));
-	write(fd, "\n", 1);
+	output_arr = ft_calloc(i + 1, sizeof(char *));
+	if (!output_arr)
+		return (NULL);
+	while (arr[++j])
+	{
+		output_arr[j] = ft_strdup(arr[j]);
+		if (!output_arr[j])
+		{
+			free_arr(output_arr);
+			return (output_arr);
+		}
+	}
+	return (output_arr);
 }

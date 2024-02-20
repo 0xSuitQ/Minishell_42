@@ -8,7 +8,7 @@ OBJ 	= $(SRC:%.c=%.o)
 		@cc $(FLAGS) -I includes -c $< -o $(<:.c=.o)
 
 all: $(OBJ)
-		@cc ${OBJ} -o ${NAME}
+		@cc ${OBJ} -o ${NAME} -lreadline
 		@echo "\033[32m----Minishell Compiled!----\e[0m"
 
 clean:

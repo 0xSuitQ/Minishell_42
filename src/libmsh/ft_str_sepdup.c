@@ -1,29 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_str_sepdup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/09 13:44:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/12 09:42:11 by psimcak          ###   ########.fr       */
+/*   Created: 2024/02/12 09:48:40 by psimcak           #+#    #+#             */
+/*   Updated: 2024/02/12 09:48:54 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-static int	ft_strlen(const char *str)
+static	int	ft_str_sep_len(char const *s)
 {
 	int	i;
 
 	i = 0;
-	while (str[i])
+	while (s[i] && !((s[i] >= 9 && s[i] <= 13) || s[i] == 32))
 		i++;
 	return (i);
 }
 
-void	ft_putstr_fd(char *str, int fd)
+char	*ft_str_sepdup(char *s)
 {
-	write(fd, str, ft_strlen(str));
-	write(fd, "\n", 1);
+	char	*word;
+	int		i;
+	int		len;
+
+	i = 0;
+	len = ft_str_sep_len(s);
+	word = (char *)malloc((len + 1) * sizeof(char));
+	if (!word)
+		return (NULL);
+	while (i < len)
+	{
+		word[i] = s[i];
+		i++;
+	}
+	word[i] = '\0';
+	return (word);
 }
