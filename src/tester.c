@@ -42,4 +42,9 @@ void	tester(t_main_tools *tools, int signpost)
 			tmp = tmp->next;
 		}
 	}
+
+	if (signpost == EXPANDER)
+	{
+		printf("POKUS\n");
+	}
 }

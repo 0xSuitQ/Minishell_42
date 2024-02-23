@@ -6,12 +6,12 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/20 18:06:50 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/22 13:32:06 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-// ZAKOMENTOVAT
+
 void	tester(t_main_tools *tools, int signpost);
 
 /*
@@ -224,7 +224,7 @@ void	init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list)
 		return ;
 	}
 	i = -1;
-	while (++i < new_node->arg_count)
+	while (++i <= new_node->arg_count)
 		new_node->str[i] = NULL;
 	// move this str init to the end of parser function.
 	i = -1;

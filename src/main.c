@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/20 11:45:58 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/22 13:40:36 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	minishell_loop(t_main_tools *tools)
 	// tester(tools, LEXER_LIST); // ZAKOMENTOVAT
 	parser(tools);
 	tester(tools, CMD_LIST); // ZAKOMENTOVAT
+	expander(tools);
 	tools_to_default_setting(tools);
 	return (0);
 }

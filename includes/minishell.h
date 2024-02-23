@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/20 10:32:21 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/02/22 13:15:52 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ typedef struct s_main_tools
 t_lexer	*lexer(char *input);
 // PARSER
 void	parser(t_main_tools *tools);
+// EXPANDER
+void	expander(t_main_tools *tools);
 // LIBFT
 void	*ft_calloc(size_t nmemb, size_t size);
 void	ft_putstr_fd(char *s, int fd);
@@ -113,6 +115,7 @@ int		substring_counter(char *str);
 
 # define LEXER_LIST		0
 # define CMD_LIST		1
+# define EXPANDER		2
 
 # define TOKEN_NUM		5
 # define HEREDOC_MSG	BOLD_BLUE"> "END
