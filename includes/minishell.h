@@ -22,6 +22,8 @@
 # include <signal.h>			// signal
 # include <readline/readline.h> // functions related w/ readline
 # include <readline/history.h>	// functions related w/ readline
+#include <fcntl.h>				// open, close
+#include <stdlib.h>				// For EXIT_FAILURE and EXIT_SUCCESS constants
 
 /********* DECLARATION OF GLOBAL VARIABLE *********/
 // declare it in .h file allow us to use it anywhere where we include msh.h
@@ -60,6 +62,7 @@ typedef struct s_simple_cmd
 	char				**str; // str of the command
 	int					arg_count;
 	t_lexer				*lexer_list;
+	char				*heredoc_filename;
 	struct s_simple_cmd	*next;
 	struct s_simple_cmd	*prev;
 }	t_simple_cmd;
@@ -71,6 +74,7 @@ typedef struct s_main_tools
 	t_simple_cmd	*simple_cmd_list;
 	char			*envp;
 	char			**paths;
+	int				pipes;
 }	t_main_tools;
 
 /****************** PROTOTYPES ********************/
@@ -78,9 +82,15 @@ typedef struct s_main_tools
 t_lexer	*lexer(char *input);
 // PARSER
 void	parser(t_main_tools *tools);
+// HEREDOC
+int		heredoc(t_main_tools *tools, t_simple_cmd *cmd);
 // LIBFT
 void	*ft_calloc(size_t nmemb, size_t size);
 void	ft_putstr_fd(char *s, int fd);
+char	*ft_itoa(int n);
+char	*ft_strjoin(char const *s1, char const *s2);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t	ft_strlen(const char *str);
 // PRINTF
 int		ft_printf(const char *format, ...);
 void	ft_putchar_and_strlen(char c, int *count);

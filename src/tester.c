@@ -5,10 +5,10 @@ void	tester(t_main_tools *tools, int signpost)
 	if (signpost == LEXER_LIST)
 	{
 		t_lexer			*lexer_list;
-		t_simple_cmd	*simple_cmds;
+		//t_simple_cmd	*simple_cmds;
 
 		lexer_list = tools->lexer_list;
-		simple_cmds = tools->simple_cmd_list;
+		//simple_cmds = tools->simple_cmd_list;
 		if (lexer_list)
 		{
 			while (lexer_list)

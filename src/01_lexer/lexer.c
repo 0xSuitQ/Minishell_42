@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
+#include <string.h>
 /*
 tokienize() is a function that takes a list of words and creates a lexer list.
 It iterates through the words and checks if the word is a token. If it is, it
@@ -35,7 +35,7 @@ static void	tokenize(char **words, t_lexer	**lexer_list)
 		found = 0;
 		while (++j < TOKEN_NUM)
 		{
-			if (ft_strcmp(words[i], tokens[j].str_sym) == 0)
+			if (strcmp(words[i], tokens[j].str_sym) == 0)
 			{
 				create_list(lexer_list, i, tokens[j].type, tokens[j].str_sym);
 				found = 1;
@@ -87,5 +87,6 @@ t_lexer	*lexer(char *input)
 	lexer_list = NULL;
 	words = split_by_whitespace(input);
 	tokenize(words, &lexer_list); // TODO free
+	write(1, "lexer.c\n", 8);
 	return (lexer_list);
 }
