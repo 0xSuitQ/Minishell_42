@@ -89,7 +89,7 @@ void	validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer)
 		return ;
 	the_arg = *current_lexer;
 	next_arg = the_arg->next;
-
+	
 	if ((!next_arg || next_arg->token != 0) && the_arg)
 		unexpected_token_officer(next_arg);
 	if (the_arg->token == LESS)
@@ -129,7 +129,7 @@ void	redirection_pipe_word(t_simple_cmd **cmd, t_lexer *lexer_list)
 			validate_redirection(cmd, &tmp);
 		if (tmp->token == PIPE)
 		{
-			if (tmp->next->token == PIPE)
+			if (!tmp->next || tmp->next->token == PIPE)
 				unexpected_token_officer(tmp);
 			*cmd = (*cmd)->next;
 		}

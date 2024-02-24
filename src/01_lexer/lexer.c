@@ -50,6 +50,41 @@ static void	tokenize(char **words, t_lexer	**lexer_list)
 split_by_whitespace() is a function that takes a string and splits it into words
 by whitespace. It returns a list of words.
 */
+
+static int count_string_length(char *input, char delimiter) {
+    int length;
+	
+	length = 0;
+    while (*input && *input != delimiter)
+	{
+        length++;
+        input++;
+    }
+	if (*input == '\0')
+			ft_putstr_fd_exit("Error: unclosed quote\n", STDERR, EXIT_FAILURE);
+    return (length);
+}
+
+void handle_quotes(char **input, char ***words, int i)
+{
+	char *word;
+	char delimiter;
+	int len;
+	int iter;
+	
+	delimiter = **input;
+	(*input)++;
+	iter = 0;
+	len = count_string_length(*input, delimiter);
+	word = malloc(sizeof(char) * (len + 3)); // +3 for the quotes and null terminator
+	word[iter++] = delimiter; // add opening quote
+	while (**input && **input != delimiter)
+		word[iter++] = *(*input)++;
+	word[iter++] = delimiter; // add closing quote
+	word[iter] = '\0';
+	(*words)[i] = word;
+}
+
 static char	**split_by_whitespace(char *input)
 {
 	char	**words;
@@ -64,7 +99,13 @@ static char	**split_by_whitespace(char *input)
 		while (*input && ((*input >= 9 && *input <= 13) || *input == 32))
 			input++;
 		if (*input)
-			words[i++] = ft_str_sepdup(input);
+		{
+			if (*input == 34 || *input == 39)
+				handle_quotes(&input, &words, i);
+			else
+				words[i] = ft_str_sepdup(input);
+			i++;
+		}
 		while (*input && !((*input >= 9 && *input <= 13) || *input == 32))
 			input++;
 	}

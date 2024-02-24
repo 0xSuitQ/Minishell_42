@@ -36,7 +36,7 @@ void	tools_to_default_setting(t_main_tools *tools)
 int	minishell_loop(t_main_tools *tools)
 {
 	tools->lexer_list = lexer(readline(READLINE_MSG));
-	// tester(tools, LEXER_LIST); // ZAKOMENTOVAT
+	tester(tools, LEXER_LIST); // ZAKOMENTOVAT
 	parser(tools);
 	tester(tools, CMD_LIST); // ZAKOMENTOVAT
 	while(tools->simple_cmd_list)
