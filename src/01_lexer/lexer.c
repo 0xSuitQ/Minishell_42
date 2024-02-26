@@ -51,7 +51,8 @@ split_by_whitespace() is a function that takes a string and splits it into words
 by whitespace. It returns a list of words.
 */
 
-static int count_string_length(char *input, char delimiter) {
+static int count_string_length(char *input, char delimiter)
+{
     int length;
 	
 	length = 0;

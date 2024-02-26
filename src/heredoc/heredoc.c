@@ -37,6 +37,8 @@ void	create_heredoc(t_lexer *lexer_list, char *filename)
 		exit(1);
 	}
 	delimiter = lexer_list->next->sub_str;
+	if (delimiter[0] == '\'' || delimiter[0] == '\"')
+		delimiter++;
 	// TODO doublequotes
 	line = readline("heredoc> ");
 	while (line && ft_strncmp(line, delimiter, ft_strlen(delimiter)) != 0)
@@ -66,7 +68,7 @@ int	heredoc(t_main_tools *tools, t_simple_cmd *cmd)
 		{
 			if (cmd->heredoc_filename)
 				free(cmd->heredoc_filename);
-			cmd->heredoc_filename = gen_filename(); // TODO free
+			cmd->heredoc_filename = gen_filename();
 			create_heredoc(lexer_list, cmd->heredoc_filename);
 		}
 		lexer_list = lexer_list->next;
