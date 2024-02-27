@@ -24,6 +24,44 @@ char	*gen_filename()
 	return (filename);
 }
 
+char	*delete_quotes(char *str, char c)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+		{
+			j = 0;
+			while (str[i + j] == c)
+				j++;
+			ft_strlcpy(&str[i], &str[i + j], ft_strlen(str) - i);
+		}
+		i++;
+	}
+	return (str);
+}
+
+int	quote_check(char **delimiter)
+{
+	int		flag;
+
+	flag = 0;
+	if ((*delimiter)[0] == '\'' || (*delimiter)[0] == '\"')
+	{
+		if ((*delimiter)[0] == '\'')
+			flag = 1;
+		else if ((*delimiter)[0] == '\"')
+			flag = 2;
+		delete_quotes((*delimiter), '\'');
+		delete_quotes((*delimiter), '\"');
+	}
+	return (flag);
+}
+
 void	create_heredoc(t_lexer *lexer_list, char *filename)
 {
 	int		fd;
@@ -37,8 +75,8 @@ void	create_heredoc(t_lexer *lexer_list, char *filename)
 		exit(1);
 	}
 	delimiter = lexer_list->next->sub_str;
-	if (delimiter[0] == '\'' || delimiter[0] == '\"')
-		delimiter++;
+	printf("delimiter: %s\n", delimiter);
+	quote_check(&delimiter);
 	// TODO doublequotes
 	line = readline("heredoc> ");
 	while (line && ft_strncmp(line, delimiter, ft_strlen(delimiter)) != 0)

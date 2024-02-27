@@ -75,22 +75,28 @@ typedef struct s_main_tools
 	char			*envp;
 	char			**paths;
 	int				pipes;
+	char			*args;
 }	t_main_tools;
 
 /****************** PROTOTYPES ********************/
 // LEXER
 t_lexer	*lexer(char *input);
+int		token_reader(t_main_tools *tools);
 // PARSER
 void	parser(t_main_tools *tools);
+char	*delete_quotes(char *str, char c);
 // HEREDOC
 int		heredoc(t_main_tools *tools, t_simple_cmd *cmd);
 // LIBFT
-void	*ft_calloc(size_t nmemb, size_t size);
-void	ft_putstr_fd(char *s, int fd);
-char	*ft_itoa(int n);
-char	*ft_strjoin(char const *s1, char const *s2);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-size_t	ft_strlen(const char *str);
+void			*ft_calloc(size_t nmemb, size_t size);
+void			ft_putstr_fd(char *s, int fd);
+char			*ft_itoa(int n);
+char			*ft_strjoin(char const *s1, char const *s2);
+int				ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t			ft_strlen(const char *str);
+char			*ft_strncpy(char *dest, char *src, unsigned int n);
+unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size);
+char			*ft_substr(char const *s, unsigned int start, size_t len);
 // PRINTF
 int		ft_printf(const char *format, ...);
 void	ft_putchar_and_strlen(char c, int *count);
@@ -106,10 +112,11 @@ t_lexer	*get_last_node(t_lexer *list_head);
 void	tools_to_default_setting(t_main_tools *tools);
 char	*ft_str_sepdup(char *s);
 int		ft_strcmp(char *s1, char *s2);
-char	*ft_strdup(char *src);
+char	*ft_strdup(const char *s1);
 void	free_arr(char **split_arr);
 void	ft_putstr_fd_exit(char *message, int fd_num, int exit_num);
 int		substring_counter(char *str);
+char	*ft_strtrim(char const *s1, char const *set);
 // SIGNALS
 // void	handle_sigint(int signum);
 

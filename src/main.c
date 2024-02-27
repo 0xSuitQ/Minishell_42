@@ -35,7 +35,13 @@ void	tools_to_default_setting(t_main_tools *tools)
 
 int	minishell_loop(t_main_tools *tools)
 {
-	tools->lexer_list = lexer(readline(READLINE_MSG));
+	char	*tmp;
+
+	tools->args = readline(READLINE_MSG);
+	tmp = ft_strtrim(tools->args, " ");
+	free(tools->args);
+	tools->args = tmp;
+	token_reader(tools);
 	tester(tools, LEXER_LIST); // ZAKOMENTOVAT
 	parser(tools);
 	tester(tools, CMD_LIST); // ZAKOMENTOVAT

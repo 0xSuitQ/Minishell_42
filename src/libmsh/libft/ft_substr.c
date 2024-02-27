@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,22 +12,28 @@
 
 #include "../includes/minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	size_t	i;
+	unsigned int	i;
+	char			*substr;
+	size_t			strln;
 
+	strln = ft_strlen(s);
+	if (!s)
+		return (0);
+	if (start > strln)
+		return (ft_strdup(""));
+	if (len > strln - start)
+		return (ft_strdup(s + start));
 	i = 0;
-	while (i < n && s2[i] != '\0')
+	substr = (char *)malloc((len * sizeof(char)) + 1);
+	if (!substr)
+		return (0);
+	while (i < len)
 	{
-		if ((((unsigned char *)s1)[i] != ((unsigned char *)s2)[i]))
-			return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
+		substr[i] = s[start + i];
 		i++;
 	}
-	while (i < n && s1[i] != '\0')
-	{
-		if ((((unsigned char *)s1)[i] != ((unsigned char *)s2)[i]))
-			return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
-		i++;
-	}
-	return (0);
+	substr[i] = '\0';
+	return (substr);
 }
