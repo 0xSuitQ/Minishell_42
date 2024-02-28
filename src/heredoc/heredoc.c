@@ -77,7 +77,6 @@ void	create_heredoc(t_lexer *lexer_list, char *filename)
 	delimiter = lexer_list->next->sub_str;
 	printf("delimiter: %s\n", delimiter);
 	quote_check(&delimiter);
-	// TODO doublequotes
 	line = readline("heredoc> ");
 	while (line && ft_strncmp(line, delimiter, ft_strlen(delimiter)) != 0)
 	{

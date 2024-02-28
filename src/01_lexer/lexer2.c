@@ -143,7 +143,6 @@ int	handle_token(char *str, int i, t_lexer **lexer_list)
 	}
 	else if (token)
 	{
-		//write(1, "we are here\n", 12);
 		if (!add_node(NULL, token, lexer_list))
 			return (-1);
 		return (1);
@@ -159,16 +158,12 @@ int	token_reader(t_main_tools *tools)
 	i = 0;
 	while (tools->args[i])
 	{
-		//write(1, "we are here\n", 12);
 		j = 0;
 		i += skip_spaces(tools->args, i);
 		if (check_token(tools->args[i]))
 			j = handle_token(tools->args, i, &tools->lexer_list);
 		else
-		{
-			//write(1, "we are here", 12);
 			j = read_words(i, tools->args, &tools->lexer_list);
-		}
 		if (j < 0)
 			return (0);
 		i += j;
