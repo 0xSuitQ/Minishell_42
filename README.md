@@ -16,6 +16,7 @@ it is our first team work in Git, so there is cheat sheet 4 us.
 - Textbook: [Writing your own shell](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf)
 - [Shell syntax](https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html)
 - Code Inspiration on [GitHub](https://github.com/maiadegraaf/minishell)
+- 42Guide [Minishel guide](https://42-cursus.gitbook.io/guide/rank-03/minishell-todo) (mainly 4 the function explanation)
 
 ## Project plan
 1 - create lexer and basic main
