@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_arrdup.c                                        :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/07 17:09:33 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/09 16:23:08 by psimcak          ###   ########.fr       */
+/*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
+/*   Updated: 2024/02/20 18:06:50 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-char	**ft_arrdup(char **arr)
+unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size)
 {
-	char			**output_arr;
-	static size_t	i = 0;
-	static int		j = -1;
+	unsigned int	count;
+	unsigned int	i;
 
-	while (arr[i])
-		i++;
-	output_arr = ft_calloc(i + 1, sizeof(char *));
-	if (!output_arr)
-		return (NULL);
-	while (arr[++j])
+	count = 0;
+	while (src[count] != '\0')
+		++count;
+	i = 0;
+	while (src[i] != '\0' && i < (size - 1))
 	{
-		output_arr[j] = ft_strdup(arr[j]);
-		if (!output_arr[j])
-		{
-			free_arr(output_arr);
-			return (output_arr);
-		}
+		dest[i] = src[i];
+		++i;
 	}
-	return (output_arr);
+	dest[i] = '\0';
+	return (count);
 }

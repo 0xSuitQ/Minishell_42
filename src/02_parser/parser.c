@@ -43,7 +43,7 @@ char	*token_to_str(t_lexer *token)
 */
 void	unexpected_token_officer(t_lexer *head)
 {
-	ft_printf("syntax error near unexpected token `%s'", token_to_str(head));
+	ft_printf("syntax error near unexpected token `%s'", token_to_str(head));  // TODO 
 	ft_putstr_fd_exit("\n", STDOUT, 0);
 }
 
@@ -64,14 +64,13 @@ t_lexer	*append_redirection(t_simple_cmd **cmd, t_lexer *arg)
 	new_arg->next = NULL;
 	new_arg->prev = NULL;
 	if (!(*cmd)->lexer_list)
-		(*cmd)->lexer_list = new_arg;
+		(*cmd)->lexer_list = new_arg;  // TODO
 	else
 	{
 		last = get_last_node((*cmd)->lexer_list);
 		last->next = new_arg;
 		new_arg->prev = last;
 	}
-	printf("(*cmd)->lexer_list->flag: %d\n", (*cmd)->lexer_list->flag);
 	return (new_arg);
 }
 
@@ -90,14 +89,14 @@ void	validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer)
 		return ;
 	the_arg = *current_lexer;
 	next_arg = the_arg->next;
-
+	
 	if ((!next_arg || next_arg->token != 0) && the_arg)
 		unexpected_token_officer(next_arg);
 	if (the_arg->token == LESS)
 	{
 		if (access(next_arg->sub_str, F_OK) == -1)
 		{
-			ft_printf("no such file or directory: %s\n", next_arg->sub_str);
+			ft_printf("no such file or directory: %s\n", next_arg->sub_str);  // TODO 
 			return ; // Exit on error for non-existing file
 		}
 	}
@@ -105,7 +104,10 @@ void	validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer)
 	if (next_arg)
 	{
 		next_arg = append_redirection(cmd, next_arg);
-		*current_lexer = (*current_lexer)->next->next; // TODO NULL CHECKER 
+		if ((*current_lexer)->next->next)
+			*current_lexer = (*current_lexer)->next->next; 
+		else
+			return ;
 	}
 }
 
@@ -124,12 +126,10 @@ void	redirection_pipe_word(t_simple_cmd **cmd, t_lexer *lexer_list)
 	while (tmp)
 	{
 		if (tmp->token && tmp->token != PIPE)
-		{
 			validate_redirection(cmd, &tmp);
-		}
 		if (tmp->token == PIPE)
 		{
-			if (tmp->next->token == PIPE)
+			if (!tmp->next || tmp->next->token == PIPE)
 				unexpected_token_officer(tmp);
 			*cmd = (*cmd)->next;
 		}
@@ -211,7 +211,7 @@ void	connect_node_to_list(t_simple_cmd **list, t_simple_cmd *new_node)
 void	init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list)
 {
 	t_simple_cmd	*new_node;
-	int				i;
+	//int				i;
 
 	new_node = malloc(sizeof(t_simple_cmd));
 	if (!new_node)
@@ -220,26 +220,16 @@ void	init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list)
 	new_node->str = malloc((new_node->arg_count + 1) * sizeof(char *));
 	if (!new_node->str)
 	{
-		free(new_node);
+		free(new_node); // TODO 
 		return ;
 	}
-	i = -1;
-	while (++i < new_node->arg_count)
-		new_node->str[i] = NULL;
-	// move this str init to the end of parser function.
-	i = -1;
-	while (++i < new_node->arg_count)
-	{
-		new_node->str[i] = ft_strdup(lexer_list->sub_str);
-		lexer_list = lexer_list->next;
-	}
-	// end of move
 	if (*cmd_list == NULL)
 		init_first_scmd(cmd_list, new_node);
 	else
 		connect_node_to_list(cmd_list, new_node);
 	new_node->lexer_list = NULL;
 	new_node->next = NULL;
+	new_node->heredoc_filename = NULL;
 }
 
 /*
@@ -278,6 +268,47 @@ void	first_node_not_pipe(t_lexer *lex_head)
 	@brief:
 	parser function is the main function that calls all the other functions
 */
+
+void	check_cmds(t_simple_cmd **cmd, t_lexer *lexer_list)
+{
+	int i;
+	t_lexer	*tmp;
+
+	tmp = lexer_list;
+	i = 0;
+	while (tmp)
+	{
+		if ((tmp)->token == PIPE)
+		{
+			*cmd = (*cmd)->next;
+			tmp = tmp->next;
+			i = 0;
+		}
+		else if (tmp->flag == 0)
+			tmp = tmp->next;
+		else
+		{
+			(*cmd)->str[i++] = ft_strdup(tmp->sub_str);
+			tmp = tmp->next;
+		}
+	}
+	(*cmd)->str[i] = NULL;
+}
+
+int	count_pipes(t_lexer *lexer_list)
+{
+    int static	count = 0;
+    t_lexer *tmp;
+	
+	tmp = lexer_list;
+    while (tmp) {
+        if (tmp->token == PIPE)
+            count++;
+        tmp = tmp->next;
+    }
+    return (count);
+}
+
 void	parser(t_main_tools *tools)
 {
 	t_lexer			*lexer_list;
@@ -289,7 +320,7 @@ void	parser(t_main_tools *tools)
 	init_simple_cmds(&s_cmd_list, lexer_list);
 	tools->simple_cmd_list = s_cmd_list;
 	redirection_pipe_word(&s_cmd_list, lexer_list);
-
-	// WIP:
-	// check_cmds(&s_cmd_list, lexer_list);
+	s_cmd_list = tools->simple_cmd_list;
+	check_cmds(&s_cmd_list, lexer_list);
+	tools->pipes = count_pipes(lexer_list);
 }

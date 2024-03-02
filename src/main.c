@@ -29,15 +29,28 @@ void	tools_to_default_setting(t_main_tools *tools)
 	tools->lexer_list = NULL;
 	tools->paths = NULL;
 	tools->simple_cmd_list = NULL;
+	tools->pipes = 0;
 	minishell_loop(tools);
 }
 
 int	minishell_loop(t_main_tools *tools)
 {
-	tools->lexer_list = lexer(readline(READLINE_MSG));
-	// tester(tools, LEXER_LIST); // ZAKOMENTOVAT
+	char	*tmp;
+
+	tools->args = readline(READLINE_MSG);
+	tmp = ft_strtrim(tools->args, " ");
+	free(tools->args);
+	tools->args = tmp;
+	token_reader(tools);
+	tester(tools, LEXER_LIST); // ZAKOMENTOVAT
 	parser(tools);
 	tester(tools, CMD_LIST); // ZAKOMENTOVAT
+	while(tools->simple_cmd_list)
+	{
+		heredoc(tools, tools->simple_cmd_list);
+		printf("simple_cmd_list->heredoc_filename: %s\n", tools->simple_cmd_list->heredoc_filename);
+		tools->simple_cmd_list = tools->simple_cmd_list->next;
+	}
 	tools_to_default_setting(tools);
 	return (0);
 }
