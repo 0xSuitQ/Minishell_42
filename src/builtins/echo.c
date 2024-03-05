@@ -1,7 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/05 10:10:42 by nandroso          #+#    #+#             */
+/*   Updated: 2024/03/05 10:23:16 by nandroso         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-void output_stuff(char **str, int n, int i) {
-  while (str[i]) {
+void output_stuff(char **str, int n, int i) 
+{
+  while (str[i])
+  {
     ft_putstr_fd(str[i], STDOUT_FILENO);
     i++;
     if (str[i]) // if the next string is not NULL, print a space
@@ -11,7 +25,7 @@ void output_stuff(char **str, int n, int i) {
     write(STDOUT_FILENO, "\n", 1);
 }
 
-int msh_echo(t_main_tools *tools, t_simple_cmd *cmd) 
+int msh_echo(t_main_tools *tools, t_simple_cmd *cmd)
 {
   int i;
   int j;
@@ -20,8 +34,8 @@ int msh_echo(t_main_tools *tools, t_simple_cmd *cmd)
   n = 0;
   i = 1;
   (void)tools;
-  // check for -n flag or -nnn and so on
-  while (cmd->str[i] && cmd->str[i][0] == '-' && cmd->str[i][1] == 'n') {
+  while (cmd->str[i] && cmd->str[i][0] == '-' && cmd->str[i][1] == 'n')
+  {
     j = 1;
     while (cmd->str[i][j] == 'n')
       j++;

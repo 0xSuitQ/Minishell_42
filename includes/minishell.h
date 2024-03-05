@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/05 09:25:41 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/05 10:52:45 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_main_tools {
 int msh_echo(t_main_tools *tools, t_simple_cmd *cmd);
 int msh_pwd(t_main_tools *tools, t_simple_cmd *cmd);
 int	msh_cd(t_main_tools *tools, t_simple_cmd *cmd);
+int msh_env(t_main_tools *tools, t_simple_cmd *cmd);
 
 /****************** PROTOTYPES ********************/
 // LEXER
@@ -115,7 +116,7 @@ void ft_pointer(unsigned long u_int_num, int *count);
 char **ft_arrdup(char **arr);
 void create_list(t_lexer **list, int index, t_token_list tok, char *sub_str);
 t_lexer *get_last_node(t_lexer *list_head);
-void tools_to_default_setting(t_main_tools *tools);
+void	tools_to_default_setting(t_main_tools *tools);
 char *ft_str_sepdup(char *s);
 int ft_strcmp(char *s1, char *s2);
 char *ft_strdup(const char *s1);
