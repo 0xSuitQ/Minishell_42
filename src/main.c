@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/20 11:45:58 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/03/05 09:26:16 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,26 @@ void	tools_to_default_setting(t_main_tools *tools)
 	minishell_loop(tools);
 }
 
+void	set_pwd(t_main_tools *tools)
+{
+	char	*pwd;
+	size_t	buf_size;
+
+	buf_size = 1024;
+	pwd = malloc(sizeof(char) * buf_size);
+	if (!pwd)
+		ft_putstr_fd_exit("Error: malloc failed", STDERR, 1);
+	while(getcwd(pwd, buf_size) == NULL)
+	{
+		free(pwd);
+		buf_size *= 2;
+		pwd = malloc(sizeof(char) * buf_size);
+		if (!pwd)
+			ft_putstr_fd_exit("Error: malloc failed", STDERR, 1);
+	}
+	tools->pwd = pwd;
+}
+
 int	minishell_loop(t_main_tools *tools)
 {
 	char	*tmp;
@@ -45,12 +65,21 @@ int	minishell_loop(t_main_tools *tools)
 	tester(tools, LEXER_LIST); // ZAKOMENTOVAT
 	parser(tools);
 	tester(tools, CMD_LIST); // ZAKOMENTOVAT
+	// while(tools->simple_cmd_list)
+	// {
+	// 	heredoc(tools, tools->simple_cmd_list);
+	// 	printf("simple_cmd_list->heredoc_filename: %s\n", tools->simple_cmd_list->heredoc_filename);
+	// 	tools->simple_cmd_list = tools->simple_cmd_list->next;
+	// }
+
 	while(tools->simple_cmd_list)
 	{
-		heredoc(tools, tools->simple_cmd_list);
-		printf("simple_cmd_list->heredoc_filename: %s\n", tools->simple_cmd_list->heredoc_filename);
+		write(1, "we are in the loop\n", 19);
+		if (tools->simple_cmd_list->builtin)
+			tools->simple_cmd_list->builtin(tools, tools->simple_cmd_list);
 		tools->simple_cmd_list = tools->simple_cmd_list->next;
 	}
+
 	tools_to_default_setting(tools);
 	return (0);
 }
@@ -61,6 +90,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 1 || argv[1] || !envp[0])
 		ft_putstr_fd_exit("Error: don't put any arguments", STDOUT, 0);
+	set_pwd(&tools);
 	tools_to_default_setting(&tools);
 	minishell_loop(&tools);
 	return (0);

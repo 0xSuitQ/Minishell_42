@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <complex.h>
 
 char *gen_filename() {
   char *filename;
