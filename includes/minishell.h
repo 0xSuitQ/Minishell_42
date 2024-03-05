@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/04 17:39:39 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/05 09:25:41 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct s_main_tools {
 /**************** THE BUILTINS ********************/
 int msh_echo(t_main_tools *tools, t_simple_cmd *cmd);
 int msh_pwd(t_main_tools *tools, t_simple_cmd *cmd);
+int	msh_cd(t_main_tools *tools, t_simple_cmd *cmd);
 
 /****************** PROTOTYPES ********************/
 // LEXER
@@ -120,7 +121,6 @@ int ft_strcmp(char *s1, char *s2);
 char *ft_strdup(const char *s1);
 void free_arr(char **split_arr);
 void ft_putstr_fd_exit(char *message, int fd_num, int exit_num);
-void	ft_putstr_fd(char *message, int fd_num);
 int substring_counter(char *str);
 char *ft_strtrim(char const *s1, char const *set);
 // SIGNALS

@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/03 19:34:44 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/05 08:57:39 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,8 +289,8 @@ int count_pipes(t_lexer *lexer_list) {
 int (*builtin_arr(char *str))(t_main_tools *tools, t_simple_cmd *cmd)
 {
   static void *builtins[7][2] = {
-    {"echo", msh_echo},   {"cd", msh_echo},
-    {"pwd", msh_echo},     {"export", msh_echo},
+    {"echo", msh_echo},   {"cd", msh_cd},
+    {"pwd", msh_pwd},     {"export", msh_echo},
     {"unset", msh_echo}, {"env", msh_echo},
     {"exit", msh_echo}};
   int i;

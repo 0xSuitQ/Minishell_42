@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/04 14:42:06 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/05 09:26:16 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,21 @@ int	minishell_loop(t_main_tools *tools)
 	tester(tools, LEXER_LIST); // ZAKOMENTOVAT
 	parser(tools);
 	tester(tools, CMD_LIST); // ZAKOMENTOVAT
+	// while(tools->simple_cmd_list)
+	// {
+	// 	heredoc(tools, tools->simple_cmd_list);
+	// 	printf("simple_cmd_list->heredoc_filename: %s\n", tools->simple_cmd_list->heredoc_filename);
+	// 	tools->simple_cmd_list = tools->simple_cmd_list->next;
+	// }
+
 	while(tools->simple_cmd_list)
 	{
-		heredoc(tools, tools->simple_cmd_list);
-		printf("simple_cmd_list->heredoc_filename: %s\n", tools->simple_cmd_list->heredoc_filename);
+		write(1, "we are in the loop\n", 19);
+		if (tools->simple_cmd_list->builtin)
+			tools->simple_cmd_list->builtin(tools, tools->simple_cmd_list);
 		tools->simple_cmd_list = tools->simple_cmd_list->next;
 	}
+
 	tools_to_default_setting(tools);
 	return (0);
 }
