@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/05 10:52:45 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/05 13:32:27 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct s_simple_cmd {
 typedef struct s_main_tools {
   t_lexer       *lexer_list;
   t_simple_cmd  *simple_cmd_list;
-  char  *envp;
+  char  **envp;
   char  *args;
   char  *pwd;
   char  *old_pwd;
@@ -124,6 +124,7 @@ void free_arr(char **split_arr);
 void ft_putstr_fd_exit(char *message, int fd_num, int exit_num);
 int substring_counter(char *str);
 char *ft_strtrim(char const *s1, char const *set);
+void	set_pwd(t_main_tools *tools);
 // SIGNALS
 // void	handle_sigint(int signum);
 

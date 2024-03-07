@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/05 11:00:11 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/06 21:06:49 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 1 || argv[1] || !envp[0])
 		ft_putstr_fd_exit("Error: don't put any arguments", STDOUT, 0);
-	tools.envp = *envp;
+	tools.envp = envp;
 	set_pwd(&tools);
 	tools_to_default_setting(&tools);
 	minishell_loop(&tools);

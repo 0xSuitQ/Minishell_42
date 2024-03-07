@@ -1,29 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   env_management.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/05 10:10:56 by nandroso          #+#    #+#             */
-/*   Updated: 2024/03/05 12:52:32 by nandroso         ###   ########.fr       */
+/*   Created: 2024/03/06 21:01:08 by nandroso          #+#    #+#             */
+/*   Updated: 2024/03/06 21:14:12 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int msh_env(t_main_tools *tools, t_simple_cmd *cmd)
+void	copy_env(t_main_tools *tools, char **envp)
 {
-	char **envp;
-	char *tmp;
+	char	**envp_cpy;
 
-	(void)cmd;
-	envp = tools->envp;
-	while (envp && *envp)
-	{
-		tmp = *envp;
-		ft_putstr_fd(tmp, STDOUT_FILENO);
-		envp++;
-	}
-	return (EXIT_SUCCESS);
+	
 }
+
+// void	change_env(t_main_tools *tools, char *name, char *value)
+// {
+// 	t_env	*env;
+
+// 	env = tools->env;
+// 	while (env)
+// 	{
+// 		if (ft_strcmp(env->name, name) == 0)
+// 		{
+// 			free(env->value);
+// 			env->value = ft_strdup(value);
+// 			return ;
+// 		}
+// 		env = env->next;
+// 	}
+// }
