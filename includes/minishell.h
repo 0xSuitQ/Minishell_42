@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/05 13:32:27 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/07 14:17:23 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,16 @@ typedef struct s_simple_cmd {
 } t_simple_cmd;
 
 /********* THE SUPERIOR, CENTRAL STRUCT ***********/
+typedef struct s_env {
+  char *name;
+  char *value;
+  struct s_env *next;
+} t_env;
+
 typedef struct s_main_tools {
   t_lexer       *lexer_list;
   t_simple_cmd  *simple_cmd_list;
-  char  **envp;
+  t_env  *envp_cpy;
   char  *args;
   char  *pwd;
   char  *old_pwd;
@@ -104,6 +110,7 @@ size_t ft_strlen(const char *str);
 char *ft_strncpy(char *dest, char *src, unsigned int n);
 unsigned int ft_strlcpy(char *dest, char *src, unsigned int size);
 char *ft_substr(char const *s, unsigned int start, size_t len);
+char	**ft_split(char const *s, char c);
 // PRINTF
 int ft_printf(const char *format, ...);
 void ft_putchar_and_strlen(char c, int *count);
@@ -125,6 +132,8 @@ void ft_putstr_fd_exit(char *message, int fd_num, int exit_num);
 int substring_counter(char *str);
 char *ft_strtrim(char const *s1, char const *set);
 void	set_pwd(t_main_tools *tools);
+// ENV_MANAGEMENT
+void  copy_env(t_main_tools *tools, char **envp);
 // SIGNALS
 // void	handle_sigint(int signum);
 
