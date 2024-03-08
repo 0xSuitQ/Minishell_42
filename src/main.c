@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/05 09:26:16 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/08 11:42:48 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	g_signal = 0;
 
 void	tools_to_default_setting(t_main_tools *tools)
 {
-	tools->envp = NULL;
 	tools->lexer_list = NULL;
 	tools->paths = NULL;
 	tools->simple_cmd_list = NULL;
@@ -74,7 +73,6 @@ int	minishell_loop(t_main_tools *tools)
 
 	while(tools->simple_cmd_list)
 	{
-		write(1, "we are in the loop\n", 19);
 		if (tools->simple_cmd_list->builtin)
 			tools->simple_cmd_list->builtin(tools, tools->simple_cmd_list);
 		tools->simple_cmd_list = tools->simple_cmd_list->next;
@@ -90,6 +88,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 1 || argv[1] || !envp[0])
 		ft_putstr_fd_exit("Error: don't put any arguments", STDOUT, 0);
+	copy_env(&tools, envp);
 	set_pwd(&tools);
 	tools_to_default_setting(&tools);
 	minishell_loop(&tools);

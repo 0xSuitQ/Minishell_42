@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/05 09:25:41 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/08 11:48:11 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,16 @@ typedef struct s_simple_cmd {
 } t_simple_cmd;
 
 /********* THE SUPERIOR, CENTRAL STRUCT ***********/
+typedef struct s_env {
+  char *name;
+  char *value;
+  struct s_env *next;
+} t_env;
+
 typedef struct s_main_tools {
   t_lexer       *lexer_list;
   t_simple_cmd  *simple_cmd_list;
-  char  *envp;
+  t_env  *envp_cpy;
   char  *args;
   char  *pwd;
   char  *old_pwd;
@@ -83,6 +89,7 @@ typedef struct s_main_tools {
 int msh_echo(t_main_tools *tools, t_simple_cmd *cmd);
 int msh_pwd(t_main_tools *tools, t_simple_cmd *cmd);
 int	msh_cd(t_main_tools *tools, t_simple_cmd *cmd);
+int msh_env(t_main_tools *tools, t_simple_cmd *cmd);
 
 /****************** PROTOTYPES ********************/
 // LEXER
@@ -103,6 +110,7 @@ size_t ft_strlen(const char *str);
 char *ft_strncpy(char *dest, char *src, unsigned int n);
 unsigned int ft_strlcpy(char *dest, char *src, unsigned int size);
 char *ft_substr(char const *s, unsigned int start, size_t len);
+char	**ft_split(char const *s, char c);
 // PRINTF
 int ft_printf(const char *format, ...);
 void ft_putchar_and_strlen(char c, int *count);
@@ -115,7 +123,7 @@ void ft_pointer(unsigned long u_int_num, int *count);
 char **ft_arrdup(char **arr);
 void create_list(t_lexer **list, int index, t_token_list tok, char *sub_str);
 t_lexer *get_last_node(t_lexer *list_head);
-void tools_to_default_setting(t_main_tools *tools);
+void	tools_to_default_setting(t_main_tools *tools);
 char *ft_str_sepdup(char *s);
 int ft_strcmp(char *s1, char *s2);
 char *ft_strdup(const char *s1);
@@ -123,6 +131,10 @@ void free_arr(char **split_arr);
 void ft_putstr_fd_exit(char *message, int fd_num, int exit_num);
 int substring_counter(char *str);
 char *ft_strtrim(char const *s1, char const *set);
+void	set_pwd(t_main_tools *tools);
+// ENV_MANAGEMENT
+void  copy_env(t_main_tools *tools, char **envp);
+void	change_env(t_main_tools *tools, char *name, char *value);
 // SIGNALS
 // void	handle_sigint(int signum);
 

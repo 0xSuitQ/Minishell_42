@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 09:52:28 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/07 15:22:37 by nandroso         ###   ########.fr       */
+/*   Created: 2024/03/05 10:10:56 by nandroso          #+#    #+#             */
+/*   Updated: 2024/03/08 11:42:54 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-char	*ft_strdup(const char *s1)
+int msh_env(t_main_tools *tools, t_simple_cmd *cmd)
 {
-	char	*s2;
-	size_t	size;
-	size_t	i;
+	t_env *envp;
+	char *tmp;
 
-	i = 0;
-	size = ft_strlen(s1);
-	s2 = (char *)malloc((size * sizeof(char)) + 1);
-	if (!s2)
-		return (0);
-	while (i < size)
+	(void)cmd;
+	envp = tools->envp_cpy;
+	while (envp)
 	{
-		s2[i] = s1[i];
-		i++;
+		tmp = ft_strjoin(envp->name, "=");
+		tmp = ft_strjoin(tmp, envp->value);
+		ft_putstr_fd(tmp, STDOUT_FILENO);
+		free(tmp);
+		envp = envp->next;
 	}
-	s2[i] = '\0';
-	return (s2);
+	return (EXIT_SUCCESS);
 }
