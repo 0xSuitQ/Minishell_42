@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 21:01:08 by nandroso          #+#    #+#             */
-/*   Updated: 2024/03/07 18:37:15 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/08 11:47:34 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,19 @@ void	copy_env(t_main_tools *tools, char **envp)
 	}
 }
 
-// void	change_env(t_main_tools *tools, char *name, char *value)
-// {
-// 	t_env	*env;
+void	change_env(t_main_tools *tools, char *name, char *value)
+{
+	t_env	*envp;
 
-// 	env = tools->env;
-// 	while (env)
-// 	{
-// 		if (ft_strcmp(env->name, name) == 0)
-// 		{
-// 			free(env->value);
-// 			env->value = ft_strdup(value);
-// 			return ;
-// 		}
-// 		env = env->next;
-// 	}
-// }
+	envp = tools->envp_cpy;
+	while (envp)
+	{
+		if (ft_strcmp(envp->name, name) == 0)
+		{
+			free(envp->value);
+			envp->value = ft_strdup(value);
+			return ;
+		}
+		envp = envp->next;
+	}
+}

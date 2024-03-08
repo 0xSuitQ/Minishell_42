@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/07 14:17:23 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/08 11:48:11 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ char *ft_strtrim(char const *s1, char const *set);
 void	set_pwd(t_main_tools *tools);
 // ENV_MANAGEMENT
 void  copy_env(t_main_tools *tools, char **envp);
+void	change_env(t_main_tools *tools, char *name, char *value);
 // SIGNALS
 // void	handle_sigint(int signum);
 
