@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/08 11:48:11 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/10 19:31:26 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_main_tools {
   char  *old_pwd;
   char  **paths;
   int   pipes;
+  int   *pid;
 } t_main_tools;
 
 /**************** THE BUILTINS ********************/

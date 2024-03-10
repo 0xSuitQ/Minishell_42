@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/05 10:22:12 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/10 13:50:18 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,9 +333,9 @@ void parser(t_main_tools *tools) {
   s_cmd_list = tools->simple_cmd_list;
   tools->pipes = count_pipes(lexer_list);
   fill_builtin(&s_cmd_list);
-  /* while (s_cmd_list) {
+  while (s_cmd_list) {
     if (s_cmd_list->builtin)
       printf("builtin: %p\n", (void*)s_cmd_list->builtin);
     s_cmd_list = s_cmd_list->next;
-  } */
+  }
 }
