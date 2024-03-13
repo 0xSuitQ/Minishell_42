@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/10 13:50:18 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/12 14:17:11 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer) {
   if (the_arg->token == LESS) {
     if (access(next_arg->sub_str, F_OK) == -1) {
       ft_printf("no such file or directory: %s\n", next_arg->sub_str); // TODO
-      return; // Exit on error for non-existing file
+      return ; // Exit on error for non-existing file
     }
   }
   the_arg = append_redirection(cmd, the_arg);
@@ -333,9 +333,9 @@ void parser(t_main_tools *tools) {
   s_cmd_list = tools->simple_cmd_list;
   tools->pipes = count_pipes(lexer_list);
   fill_builtin(&s_cmd_list);
-  while (s_cmd_list) {
-    if (s_cmd_list->builtin)
-      printf("builtin: %p\n", (void*)s_cmd_list->builtin);
-    s_cmd_list = s_cmd_list->next;
-  }
+  // while (s_cmd_list) {
+  //   if (s_cmd_list->builtin)
+  //     printf("builtin: %p\n", (void*)s_cmd_list->builtin);
+  //   s_cmd_list = s_cmd_list->next;
+  // }
 }

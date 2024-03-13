@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/10 19:32:57 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/12 14:58:29 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	tools_to_default_setting(t_main_tools *tools)
 	tools->simple_cmd_list = NULL;
 	tools->pipes = 0;
 	tools->pid = 0;
+	get_paths(tools); // adding tools->paths
 	minishell_loop(tools);
 }
 

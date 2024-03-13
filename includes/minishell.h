@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/10 19:31:26 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/12 14:46:57 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,11 @@ typedef struct s_main_tools {
   t_lexer       *lexer_list;
   t_simple_cmd  *simple_cmd_list;
   t_env  *envp_cpy;
+  char    **env_2d; // 2d array just for execve format
+  char  **paths;
   char  *args;
   char  *pwd;
   char  *old_pwd;
-  char  **paths;
   int   pipes;
   int   *pid;
 } t_main_tools;
@@ -136,6 +137,8 @@ void	set_pwd(t_main_tools *tools);
 // ENV_MANAGEMENT
 void  copy_env(t_main_tools *tools, char **envp);
 void	change_env(t_main_tools *tools, char *name, char *value);
+void	convert_to_2d(t_main_tools *tools);
+int	get_paths(t_main_tools *tools);
 // SIGNALS
 // void	handle_sigint(int signum);
 
