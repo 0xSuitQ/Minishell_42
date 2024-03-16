@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/12 14:46:57 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/14 20:09:37 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct s_main_tools {
   char  *pwd;
   char  *old_pwd;
   int   pipes;
-  int   *pid;
+  pid_t   pid;
 } t_main_tools;
 
 /**************** THE BUILTINS ********************/
@@ -102,6 +102,8 @@ void parser(t_main_tools *tools);
 char *delete_quotes(char *str, char c);
 // HEREDOC
 int heredoc(t_main_tools *tools, t_simple_cmd *cmd);
+// EXECUTOR
+int	executor(t_main_tools *tools);
 // LIBFT
 void *ft_calloc(size_t nmemb, size_t size);
 void ft_putstr_fd(char *s, int fd);

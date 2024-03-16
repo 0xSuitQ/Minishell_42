@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/12 14:58:29 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/14 20:11:30 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,14 @@ int	minishell_loop(t_main_tools *tools)
 	// 	printf("simple_cmd_list->heredoc_filename: %s\n", tools->simple_cmd_list->heredoc_filename);
 	// 	tools->simple_cmd_list = tools->simple_cmd_list->next;
 	// }
-
+	executor(tools);
+	/*
 	while(tools->simple_cmd_list)
 	{
 		if (tools->simple_cmd_list->builtin)
 			tools->simple_cmd_list->builtin(tools, tools->simple_cmd_list);
 		tools->simple_cmd_list = tools->simple_cmd_list->next;
-	}
+	} */
 
 	tools_to_default_setting(tools);
 	return (0);
