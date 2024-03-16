@@ -25,9 +25,7 @@ int	locate_and_execute_command(t_simple_cmd *cmd, t_main_tools *tools)
 	i = 0;
 	while (tools->paths[i])
 	{
-		// tmp = ft_strjoin(tools->paths[i], "/");
 		path = ft_strjoin(tools->paths[i], cmd->str[0]);
-		//free(tmp);
 		write(2, "we made it here\n", 17);
 		if (access(path, F_OK) == 0)
 			execve(path, cmd->str, tools->env_2d);
@@ -67,19 +65,13 @@ void	pipe_dup(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 {
 	if (cmd->prev && dup2(fd_in, STDIN_FILENO) < 0)
 		write(2, "OOPS\n", 5); //ft_error(4, tools);
-	else
-		write(2, "we are good\n", 12);
 	close(fd[0]);
 	if (cmd->next && dup2(fd[1], STDOUT_FILENO) < 0)
 		write(2, "OOPS\n", 5);//ft_error(4, tools);
-	else
-		write(2, "we are good\n", 12);
 	close(fd[1]);
 	if (cmd->prev)
 		close(fd_in);
-	ft_putstr_fd(tools->pwd, 1); // Doesn't work
-	ft_putstr_fd(tools->pwd, STDOUT_FILENO); // Doesn't work
-	//check_builtin(tools, cmd); // there look for the path and execute the command
+	check_builtin(tools, cmd); // there look for the path and execute the command
 }
 
 int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
