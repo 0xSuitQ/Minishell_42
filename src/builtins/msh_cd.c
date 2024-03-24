@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   msh_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:10:32 by nandroso          #+#    #+#             */
-/*   Updated: 2024/03/08 11:49:14 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/12 18:07:14 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,7 @@ int	msh_cd(t_main_tools *tools, t_simple_cmd *cmd)
 	}
 	change_env(tools, "OLDPWD", tools->old_pwd);
 	change_env(tools, "PWD", tools->pwd);
+	
+	convert_to_2d(tools);
 	return (EXIT_SUCCESS);
 }

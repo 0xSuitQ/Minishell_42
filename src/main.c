@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/08 11:42:48 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/14 20:11:30 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	tools_to_default_setting(t_main_tools *tools)
 	tools->paths = NULL;
 	tools->simple_cmd_list = NULL;
 	tools->pipes = 0;
+	tools->pid = 0;
+	get_paths(tools); // adding tools->paths
 	minishell_loop(tools);
 }
 
@@ -61,22 +63,23 @@ int	minishell_loop(t_main_tools *tools)
 	free(tools->args);
 	tools->args = tmp;
 	token_reader(tools);
-	tester(tools, LEXER_LIST); // ZAKOMENTOVAT
+	//tester(tools, LEXER_LIST); // ZAKOMENTOVAT
 	parser(tools);
-	tester(tools, CMD_LIST); // ZAKOMENTOVAT
+	//tester(tools, CMD_LIST); // ZAKOMENTOVAT
 	// while(tools->simple_cmd_list)
 	// {
 	// 	heredoc(tools, tools->simple_cmd_list);
 	// 	printf("simple_cmd_list->heredoc_filename: %s\n", tools->simple_cmd_list->heredoc_filename);
 	// 	tools->simple_cmd_list = tools->simple_cmd_list->next;
 	// }
-
+	executor(tools);
+	/*
 	while(tools->simple_cmd_list)
 	{
 		if (tools->simple_cmd_list->builtin)
 			tools->simple_cmd_list->builtin(tools, tools->simple_cmd_list);
 		tools->simple_cmd_list = tools->simple_cmd_list->next;
-	}
+	} */
 
 	tools_to_default_setting(tools);
 	return (0);

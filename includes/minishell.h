@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/08 11:48:11 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/03/14 20:09:37 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,13 @@ typedef struct s_main_tools {
   t_lexer       *lexer_list;
   t_simple_cmd  *simple_cmd_list;
   t_env  *envp_cpy;
+  char    **env_2d; // 2d array just for execve format
+  char  **paths;
   char  *args;
   char  *pwd;
   char  *old_pwd;
-  char  **paths;
   int   pipes;
+  pid_t   pid;
 } t_main_tools;
 
 /**************** THE BUILTINS ********************/
@@ -100,6 +102,10 @@ void parser(t_main_tools *tools);
 char *delete_quotes(char *str, char c);
 // HEREDOC
 int heredoc(t_main_tools *tools, t_simple_cmd *cmd);
+// EXECUTOR
+int	executor(t_main_tools *tools);
+int	read_from(t_simple_cmd *cmd, t_lexer *tmp, t_token_list redirection);
+int	write_to(t_lexer *tmp, t_token_list redirection);
 // LIBFT
 void *ft_calloc(size_t nmemb, size_t size);
 void ft_putstr_fd(char *s, int fd);
@@ -135,6 +141,8 @@ void	set_pwd(t_main_tools *tools);
 // ENV_MANAGEMENT
 void  copy_env(t_main_tools *tools, char **envp);
 void	change_env(t_main_tools *tools, char *name, char *value);
+void	convert_to_2d(t_main_tools *tools);
+int	get_paths(t_main_tools *tools);
 // SIGNALS
 // void	handle_sigint(int signum);
 
