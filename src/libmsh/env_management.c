@@ -48,8 +48,8 @@ void	copy_env(t_main_tools *tools, char **envp)
 	while (*envp)
 	{
 		envp_cpy = ft_split(*envp, '=');
-		if (!envp_cpy[0] || !envp_cpy[1])
-			write(1, "Error: envp_cpy[0] or envp_cpy[1] is NULL\n", 41);
+		//if (!envp_cpy[0] || !envp_cpy[1])
+		//	write(1, "Error: envp_cpy[0] or envp_cpy[1] is NULL\n", 41);
 		add_env(tools, envp_cpy[0], envp_cpy[1]);
 		free(envp_cpy[0]);
 		free(envp_cpy[1]);
@@ -83,12 +83,10 @@ void	change_env(t_main_tools *tools, char *name, char *value)
 void	add_slash(t_main_tools *tools)
 {
 	int		i;
-	int		j;
 	char	**iter;
 	char	*temp;
 
 	i = 0;
-	j = 0;
 	iter = tools->paths;
 	while (iter[i])
 	{

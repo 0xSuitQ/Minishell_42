@@ -62,8 +62,9 @@ t_lexer *append_redirection(t_simple_cmd **cmd, t_lexer *arg) {
   new_arg->next = NULL;
   new_arg->prev = NULL;
   if (!(*cmd)->lexer_list)
-    (*cmd)->lexer_list = new_arg; // TODO
-  else {
+    (*cmd)->lexer_list = new_arg;
+  else
+  {
     last = get_last_node((*cmd)->lexer_list);
     last->next = new_arg;
     new_arg->prev = last;
@@ -77,31 +78,41 @@ t_lexer *append_redirection(t_simple_cmd **cmd, t_lexer *arg) {
    program. If the redirection is a '<' and the file does not exist, it
    Print&Error. Otherwise, it appends the redirection to the lexer_list.
 */
-void validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer) {
+int validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer)
+{
   t_lexer *the_arg;
   t_lexer *next_arg;
 
   if (!(*current_lexer) || !(*cmd))
-    return;
+    return (EXIT_FAILURE);
   the_arg = *current_lexer;
   next_arg = the_arg->next;
 
   if ((!next_arg || next_arg->token != 0) && the_arg)
+  {
     unexpected_token_officer(next_arg);
-  if (the_arg->token == LESS) {
-    if (access(next_arg->sub_str, F_OK) == -1) {
-      ft_printf("no such file or directory: %s\n", next_arg->sub_str); // TODO
-      return ; // Exit on error for non-existing file
+    return (EXIT_FAILURE);
+  }
+  if (the_arg->token == LESS)
+  {
+    if (access(next_arg->sub_str, F_OK) == -1)
+    {
+      ft_putstr_fd("no such file or directory:", STDERR_FILENO);
+      ft_putstr_fd(next_arg->sub_str, STDERR_FILENO); // TODO
+      ft_putstr_fd("\n", STDERR_FILENO);
+      return (EXIT_FAILURE); // Exit on error for non-existing file
     }
   }
   the_arg = append_redirection(cmd, the_arg);
-  if (next_arg) {
+  if (next_arg)
+  {
     next_arg = append_redirection(cmd, next_arg);
     if ((*current_lexer)->next->next)
       *current_lexer = (*current_lexer)->next->next;
     else
-      return;
+      return (EXIT_FAILURE);
   }
+  return (EXIT_SUCCESS);
 }
 
 /*
@@ -111,14 +122,17 @@ void validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer) {
         if the token is anything else (word), it moves to the next node of the
    list of lexer_list
 */
-void redirection_pipe_word(t_simple_cmd **cmd, t_lexer *lexer_list) {
+void redirection_pipe_word(t_simple_cmd **cmd, t_lexer *lexer_list)
+{
   t_lexer *tmp;
 
   tmp = lexer_list;
-  while (tmp) {
+  while (tmp)
+  {
     if (tmp->token && tmp->token != PIPE)
       validate_redirection(cmd, &tmp);
-    if (tmp->token == PIPE) {
+    if (tmp->token == PIPE)
+    {
       if (!tmp->next || tmp->next->token == PIPE)
         unexpected_token_officer(tmp);
       *cmd = (*cmd)->next;
@@ -134,7 +148,8 @@ void redirection_pipe_word(t_simple_cmd **cmd, t_lexer *lexer_list) {
         init_simple_cmd function. It ends when it reaches the end of the list or
         when it encounters a pipe.
 */
-int count_args(t_lexer *lexer_list) {
+int count_args(t_lexer *lexer_list)
+{
   int counter;
 
   counter = 0;
@@ -152,7 +167,8 @@ int count_args(t_lexer *lexer_list) {
    simple_cmd structures. It uses tmp variable to go through the list without
    changing the head of the list in the functions that call it.
 */
-t_simple_cmd *get_last_cmd_node(t_simple_cmd **lexer_list) {
+t_simple_cmd *get_last_cmd_node(t_simple_cmd **lexer_list)
+{
   t_simple_cmd *tmp;
 
   tmp = *lexer_list;
@@ -168,7 +184,8 @@ t_simple_cmd *get_last_cmd_node(t_simple_cmd **lexer_list) {
         init_first_scmd function initializes the first node of the list of
         simple_cmd structures.
 */
-void init_first_scmd(t_simple_cmd **list, t_simple_cmd *new_node) {
+void init_first_scmd(t_simple_cmd **list, t_simple_cmd *new_node)
+{
   *list = new_node;
   (*list)->prev = NULL;
 }
@@ -178,7 +195,8 @@ void init_first_scmd(t_simple_cmd **list, t_simple_cmd *new_node) {
         connect_node_to_list function connects the new_node to the list of
         simple_cmd structures.
 */
-void connect_node_to_list(t_simple_cmd **list, t_simple_cmd *new_node) {
+void connect_node_to_list(t_simple_cmd **list, t_simple_cmd *new_node)
+{
   new_node->prev = get_last_cmd_node(list);
   new_node->prev->next = new_node;
 }
@@ -193,7 +211,8 @@ void connect_node_to_list(t_simple_cmd **list, t_simple_cmd *new_node) {
         structures. This list is used to store the simple commands that are
         separeted by pipes.
 */
-void init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list) {
+void init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list)
+{
   t_simple_cmd *new_node;
 
   new_node = malloc(sizeof(t_simple_cmd));
@@ -221,7 +240,8 @@ void init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list) {
         It goes through the lexer_list and calls the init_one_simple_cmd
    function every time it encounters a pipe.
 */
-void init_simple_cmds(t_simple_cmd **cmd_list, t_lexer *lexer_list) {
+void init_simple_cmds(t_simple_cmd **cmd_list, t_lexer *lexer_list)
+{
   t_lexer *tmp;
 
   tmp = lexer_list;
@@ -239,7 +259,8 @@ void init_simple_cmds(t_simple_cmd **cmd_list, t_lexer *lexer_list) {
         first_node_not_pipe function checks if the first node is a pipe. If it
    is, it prints an error message and exits the program.
 */
-void first_node_not_pipe(t_lexer *lex_head) {
+void first_node_not_pipe(t_lexer *lex_head)
+{
   if (lex_head->token == PIPE)
     unexpected_token_officer(lex_head);
 }
@@ -255,7 +276,8 @@ void check_cmds(t_simple_cmd **cmd, t_lexer *lexer_list) {
 
   tmp = lexer_list;
   i = 0;
-  while (tmp) {
+  while (tmp)
+  {
     if ((tmp)->token == PIPE) 
     {
       *cmd = (*cmd)->next;
@@ -273,7 +295,8 @@ void check_cmds(t_simple_cmd **cmd, t_lexer *lexer_list) {
   (*cmd)->str[i] = NULL;
 }
 
-int count_pipes(t_lexer *lexer_list) {
+int count_pipes(t_lexer *lexer_list)
+{
   int static count = 0;
   t_lexer *tmp;
 
@@ -318,7 +341,8 @@ void  fill_builtin(t_simple_cmd **cmd)
   }
 }
 
-void parser(t_main_tools *tools) {
+void parser(t_main_tools *tools)
+{
   t_lexer *lexer_list;
   t_simple_cmd *s_cmd_list;
 

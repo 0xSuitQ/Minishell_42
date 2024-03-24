@@ -16,17 +16,14 @@ int	receive_heredoc(int fd[2], t_simple_cmd *cmd)
 
 int	locate_and_execute_command(t_simple_cmd *cmd, t_main_tools *tools)
 {
-	int		path_index;
 	char	*path;
 	//char	*tmp;
 	int		i;
 
-	path_index = 0;
 	i = 0;
 	while (tools->paths[i])
 	{
 		path = ft_strjoin(tools->paths[i], cmd->str[0]);
-		write(2, "we made it here\n", 17);
 		if (access(path, F_OK) == 0)
 			execve(path, cmd->str, tools->env_2d);
 		free(path);
@@ -38,21 +35,40 @@ int	locate_and_execute_command(t_simple_cmd *cmd, t_main_tools *tools)
 	return (EXIT_FAILURE);
 }
 
+int	setup_fd(t_simple_cmd *cmd)
+{
+	t_lexer	*tmp;
+
+	tmp = cmd->lexer_list;
+
+	while (tmp)
+	{
+		if (tmp->token == LESS || tmp->token == LESS_LESS)
+			if (read_from(cmd, tmp, tmp->token))
+				return (EXIT_FAILURE);
+		if (tmp->token == GREAT || tmp->token == GREAT_GREAT)
+			if (write_to(tmp, tmp->token))
+				return (EXIT_FAILURE);
+		tmp = tmp->next;
+	}
+	return (EXIT_SUCCESS);
+}
+
 void	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	int command_result = 0;
-     /*if (cmd->lexer_list->token != 0) 
+	
+	if (cmd->lexer_list && cmd->lexer_list->token)
 	{
         if (setup_fd(cmd))
             exit(1);
-    } */
-
+    }
     // Attempt to execute built-in command first
     if (cmd->builtin)
 	{
-        command_result = cmd->builtin(tools, cmd);
-        exit(command_result);
-    }
+		command_result = cmd->builtin(tools, cmd);
+		exit(command_result);
+	}
 
     // If not a built-in, try finding an external command
     if (cmd->str[0][0] != '\0')
@@ -76,15 +92,15 @@ void	pipe_dup(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 
 int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 {
-	int	i;
+	//int	i;
 
-	i = 0;
+	//i = 0;
 	tools->pid = fork();
 	if (tools->pid == 0)
 	{
 		pipe_dup(tools, cmd, fd, fd_in);
 	}
-	i++;
+	//i++;
 	return (EXIT_SUCCESS);
 }
 

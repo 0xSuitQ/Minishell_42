@@ -104,6 +104,8 @@ char *delete_quotes(char *str, char c);
 int heredoc(t_main_tools *tools, t_simple_cmd *cmd);
 // EXECUTOR
 int	executor(t_main_tools *tools);
+int	read_from(t_simple_cmd *cmd, t_lexer *tmp, t_token_list redirection);
+int	write_to(t_lexer *tmp, t_token_list redirection);
 // LIBFT
 void *ft_calloc(size_t nmemb, size_t size);
 void ft_putstr_fd(char *s, int fd);

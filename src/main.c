@@ -63,9 +63,9 @@ int	minishell_loop(t_main_tools *tools)
 	free(tools->args);
 	tools->args = tmp;
 	token_reader(tools);
-	tester(tools, LEXER_LIST); // ZAKOMENTOVAT
+	//tester(tools, LEXER_LIST); // ZAKOMENTOVAT
 	parser(tools);
-	tester(tools, CMD_LIST); // ZAKOMENTOVAT
+	//tester(tools, CMD_LIST); // ZAKOMENTOVAT
 	// while(tools->simple_cmd_list)
 	// {
 	// 	heredoc(tools, tools->simple_cmd_list);
