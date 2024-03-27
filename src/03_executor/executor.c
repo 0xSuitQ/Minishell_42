@@ -29,7 +29,6 @@ int	locate_and_execute_command(t_simple_cmd *cmd, t_main_tools *tools)
 		free(path);
 		i++;
 	}
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(cmd->str[0], STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	return (EXIT_FAILURE);
@@ -54,7 +53,7 @@ int	setup_fd(t_simple_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
-void	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
+void	run_cmd(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	int command_result = 0;
 	
@@ -87,24 +86,23 @@ void	pipe_dup(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 	close(fd[1]);
 	if (cmd->prev)
 		close(fd_in);
-	check_builtin(tools, cmd); // there look for the path and execute the command
+	run_cmd(tools, cmd); // there look for the path and execute the command
 }
 
 int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 {
-	//int	i;
+	static int	i = 0;
 
-	//i = 0;
-	tools->pid = fork();
-	if (tools->pid == 0)
+	tools->pid[i] = fork();
+	if (tools->pid[i] == 0)
 	{
 		pipe_dup(tools, cmd, fd, fd_in);
 	}
-	//i++;
+	i++;
 	return (EXIT_SUCCESS);
 }
 
-int	executor(t_main_tools *tools)
+int	execute_with_pipes(t_main_tools *tools)
 {
 	int	fd[2];
 	int	fd_in;
@@ -116,7 +114,7 @@ int	executor(t_main_tools *tools)
 		if (tools->simple_cmd_list->next)
 			pipe(fd);
 		heredoc(tools, tools->simple_cmd_list);
-		forking(tools, tools->simple_cmd_list, fd, fd_in); // it might be before all the fd shit
+		forking(tools, tools->simple_cmd_list, fd, fd_in);
 		close(fd[1]);
 
 		fd_in = receive_heredoc(fd, tools->simple_cmd_list);
@@ -127,5 +125,52 @@ int	executor(t_main_tools *tools)
 	}
 	// wait 
 	// reset simple_cmds to the head
+	return (EXIT_SUCCESS);
+}
+
+int	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
+{
+	int	exit_status;
+
+	exit_status = EXIT_FAILURE;
+	if (cmd->builtin == msh_cd || cmd->builtin == msh_cd
+		|| cmd->builtin == msh_cd || cmd->builtin == msh_cd)
+	{
+		exit_status = cmd->builtin(tools, cmd);
+		return (exit_status);
+	}
+	return (exit_status);
+}
+
+void	execute_no_pipes(t_main_tools *tools)
+{
+	int	pid;
+
+	// expander
+	if (!check_builtin(tools, tools->simple_cmd_list))
+		return ;
+	write(2, "executor\n", 9);
+	heredoc(tools, tools->simple_cmd_list);
+	pid = fork();
+	if (pid == 0)
+		run_cmd(tools, tools->simple_cmd_list);
+	// wait
+	// exitstatus
+}
+
+int	executor(t_main_tools *tools)
+{
+	if (tools->pipes == 0)
+	{
+		execute_no_pipes(tools);
+	}
+	else
+	{
+		tools->pid = malloc((tools->pipes + 2) * sizeof(int));
+		if (!tools->pid)
+			return (EXIT_FAILURE); // TODO memory error 
+		tools->pid[tools->pipes + 2] = 0;
+		execute_with_pipes(tools);
+	}
 	return (EXIT_SUCCESS);
 }

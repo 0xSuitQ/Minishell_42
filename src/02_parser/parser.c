@@ -301,7 +301,8 @@ int count_pipes(t_lexer *lexer_list)
   t_lexer *tmp;
 
   tmp = lexer_list;
-  while (tmp) {
+  while (tmp)
+  {
     if (tmp->token == PIPE)
       count++;
     tmp = tmp->next;

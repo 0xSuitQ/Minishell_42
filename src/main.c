@@ -29,7 +29,7 @@ void	tools_to_default_setting(t_main_tools *tools)
 	tools->paths = NULL;
 	tools->simple_cmd_list = NULL;
 	tools->pipes = 0;
-	tools->pid = 0;
+	tools->pid = NULL;
 	get_paths(tools); // adding tools->paths
 	minishell_loop(tools);
 }
@@ -73,6 +73,8 @@ int	minishell_loop(t_main_tools *tools)
 	// 	tools->simple_cmd_list = tools->simple_cmd_list->next;
 	// }
 	executor(tools);
+	if (tools->pid)
+		free(tools->pid);
 	/*
 	while(tools->simple_cmd_list)
 	{

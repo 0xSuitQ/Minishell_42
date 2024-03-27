@@ -84,7 +84,7 @@ typedef struct s_main_tools {
   char  *pwd;
   char  *old_pwd;
   int   pipes;
-  pid_t   pid;
+  int   *pid;
 } t_main_tools;
 
 /**************** THE BUILTINS ********************/
