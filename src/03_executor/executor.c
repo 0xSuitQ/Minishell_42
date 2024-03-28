@@ -93,6 +93,12 @@ int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 {
 	static int	i = 0;
 
+	if (tools->finished == 1)
+	{
+		write(2, "finished\n", 9);
+		tools->finished = 0;
+		i = 0;
+	}
 	tools->pid[i] = fork();
 	if (tools->pid[i] == 0)
 	{
@@ -106,6 +112,7 @@ int	execute_with_pipes(t_main_tools *tools)
 {
 	int	fd[2];
 	int	fd_in;
+	//int i = 0;
 
 	fd_in = STDIN_FILENO;
 	while (tools->simple_cmd_list)
@@ -123,7 +130,11 @@ int	execute_with_pipes(t_main_tools *tools)
 		else
 			break ;
 	}
-	// wait 
+	// wait
+	// while (tools->pid[i])
+	// {
+	// 	waitpid(tools->pid[i++]);
+	// }
 	// reset simple_cmds to the head
 	return (EXIT_SUCCESS);
 }
@@ -160,6 +171,7 @@ void	execute_no_pipes(t_main_tools *tools)
 
 int	executor(t_main_tools *tools)
 {
+	ft_printf("pipes in executor: %d\naddress of pipes in executor: %p\n --------------\n", tools->pipes, &tools->pipes);
 	if (tools->pipes == 0)
 	{
 		execute_no_pipes(tools);
