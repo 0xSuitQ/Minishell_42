@@ -297,15 +297,19 @@ void check_cmds(t_simple_cmd **cmd, t_lexer *lexer_list) {
 
 int count_pipes(t_lexer *lexer_list)
 {
-  int static count = 0;
+  int count;
   t_lexer *tmp;
 
+  count = 0;
   tmp = lexer_list;
-  while (tmp) {
+  write(2, "we are in count_pipes\n", 23);
+  while (tmp)
+  {
     if (tmp->token == PIPE)
       count++;
     tmp = tmp->next;
   }
+  ft_printf("pipes in count_pipes: %d\n", count);
   return (count);
 }
 

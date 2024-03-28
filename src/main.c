@@ -29,7 +29,8 @@ void	tools_to_default_setting(t_main_tools *tools)
 	tools->paths = NULL;
 	tools->simple_cmd_list = NULL;
 	tools->pipes = 0;
-	tools->pid = 0;
+	ft_printf("pipes in tools: %d\naddress of pipes in tools: %p\n--------------\n", tools->pipes, &tools->pipes);
+	tools->pid = NULL;
 	get_paths(tools); // adding tools->paths
 	minishell_loop(tools);
 }
@@ -73,6 +74,12 @@ int	minishell_loop(t_main_tools *tools)
 	// 	tools->simple_cmd_list = tools->simple_cmd_list->next;
 	// }
 	executor(tools);
+	if (tools->pid)
+	{
+		write(2, "freeing pid\n", 12);
+		free(tools->pid);
+	}
+	tools->finished = 1;
 	/*
 	while(tools->simple_cmd_list)
 	{
@@ -93,6 +100,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd_exit("Error: don't put any arguments", STDOUT, 0);
 	copy_env(&tools, envp);
 	set_pwd(&tools);
+	tools.finished = 0;
 	tools_to_default_setting(&tools);
 	minishell_loop(&tools);
 	return (0);

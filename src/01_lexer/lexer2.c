@@ -156,7 +156,7 @@ int	token_reader(t_main_tools *tools)
 	int		j;
 
 	i = 0;
-	while (tools->args[i])
+	while (tools->args && tools->args[i])
 	{
 		j = 0;
 		i += skip_spaces(tools->args, i);
