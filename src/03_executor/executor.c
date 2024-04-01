@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
+/*   Updated: 2024/04/01 16:30:19 by peta             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	receive_heredoc(int fd[2], t_simple_cmd *cmd)
@@ -144,8 +156,8 @@ int	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
 	int	exit_status;
 
 	exit_status = EXIT_FAILURE;
-	if (cmd->builtin == msh_cd || cmd->builtin == msh_cd
-		|| cmd->builtin == msh_cd || cmd->builtin == msh_cd)
+	if (cmd->builtin == msh_echo || cmd->builtin == msh_pwd
+		|| cmd->builtin == msh_cd || cmd->builtin == msh_env)
 	{
 		exit_status = cmd->builtin(tools, cmd);
 		return (exit_status);
@@ -153,6 +165,12 @@ int	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
 	return (exit_status);
 }
 
+/*
+	Execute_no_pipes is a function that will be called when there are no pipes
+	in the command. It will check if the command is a built-in command and
+	execute it. If it is not a built-in command, it will execute the command
+	by calling the run_cmd function.
+*/
 void	execute_no_pipes(t_main_tools *tools)
 {
 	int	pid;
@@ -169,6 +187,11 @@ void	execute_no_pipes(t_main_tools *tools)
 	// exitstatus
 }
 
+/*
+	Executor is the main function here. It will call the appropriate function:
+	either execute_no_pipes or execute_with_pipes. It just a crossroad for
+	the two functions.
+*/
 int	executor(t_main_tools *tools)
 {
 	ft_printf("pipes in executor: %d\naddress of pipes in executor: %p\n --------------\n", tools->pipes, &tools->pipes);

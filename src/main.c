@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/03/14 20:11:30 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/04/01 17:11:35 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	minishell_loop(t_main_tools *tools)
 	tmp = ft_strtrim(tools->args, " ");
 	free(tools->args);
 	tools->args = tmp;
-	token_reader(tools);
+	lexer(tools);
 	//tester(tools, LEXER_LIST); // ZAKOMENTOVAT
 	parser(tools);
 	//tester(tools, CMD_LIST); // ZAKOMENTOVAT

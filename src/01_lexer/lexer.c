@@ -3,150 +3,170 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:02 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/15 16:20:09 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/01 17:09:54 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../../includes/minishell.h"
-// #include <string.h>
-// /*
-// tokienize() is a function that takes a list of words and creates a lexer list.
-// It iterates through the words and checks if the word is a token. If it is, it
-// creates a new node in the lexer list with the token type and the word. If it is
-// not, it creates a new node with the token type 0 and the word.
-// */
-// static void	tokenize(char **words, t_lexer	**lexer_list)
-// {
-// 	static int				i = -1;
-// 	static int				j;
-// 	static int				found;
-// 	static t_token_matrix	tokens[] = {
-// 	{"|", PIPE},
-// 	{"<", LESS}, {"<<", LESS_LESS},
-// 	{">", GREAT}, {">>", GREAT_GREAT}
-// 	};
+#include "../../includes/minishell.h"
 
-// 	while (words[++i])
-// 	{
-// 		j = -1;
-// 		found = 0;
-// 		while (++j < TOKEN_NUM)
-// 		{
-// 			if (ft_strcmp(words[i], tokens[j].str_sym) == 0)
-// 			{
-// 				create_list(lexer_list, i, tokens[j].type, tokens[j].str_sym);
-// 				found = 1;
-// 			}
-// 		}
-// 		if (!found)
-// 			create_list(lexer_list, i, 0, words[i]);
-// 	}
-// }
+t_lexer	*ft_lexernew(char *str, t_token_list token)
+{
+	t_lexer		*new_element;
+	static int	i = 0;
 
-// /*
-// split_by_whitespace() is a function that takes a string and splits it into words
-// by whitespace. It returns a list of words.
-// */
+	new_element = (t_lexer *)malloc(sizeof(t_lexer));
+	if (!new_element)
+		return (0);
+	new_element->sub_str = str;
+	new_element->token = token;
+	new_element->index = i++;
+	new_element->flag = VISIBLE;
+	new_element->next = NULL;
+	new_element->prev = NULL;
+	return (new_element);
+}
 
-// static int count_string_length(char *input, char delimiter)
-// {
-//     int length;
-	
-// 	length = 0;
-//     while (*input && *input != delimiter)
-// 	{
-//         length++;
-//         input++;
-//     }
-// 	if (*input == '\0')
-// 			ft_putstr_fd_exit("Error: unclosed quote\n", STDERR, EXIT_FAILURE);
-//     return (length);
-// }
+void	ft_lexeradd_back(t_lexer **lst, t_lexer *new)
+{
+	t_lexer	*tmp;
 
-// void handle_quotes(char **input, char ***words, int i)
-// {
-// 	char *word;
-// 	char delimiter;
-// 	int len;
-// 	int iter;
-	
-// 	delimiter = **input;
-// 	(*input)++;
-// 	printf("input pointer is at: %s\n", *input);
-// 	if(**input == delimiter)
-// 		return ;
-// 	iter = 0;
-// 	len = count_string_length(*input, delimiter);
-// 	if (len == 0)
-// 	{
-// 		(*input)++;
-// 		return ;
-// 	}
-// 	word = malloc(sizeof(char) * (len + 3)); // +3 for the quotes and null terminator
-// 	word[iter++] = delimiter; // add opening quote
-// 	while (**input && **input != delimiter)
-// 		word[iter++] = *(*input)++;
-// 	word[iter++] = delimiter; // add closing quote
-// 	word[iter] = '\0';
-// 	(*words)[i] = word;
-// }
+	tmp = *lst;
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	tmp->next = new;
+	new->prev = tmp;
+}
 
-// static char	**split_by_whitespace(char *input)
-// {
-// 	char	**words;
-// 	int		i;
+int	handle_quotes(int i, char *str, char del)
+{
+	int	j;
 
-// 	i = 0;
-// 	words = malloc(sizeof(char *) * substring_counter(input) + 1);
-// 	if (!words)
-// 		return (NULL);
-// 	while (*input)
-// 	{
-// 		while (*input && ((*input >= 9 && *input <= 13) || *input == 32))
-// 			input++;
-// 		if (*input)
-// 		{
-// 			if (*input == 34 || *input == 39)
-// 			{
-// 				while(*input && (*input == 34 || *input == 39))
-// 				{
-// 					handle_quotes(&input, &words, i);
-// 					printf("input pointer is at: %s\n", input);
-// 					input++;
-// 					i++;
-// 				}
-// 			}
-// 			else
-// 			{
-// 				words[i] = ft_str_sepdup(input);
-// 				i++;
-// 			}
-// 		}
-// 		while (*input && !((*input >= 9 && *input <= 13) || *input == 32) && !(*input == 34 || *input == 39))
-// 			input++;
-// 	}
-// 	words[i] = 0;
-// 	return (words);
-// }
+	j = 0;
+	if (str[i + j] == del)
+	{
+		j++;
+		while (str[i + j] != del && str[i + j])
+			j++;
+		j++;
+	}
+	return (j);
+}
 
-// /*
-// lexer() is a function that takes a string and returns a lexer list. It first
-// splits the string into words, then tokenizes the words and creates a lexer list.
-// It is the hub of all lexer functions.
-// */
-// t_lexer	*lexer(char *input)
-// {
-// 	char		**words;
-// 	t_lexer		*lexer_list;
+int	is_whitespace(char c)
+{
+	return (c == ' ' || (c > 8 && c < 14));
+}
 
-// 	if (input == NULL)
-// 		ft_putstr_fd_exit("exit", STDOUT, EXIT_SUCCESS);
-// 	lexer_list = NULL;
-// 	words = split_by_whitespace(input);
-// 	tokenize(words, &lexer_list); // TODO free
-// 	write(1, "lexer.c\n", 8);
-// 	return (lexer_list);
-// }
+int	skip_spaces(char *str, int i)
+{
+	int	j;
+
+	j = 0;
+	while (is_whitespace(str[i + j]))
+		j++;
+	return (j);
+}
+
+int	add_node(char *str, t_token_list token, t_lexer **lexer_list)
+{
+	t_lexer	*node;
+
+	node = ft_lexernew(str, token);
+	if (!node)
+		return (0);
+	ft_lexeradd_back(lexer_list, node);
+	return (1);
+}
+
+t_token_list	check_token(int c)
+{
+	static int	token_arr[3][2] = {
+	{'|', PIPE},
+	{'>', GREAT},
+	{'<', LESS},
+	};
+	int			i;
+
+	i = 0;
+	while (i < 3)
+	{
+		if (token_arr[i][0] == c)
+			return (token_arr[i][1]);
+		i++;
+	}
+	return (0);
+}
+
+int	read_words(int i, char *str, t_lexer **lexer_list)
+{
+	int	j;
+
+	j = 0;
+	while (str[i + j] && !(check_token(str[i + j])))
+	{
+		j += handle_quotes(i + j, str, 34);
+		j += handle_quotes(i + j, str, 39);
+		if (is_whitespace(str[i + j]))
+			break ;
+		else
+			j++;
+	}
+	if (!add_node(ft_substr(str, i, j), 0, lexer_list))
+		return (-1);
+	return (j);
+}
+
+int	handle_token(char *str, int i, t_lexer **lexer_list)
+{
+	t_token_list	token;
+
+	token = check_token(str[i]);
+	if (token == GREAT && check_token(str[i + 1]) == GREAT)
+	{
+		if (!add_node(NULL, GREAT_GREAT, lexer_list))
+			return (-1);
+		return (2);
+	}
+	else if (token == LESS && check_token(str[i + 1]) == LESS)
+	{
+		if (!add_node(NULL, LESS_LESS, lexer_list))
+			return (-1);
+		return (2);
+	}
+	else if (token)
+	{
+		if (!add_node(NULL, token, lexer_list))
+			return (-1);
+		return (1);
+	}	
+	return (0);
+}
+
+int	lexer(t_main_tools *tools)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (tools->args && tools->args[i])
+	{
+		j = 0;
+		i += skip_spaces(tools->args, i);
+		if (check_token(tools->args[i]))
+			j = handle_token(tools->args, i, &tools->lexer_list);
+		else
+			j = read_words(i, tools->args, &tools->lexer_list);
+		if (j < 0)
+			return (0);
+		i += j;
+	}
+	return (1);
+}
