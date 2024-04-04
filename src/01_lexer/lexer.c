@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:02 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/01 17:09:54 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/02 20:47:41 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_token_list	check_token(int c)
 			return (token_arr[i][1]);
 		i++;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 int	read_words(int i, char *str, t_lexer **lexer_list)
@@ -147,9 +147,17 @@ int	handle_token(char *str, int i, t_lexer **lexer_list)
 			return (-1);
 		return (1);
 	}	
-	return (0);
+	return (EXIIT_SUCCESS);
 }
 
+/**
+ * @brief:
+   Lexer goes through user's input, tokenize it and store it in a lexer list.
+   This lexer list contains tokens representing words, operators (like |, <, 
+   >, etc.), and other special characters.
+   It goes through the input string and tokenizes it based on the
+   @param tools: pointer to the main_tools structure
+*/
 int	lexer(t_main_tools *tools)
 {
 	int		i;
@@ -165,8 +173,8 @@ int	lexer(t_main_tools *tools)
 		else
 			j = read_words(i, tools->args, &tools->lexer_list);
 		if (j < 0)
-			return (0);
+			return (EXIT_SUCCESS);
 		i += j;
 	}
-	return (1);
+	return (EXIT_FAILURE);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/01 17:11:35 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/02 20:21:24 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@ int		minishell_loop(t_main_tools *tools);
 // Definition and initialization of the global variable
 int	g_signal = 0;
 
-/*
-	@brief:
+/**
+ * @brief:
 	Setting these members to NULL is a way to ensure that the structure starts
 	in a known state, preventing undefined behavior from uninitialized pointers
 */
-
 void	tools_to_default_setting(t_main_tools *tools)
 {
 	tools->lexer_list = NULL;
@@ -35,6 +34,10 @@ void	tools_to_default_setting(t_main_tools *tools)
 	minishell_loop(tools);
 }
 
+/**
+ * @brief:
+	set_pwd function is used to set the current working directory
+*/
 void	set_pwd(t_main_tools *tools)
 {
 	char	*pwd;
@@ -55,6 +58,14 @@ void	set_pwd(t_main_tools *tools)
 	tools->pwd = pwd;
 }
 
+/**
+ * @brief:
+	minishell_loop function is the main loop of the minishell program
+	which is responsible for reading the input, parsing it, and executing it
+	
+	@param tools: pointer to the main_tools structure
+	@return: 0
+*/
 int	minishell_loop(t_main_tools *tools)
 {
 	char	*tmp;
@@ -92,6 +103,12 @@ int	minishell_loop(t_main_tools *tools)
 	return (0);
 }
 
+/**
+ * @brief:
+	main function is the entry point of the minishell program
+	which is responsible for initializing the main_tools structure
+	and starting the main loop of the program
+*/
 int	main(int argc, char **argv, char **envp)
 {
 	t_main_tools	tools;

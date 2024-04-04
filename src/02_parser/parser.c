@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/01 17:09:26 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/02 20:56:53 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 // ZAKOMENTOVAT
 void tester(t_main_tools *tools, int signpost);
 
-/*
+/**
 	@brief:
 	token_to_str function returns the string representation of the token.
 	It uses 2D array of strings and token_list enum to find the right string
@@ -48,7 +48,7 @@ void	unexpected_token_officer(t_lexer *head)
 	ft_putstr_fd_exit("\n", STDOUT, 0);
 }
 
-/*
+/**
 	@brief:
 	append_redirection function appends the redirection to the lexer_list.
 */
@@ -75,7 +75,7 @@ t_lexer	*append_redirection(t_simple_cmd **cmd, t_lexer *arg)
 	return (new_arg);
 }
 
-/*
+/**
 	@brief:
 	If the next_arg dosn't exist || isn't a word, it Print&Error the
 	program. If the redirection is a '<' and the file does not exist, it
@@ -118,7 +118,7 @@ int	validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer)
 	return (EXIT_SUCCESS);
 }
 
-/*
+/**
 	@brief:
 	if the token is a redirection, it calls the append_redirection function
 	if the token is a pipe, it moves to the next node of the simple_cmd list
@@ -144,7 +144,7 @@ void	redirection_pipe_word(t_simple_cmd **cmd, t_lexer *lexer_list)
 	}
 }
 
-/*
+/**
 	@brief:
 	simple function count_args function counts the number of arguments in
 	the lexer_list. It is used to allocate the right amount of memory in the
@@ -165,7 +165,7 @@ int	count_args(t_lexer *lexer_list)
 	return (counter);
 }
 
-/*
+/**
 	@brief:
 	get_last_cmd_node function returns the last node of the list of
 	simple_cmd structures. It uses tmp variable to go through the list without
@@ -183,7 +183,7 @@ t_simple_cmd	*get_last_cmd_node(t_simple_cmd **lexer_list)
 	return (tmp);
 }
 
-/*
+/**
 	@brief:
 	init_first_scmd function initializes the first node of the list of
 	simple_cmd structures.
@@ -194,7 +194,7 @@ void	init_first_scmd(t_simple_cmd **list, t_simple_cmd *new_node)
 	(*list)->prev = NULL;
 }
 
-/*
+/**
 	@brief:
 	connect_node_to_list function connects the new_node to the list of
 	simple_cmd structures.
@@ -205,7 +205,7 @@ void	connect_node_to_list(t_simple_cmd **list, t_simple_cmd *new_node)
 	new_node->prev->next = new_node;
 }
 
-/*
+/**
 	@brief:
 	init_one_simple_cmd function initializes the simple_cmd structure. It
 	allocates memory for the str member and sets the next and lexer_list
@@ -238,7 +238,7 @@ void	init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list)
 	new_node->builtin = NULL;
 }
 
-/*
+/**
 	@brief:
 	init_simple_cmds function initializes the list of simple_cmd structures.
 	It goes through the lexer_list and calls the init_one_simple_cmd
@@ -259,7 +259,7 @@ void	init_simple_cmds(t_simple_cmd **cmd_list, t_lexer *lexer_list)
 	}
 }
 
-/*
+/**
 	@brief:
 	first_node_not_pipe function checks if the first node is a pipe. If it
 	is, it prints an error message and exits the program.
@@ -270,7 +270,7 @@ void	first_node_not_pipe(t_lexer *lex_head)
 		unexpected_token_officer(lex_head);
 }
 
-/*
+/**
 	@brief:
 	parser function is the main function that calls all the other functions
 */
@@ -300,6 +300,11 @@ void	check_cmds(t_simple_cmd **cmd, t_lexer *lexer_list)
 	(*cmd)->str[i] = NULL;
 }
 
+/**
+	@brief:
+	count_pipes function counts the number of pipes in the lexer_list. And
+	returns the number (count) of pipes.
+*/
 int	count_pipes(t_lexer *lexer_list)
 {
 	int		count;
@@ -318,6 +323,12 @@ int	count_pipes(t_lexer *lexer_list)
 	return (count);
 }
 
+/**
+	@brief:
+	builtin_arr function is a 2D array of strings and function pointers
+	It compares the string with the builtins and returns the function pointer
+	of the builtin command.
+*/
 int	(*builtin_arr(char *str))(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	int			i;
@@ -340,6 +351,11 @@ int	(*builtin_arr(char *str))(t_main_tools *tools, t_simple_cmd *cmd)
 	return (NULL);
 }
 
+/**
+	@brief:
+	fill_builtin function fills the builtin member in the simple_cmd structure
+	with the right function pointer.
+*/
 void	fill_builtin(t_simple_cmd **cmd)
 {
 	t_simple_cmd *tmp;
@@ -352,6 +368,12 @@ void	fill_builtin(t_simple_cmd **cmd)
 	}
 }
 
+/**
+	@brief:
+	parser function is the main function that calls all the other functions.
+	It handles the parsing of the lexer list & converts it into more structured
+	representation = into a list of simple commands (simple_cmds).
+*/
 void	parser(t_main_tools *tools)
 {
 	t_lexer			*lexer_list;

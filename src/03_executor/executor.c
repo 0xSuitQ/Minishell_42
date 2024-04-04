@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/01 16:30:19 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/02 20:33:33 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,12 @@ int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 	return (EXIT_SUCCESS);
 }
 
+/**
+ * @brief:
+	If there pipes in the command, call this function.
+	Function goes through the simple_cmd_list and executes the commands.
+	For every command it will create a pipe and fork a child process.
+*/
 int	execute_with_pipes(t_main_tools *tools)
 {
 	int	fd[2];
@@ -151,6 +157,14 @@ int	execute_with_pipes(t_main_tools *tools)
 	return (EXIT_SUCCESS);
 }
 
+/**
+ * @brief:
+	check_builtin is a function that will check if the command is a built-in
+	command.
+	->	If it IS a built-in command, it will execute it and return the exit_
+		status of the command (EXIT_SUCCESS (or - for msh_cd - EXIT_FAILURE))
+	->	If it is NOT a built-in command, it will return EXIT_FAILURE.
+*/
 int	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	int	exit_status;
@@ -165,7 +179,8 @@ int	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
 	return (exit_status);
 }
 
-/*
+/**
+ * @brief:
 	Execute_no_pipes is a function that will be called when there are no pipes
 	in the command. It will check if the command is a built-in command and
 	execute it. If it is not a built-in command, it will execute the command
@@ -187,10 +202,14 @@ void	execute_no_pipes(t_main_tools *tools)
 	// exitstatus
 }
 
-/*
+/**
+ * @brief:
 	Executor is the main function here. It will call the appropriate function:
 	either execute_no_pipes or execute_with_pipes. It just a crossroad for
 	the two functions.
+	The executor is the component responsible for actually running the commands
+	entered by the user. Its main tasks include:
+	- 
 */
 int	executor(t_main_tools *tools)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/01 17:43:19 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/04 20:17:36 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,10 @@ int	executor(t_main_tools *tools);
 int	read_from(t_simple_cmd *cmd, t_lexer *tmp, t_token_list redirection);
 int	write_to(t_lexer *tmp, t_token_list redirection);
 
+//	EXPANDER
+void	expander(t_main_tools *tools);
+int		there_is_dollar(char *str);
+
 //	LIBFT
 void			*ft_calloc(size_t nmemb, size_t size);
 void			ft_putstr_fd(char *s, int fd);
@@ -174,26 +178,29 @@ int		get_paths(t_main_tools *tools);
 // void	handle_sigint(int signum);
 
 /******************** MACROS **********************/
-#define STDIN 0
-#define STDOUT 1
-#define STDERR 2
+# define STDIN			0
+# define STDOUT			1
+# define STDERR			2
 
-#define INVISIBLE 0
-#define VISIBLE 1
+# define INVISIBLE		0
+# define VISIBLE		1
 
-#define LEXER_LIST 0
-#define CMD_LIST 1
+# define LEXER_LIST		0
+# define CMD_LIST		1
 
-#define TOKEN_NUM 5
-#define HEREDOC_MSG BOLD_BLUE "> " END
-#define READLINE_MSG BOLD_CYAN "nikita&peta:msh" BLUE "$ " END
+# define FALSE			0
+# define TRUE			1
+
+# define TOKEN_NUM		5
+# define HEREDOC_MSG	BOLD_BLUE"> "END
+# define READLINE_MSG	BOLD_CYAN"nikita&peta:msh"BLUE"$ "END
 
 /******************** COLORS **********************/
-#define END "\033[0m"
-#define RED "\033[31m"
-#define GREEN "\033[32m"
-#define BLUE "\033[34m"
-#define BOLD_BLUE "\033[1;34m"
-#define BOLD_CYAN "\033[1;36m"
+# define END			"\033[0m"
+# define RED     		"\033[31m"
+# define GREEN   		"\033[32m"
+# define BLUE    		"\033[34m"
+# define BOLD_BLUE		"\033[1;34m"
+# define BOLD_CYAN		"\033[1;36m"
 
 #endif
