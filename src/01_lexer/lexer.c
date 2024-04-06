@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:02 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/02 20:47:41 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/06 18:14:56 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int	handle_token(char *str, int i, t_lexer **lexer_list)
 			return (-1);
 		return (1);
 	}	
-	return (EXIIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }
 
 /**

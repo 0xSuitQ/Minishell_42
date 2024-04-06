@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/04 20:17:36 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/06 18:05:21 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,10 @@ int	lexer(t_main_tools *tools);
 
 //	PARSER
 void	parser(t_main_tools *tools);
-char	*delete_quotes(char *str, char c);
 
 //	HEREDOC
-int	heredoc(t_main_tools *tools, t_simple_cmd *cmd);
+int		heredoc(t_main_tools *tools, t_simple_cmd *cmd);
+char	*delete_quotes(char *str, char c);
 
 //	EXECUTOR
 int	executor(t_main_tools *tools);
@@ -145,6 +145,8 @@ char			*ft_strncpy(char *dest, char *src, unsigned int n);
 unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			**ft_split(char const *s, char c);
+char			*ft_strchr(const char *str, int character);
+char			*ft_strrchr(const char *str, int character);
 
 // PRINTF
 int		ft_printf(const char *format, ...);

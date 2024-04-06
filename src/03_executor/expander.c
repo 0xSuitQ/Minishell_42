@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/04 20:38:25 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/06 18:38:08 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,51 +14,28 @@
 
 /**
 	@brief:
-	Removes quotes and backslashes from the string
+	Handles quotes and backslashes from the string
 	
 	Examples:
-	\$USER -> $USER 
-	$\USER -> $USER 
-	"$\USER" -> $SER 
-	'$\USER' -> $SER 
-	"\$USER" -> $USER 
-	'\$USER' -> \$USER
+	$USER		-> psimcak
+	'$USER'		-> $USER
+	"$USER"		-> psimcak
+	$NONEXIST	-> [empty]
+	backslash part:
+	\$USER		-> $USER
+	$\USER		-> $USER 
+	"$\USER"	-> $SER 
+	'$\USER'	-> $SER 
+	"\$USER"	-> $USER
+	'\$USER'	-> \$USER
+	special symbol:
+	$?			-> exit status of the most recently executed foreground pipeline
+	$#			-> number of positional parameters
+	$$			-> pid of the shell
 */
-void	remove_quotes_and_backslashes(char *str)
+void	handle_quotes_and_backslashes(char *str)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (str[i] == '\\' && str[i + 1] == '$')
-		{
-			str[j] = '$';
-			i++;
-		}
-		else if (str[i] == '\\' && str[i + 1] == '\\')
-		{
-			str[j] = '\\';
-			i++;
-		}
-		else if (str[i] == '\\' && str[i + 1] == '\'')
-		{
-			str[j] = '\'';
-			i++;
-		}
-		else if (str[i] == '\\' && str[i + 1] == '\"')
-		{
-			str[j] = '\"';
-			i++;
-		}
-		else
-			str[j] = str[i];
-		i++;
-		j++;
-	}
-	str[j] = '\0';
+	delete_quotes(str, '\'');
 }
 
 /**
@@ -113,11 +90,12 @@ void	expander(t_main_tools *tools)
 		{
 			if (TRUE == there_is_dollar(curr_sub_lexer->sub_str))
 			{
-				// TODO
+				expnad_dollar(curr_sub_lexer->sub_str);
+				handle_quotes_and_backslashes(curr_sub_lexer->sub_str);
 			}
 			else if (FALSE == there_is_dollar(curr_sub_lexer->sub_str))
 			{
-				remove_quotes_and_backslashes(curr_sub_lexer->sub_str);
+				handle_quotes_and_backslashes(curr_sub_lexer->sub_str);
 			}
 			curr_sub_lexer = curr_sub_lexer->next;
 		}
