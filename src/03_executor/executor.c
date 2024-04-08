@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/02 20:33:33 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/07 18:42:40 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	setup_fd(t_simple_cmd *cmd)
 	t_lexer	*tmp;
 
 	tmp = cmd->lexer_list;
-
 	while (tmp)
 	{
 		if (tmp->token == LESS || tmp->token == LESS_LESS)
@@ -135,7 +134,7 @@ int	execute_with_pipes(t_main_tools *tools)
 	fd_in = STDIN_FILENO;
 	while (tools->simple_cmd_list)
 	{
-		// expander
+		expander(tools->simple_cmd_list);
 		if (tools->simple_cmd_list->next)
 			pipe(fd);
 		heredoc(tools, tools->simple_cmd_list);
@@ -190,7 +189,7 @@ void	execute_no_pipes(t_main_tools *tools)
 {
 	int	pid;
 
-	// expander
+	expander(tools->simple_cmd_list);
 	if (!check_builtin(tools, tools->simple_cmd_list))
 		return ;
 	write(2, "executor\n", 9);
@@ -213,7 +212,6 @@ void	execute_no_pipes(t_main_tools *tools)
 */
 int	executor(t_main_tools *tools)
 {
-	ft_printf("pipes in executor: %d\naddress of pipes in executor: %p\n --------------\n", tools->pipes, &tools->pipes);
 	if (tools->pipes == 0)
 	{
 		execute_no_pipes(tools);

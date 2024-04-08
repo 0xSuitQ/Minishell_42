@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/06 18:38:08 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/07 18:53:00 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,34 @@
 	'\$USER'	-> \$USER
 	special symbol:
 	$?			-> exit status of the most recently executed foreground pipeline
-	$#			-> number of positional parameters
-	$$			-> pid of the shell
 */
-void	handle_quotes_and_backslashes(char *str)
+
+/**
+	@brief:
+	handle_backslash_dollar function handles the backslash and dollar sign only
+	\$USER			-> $USER
+	\$USER$USER		-> $USERpsimcak
+*/
+void	handle_backslash_dollar(char *str)
 {
-	delete_quotes(str, '\'');
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '\\' && str[i + 1] == '$')
+		{
+			ft_strlcpy(&str[i], &str[i + 1], ft_strlen(&str[i + 1]) + 1);
+		}
+		if (str[i] == '$')
+		{
+			expand_dollar(str);
+		}
+	}
 }
 
 /**
- * @brief:
+	@brief:
 	Checks if there is a dollar sign in the string
 */
 int	there_is_dollar(char *str)
@@ -75,30 +93,21 @@ int	there_is_dollar(char *str)
 	Example:
 	echo $USER > "test.txt" | cat test.txt
 */
-void	expander(t_main_tools *tools)
+void	expander(t_simple_cmd *curr_simple_cmd)
 {
-	t_simple_cmd	*curr_simple_cmd;
-	t_lexer			*curr_sub_lexer;
-	int				i;
+	int	i;
 
-	curr_simple_cmd = tools->simple_cmd_list;
-	while (curr_simple_cmd)
+	i = -1;
+	while (curr_simple_cmd->str[++i])
 	{
-		i = -1;
-		curr_sub_lexer = curr_simple_cmd->lexer_list;
-		while (curr_sub_lexer)
+		if (TRUE == there_is_dollar(curr_simple_cmd))
 		{
-			if (TRUE == there_is_dollar(curr_sub_lexer->sub_str))
-			{
-				expnad_dollar(curr_sub_lexer->sub_str);
-				handle_quotes_and_backslashes(curr_sub_lexer->sub_str);
-			}
-			else if (FALSE == there_is_dollar(curr_sub_lexer->sub_str))
-			{
-				handle_quotes_and_backslashes(curr_sub_lexer->sub_str);
-			}
-			curr_sub_lexer = curr_sub_lexer->next;
+			handle_backslash_dollar(curr_simple_cmd);
+			// expnad_dollar(curr_simple_cmd);
 		}
-		curr_simple_cmd = curr_simple_cmd->next;
+		// else if (FALSE == there_is_dollar(curr_simple_cmd))
+		// {
+		// 	handle_backslashes(curr_simple_cmd);
+		// }
 	}
 }
