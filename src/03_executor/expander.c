@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/07 18:53:00 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/08 18:44:16 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,22 +56,65 @@ void	handle_backslash_dollar(char *str)
 	}
 }
 
-/**
+/*
 	@brief:
-	Checks if there is a dollar sign in the string
+	- expand_dollar function expands the dollar sign and the env-variable
+	- it take the string till the $ and join it with the environment variable
+	- the power is, that it works only for one $, so if there are more $, which 
+	have for exaple backslash before, it will not work for them
+	- from handle_dollar we send the string beggining with $
+	$USER\$USER		-> psimcak\$USER
 */
-int	there_is_dollar(char *str)
+void	expand_dollar(char *str)
 {
-	int	i;
+	int		i;
+	char	*env_var;
+	char	*tmp;
+	char	*tmp2;
 
 	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$')
-			return (TRUE);
+	while (str[i] && str[i] != '$')
 		i++;
+	if (!str[i])
+		return ;
+	tmp = ft_substr(str, 0, i);
+	tmp2 = ft_strdup(&str[i + 1]);
+	env_var = getenv(tmp2);
+	if (env_var)
+	{
+		tmp = ft_strjoin(tmp, env_var);
+		tmp = ft_strjoin(tmp, tmp2 + ft_strlen(env_var));
+		ft_strlcpy(str, tmp, ft_strlen(tmp) + 1);
+		free(tmp);
 	}
-	return (FALSE);
+	else
+		ft_strlcpy(str, tmp, ft_strlen(tmp) + 1);
+	free(tmp2);
+}
+
+void	handle_dollar(char *str)
+{
+	int		i;
+	char	*tmp;
+
+	i = -1;
+	tmp = ft_strdup(str);
+	while (tmp[++i])
+	{
+		// ************************************************************
+		printf("EXECUTER - string is: %s\n", tmp);
+		printf("EXECUTER - iteration: %s\n", &tmp[i]);
+		// ************************************************************
+		if (tmp[i] == '\\' && tmp[i + 1] == '$')
+		{
+			ft_strlcpy(&tmp[i], &tmp[i + 1], ft_strlen(&tmp[i + 1]) + 1);
+			i++;
+		}
+		if (tmp[i] == '$')
+		{
+			expand_dollar(tmp);
+		}
+	}
 }
 
 /**
@@ -100,14 +143,7 @@ void	expander(t_simple_cmd *curr_simple_cmd)
 	i = -1;
 	while (curr_simple_cmd->str[++i])
 	{
-		if (TRUE == there_is_dollar(curr_simple_cmd))
-		{
-			handle_backslash_dollar(curr_simple_cmd);
-			// expnad_dollar(curr_simple_cmd);
-		}
-		// else if (FALSE == there_is_dollar(curr_simple_cmd))
-		// {
-		// 	handle_backslashes(curr_simple_cmd);
-		// }
+		handle_dollar(curr_simple_cmd->str[i]);
+		// handle_single_quotes(curr_simple_cmd->str[i]);
 	}
 }
