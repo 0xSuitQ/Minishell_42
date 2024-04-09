@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/09 20:03:08 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/09 20:22:10 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@
 	$?			-> exit status of the most recently executed foreground pipeline
 */
 
+/**
+	@brief:
+	- clear_env_variable function prepare the pure env-variable
+	- $USER$USER		-> USER
+	- $USER\$USER		-> USER
+	only first env-variable is returned, rest is solved in other iterations
+*/
 char	*clear_env_variable(char *str)
 {
 	int		i;
@@ -83,6 +90,13 @@ void	expand_dollar(char *str)
 	free(after_pure);
 }
 
+/*
+	@brief:
+	handle_dollar function handles the dollar sign in the string
+	- if there is a \ before the $, \ will be removed and $ skipped
+	- if there is a \ after the $, $ will be skipped and \ will be removed
+	- if there is a $, it will be expanded
+*/
 char	*handle_dollar(char *str)
 {
 	int		i;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   msh_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:10:56 by nandroso          #+#    #+#             */
-/*   Updated: 2024/03/08 11:42:54 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/04/09 20:16:32 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int msh_env(t_main_tools *tools, t_simple_cmd *cmd)
 {
-	t_env *envp;
-	char *tmp;
+	t_env	*envp;
+	char	*tmp;
 
 	(void)cmd;
 	envp = tools->envp_cpy;

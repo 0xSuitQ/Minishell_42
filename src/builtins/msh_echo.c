@@ -6,45 +6,45 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:10:42 by nandroso          #+#    #+#             */
-/*   Updated: 2024/04/09 13:25:57 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/09 20:16:48 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+# include "../../includes/minishell.h"
 
-void output_stuff(char **str, int n, int i) 
+void	output_stuff(char **str, int n, int i) 
 {
-  while (str[i])
-  {
-    ft_putstr_fd(str[i], STDOUT_FILENO);
-    i++;
-    if (str[i]) // if the next string is not NULL, print a space
-      write(STDOUT_FILENO, " ", 1);
-  }
-  if (n == 0)
-    write(STDOUT_FILENO, "\n", 1);
+	while (str[i])
+	{
+		ft_putstr_fd(str[i], STDOUT_FILENO);
+		i++;
+		if (str[i]) // if the next string is not NULL, print a space
+			write(STDOUT_FILENO, " ", 1);
+	}
+	if (n == 0)
+		write(STDOUT_FILENO, "\n", 1);
 }
 
 int msh_echo(t_main_tools *tools, t_simple_cmd *cmd)
 {
-  int i;
-  int j;
-  int n;
+	int	i;
+	int	j;
+	int	n;
 
-  n = 0;
-  i = 1;
-  (void)tools;
-  while (cmd->str[i] && cmd->str[i][0] == '-' && cmd->str[i][1] == 'n')
-  {
-    j = 1;
-    while (cmd->str[i][j] == 'n')
-      j++;
-    if (cmd->str[i][j] == '\0')
-      n = 1;
-    else
-      break;
-    i++;
-  }
-  output_stuff(cmd->str, n, i);
-  return (EXIT_SUCCESS);
+	n = 0;
+	i = 1;
+	(void)tools;
+	while (cmd->str[i] && cmd->str[i][0] == '-' && cmd->str[i][1] == 'n')
+	{
+		j = 1;
+		while (cmd->str[i][j] == 'n')
+			j++;
+		if (cmd->str[i][j] == '\0')
+			n = 1;
+		else
+			break;
+		i++;
+	}
+	output_stuff(cmd->str, n, i);
+	return (EXIT_SUCCESS);
 }
