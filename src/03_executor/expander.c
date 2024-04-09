@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/09 19:52:52 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/09 20:03:08 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,31 +32,7 @@
 	$?			-> exit status of the most recently executed foreground pipeline
 */
 
-/**
-	@brief:
-	handle_backslash_dollar function handles the backslash and dollar sign only
-	\$USER			-> $USER
-	\$USER$USER		-> $USERpsimcak
-*/
-// void	handle_backslash_dollar(char *str)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (str[++i])
-// 	{
-// 		if (str[i] == '\\' && str[i + 1] == '$')
-// 		{
-// 			ft_strlcpy(&str[i], &str[i + 1], ft_strlen(&str[i + 1]) + 1);
-// 		}
-// 		if (str[i] == '$')
-// 		{
-// 			expand_dollar(str);
-// 		}
-// 	}
-// }
-
-char	*clean_env_variable(char *str)
+char	*clear_env_variable(char *str)
 {
 	int		i;
 	char	*tmp;
@@ -79,27 +55,32 @@ char	*clean_env_variable(char *str)
 */
 void	expand_dollar(char *str)
 {
-	int		i;
 	char	*env_expanded;
 	char	*result;
-	char	*tmp_env;
+	char	*after_pure;
 	char	*pure;
 
-	i = 0;
-	if (!str[i])
+	if (!str[0])
 		return ;
-	result = ft_substr(str, 0, i);
-	pure = clean_env_variable(&str[i + 1]);
-	tmp_env = ft_strdup(&str[i + 1]);
+	result = ft_substr(str, 0, 0);
+	pure = clear_env_variable(&str[1]);
+	after_pure = ft_strdup(&str[1]);
 	env_expanded = getenv(pure);
 	if (env_expanded)
 	{
 		result = ft_strjoin(result, env_expanded);
-		result = ft_strjoin(result, tmp_env + ft_strlen(env_expanded));
+		result = ft_strjoin(result, after_pure + ft_strlen(env_expanded));
 		ft_strlcpy(str, result, ft_strlen(result) + 1);
 		free(result);
 	}
-	free(tmp_env);
+	if (pure[0] == '?')
+	{
+		// result = ft_itoa(g_exit_status);
+		result = ft_strjoin(result, after_pure + 1);
+		ft_strlcpy(str, result, ft_strlen(result) + 1);
+		free(result);
+	}
+	free(after_pure);
 }
 
 char	*handle_dollar(char *str)
@@ -169,9 +150,9 @@ void	expander(t_simple_cmd *curr_simple_cmd)
 	free_arr(curr_simple_cmd->str);
 	curr_simple_cmd->str = expanded_str;
 
-	int j = -1;
-	printf("final: ");
-	while (++j < i)
-		printf("%s ", curr_simple_cmd->str[j]);
-	printf("\n");
+	// int j = -1;
+	// printf("final: ");
+	// while (++j < i)
+	// 	printf("%s ", curr_simple_cmd->str[j]);
+	// printf("\n");
 }
