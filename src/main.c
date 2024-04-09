@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/07 18:30:30 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/09 11:24:13 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	tools_to_default_setting(t_main_tools *tools)
 	tools->paths = NULL;
 	tools->simple_cmd_list = NULL;
 	tools->pipes = 0;
-	ft_printf("pipes in tools: %d\naddress of pipes in tools: %p\n--------------\n", tools->pipes, &tools->pipes);
+	// ft_printf("pipes in tools: %d\naddress of pipes in tools: %p\n--------------\n", tools->pipes, &tools->pipes);
 	tools->pid = NULL;
 	get_paths(tools); // adding tools->paths
 	minishell_loop(tools);

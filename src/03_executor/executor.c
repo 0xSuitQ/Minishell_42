@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/07 18:42:40 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/09 13:21:08 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 
 	if (tools->finished == 1)
 	{
-		write(2, "finished\n", 9);
+		// write(2, "finished\n", 9);
 		tools->finished = 0;
 		i = 0;
 	}
@@ -192,7 +192,7 @@ void	execute_no_pipes(t_main_tools *tools)
 	expander(tools->simple_cmd_list);
 	if (!check_builtin(tools, tools->simple_cmd_list))
 		return ;
-	write(2, "executor\n", 9);
+	// write(2, "executor\n", 9);
 	heredoc(tools, tools->simple_cmd_list);
 	pid = fork();
 	if (pid == 0)

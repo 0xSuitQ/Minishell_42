@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/08 18:44:16 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/09 13:26:04 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,23 +38,23 @@
 	\$USER			-> $USER
 	\$USER$USER		-> $USERpsimcak
 */
-void	handle_backslash_dollar(char *str)
-{
-	int	i;
+// void	handle_backslash_dollar(char *str)
+// {
+// 	int	i;
 
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] == '\\' && str[i + 1] == '$')
-		{
-			ft_strlcpy(&str[i], &str[i + 1], ft_strlen(&str[i + 1]) + 1);
-		}
-		if (str[i] == '$')
-		{
-			expand_dollar(str);
-		}
-	}
-}
+// 	i = -1;
+// 	while (str[++i])
+// 	{
+// 		if (str[i] == '\\' && str[i + 1] == '$')
+// 		{
+// 			ft_strlcpy(&str[i], &str[i + 1], ft_strlen(&str[i + 1]) + 1);
+// 		}
+// 		if (str[i] == '$')
+// 		{
+// 			expand_dollar(str);
+// 		}
+// 	}
+// }
 
 /*
 	@brief:
@@ -73,8 +73,6 @@ void	expand_dollar(char *str)
 	char	*tmp2;
 
 	i = 0;
-	while (str[i] && str[i] != '$')
-		i++;
 	if (!str[i])
 		return ;
 	tmp = ft_substr(str, 0, i);
@@ -92,7 +90,7 @@ void	expand_dollar(char *str)
 	free(tmp2);
 }
 
-void	handle_dollar(char *str)
+char	*handle_dollar(char *str)
 {
 	int		i;
 	char	*tmp;
@@ -101,10 +99,6 @@ void	handle_dollar(char *str)
 	tmp = ft_strdup(str);
 	while (tmp[++i])
 	{
-		// ************************************************************
-		printf("EXECUTER - string is: %s\n", tmp);
-		printf("EXECUTER - iteration: %s\n", &tmp[i]);
-		// ************************************************************
 		if (tmp[i] == '\\' && tmp[i + 1] == '$')
 		{
 			ft_strlcpy(&tmp[i], &tmp[i + 1], ft_strlen(&tmp[i + 1]) + 1);
@@ -115,6 +109,7 @@ void	handle_dollar(char *str)
 			expand_dollar(tmp);
 		}
 	}
+	return (tmp);
 }
 
 /**
@@ -138,12 +133,28 @@ void	handle_dollar(char *str)
 */
 void	expander(t_simple_cmd *curr_simple_cmd)
 {
-	int	i;
+	int		i;
+	char	**expanded_str;
 
+	i = 0;
+	while (curr_simple_cmd->str[i])
+		i++;
+	expanded_str = malloc((i + 1) * sizeof(char*));
+	if (!expanded_str)
+		exit(1);
+    expanded_str[i] = NULL;
 	i = -1;
 	while (curr_simple_cmd->str[++i])
 	{
-		handle_dollar(curr_simple_cmd->str[i]);
+		expanded_str[i] = handle_dollar(curr_simple_cmd->str[i]);
 		// handle_single_quotes(curr_simple_cmd->str[i]);
 	}
+	free_arr(curr_simple_cmd->str);
+	curr_simple_cmd->str = expanded_str;
+
+	// int j = -1;
+	// printf("final: ");
+	// while (++j < i)
+	// 	printf("%s ", curr_simple_cmd->str[j]);
+	// printf("\n");
 }

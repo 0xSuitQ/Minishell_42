@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/08 18:13:42 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/09 13:18:23 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ int	write_to(t_lexer *tmp, t_token_list redirection);
 
 //	EXPANDER
 void	expander(t_simple_cmd *curr_simple_cmd);
-int		there_is_dollar(char *str);
 
 //	LIBFT
 void			*ft_calloc(size_t nmemb, size_t size);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/02 20:56:53 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/09 11:25:43 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,14 +312,14 @@ int	count_pipes(t_lexer *lexer_list)
 
 	count = 0;
 	tmp = lexer_list;
-	write(2, "we are in count_pipes\n", 23);
+	// write(2, "we are in count_pipes\n", 23);
 	while (tmp)
 	{
 		if (tmp->token == PIPE)
 			count++;
 		tmp = tmp->next;
 	}
-	ft_printf("pipes in count_pipes: %d\n", count);
+	// ft_printf("pipes in count_pipes: %d\n", count);
 	return (count);
 }
 
