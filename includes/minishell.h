@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/09 13:18:23 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/10 19:32:31 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,10 @@ int		get_paths(t_main_tools *tools);
 # define TOKEN_NUM		5
 # define HEREDOC_MSG	BOLD_BLUE"> "END
 # define READLINE_MSG	BOLD_CYAN"nikita&peta:msh"BLUE"$ "END
+
+# define NO_Q			0
+# define SINGLE_Q		1
+# define DOUBLE_Q		2
 
 /******************** COLORS **********************/
 # define END			"\033[0m"
