@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/09 20:16:58 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/12 20:39:33 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	receive_heredoc(int fd[2], t_simple_cmd *cmd)
 int	locate_and_execute_command(t_simple_cmd *cmd, t_main_tools *tools)
 {
 	char	*path;
-	//char	*tmp;
 	int		i;
 
 	i = 0;

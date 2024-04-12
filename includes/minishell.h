@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/10 19:32:31 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/12 20:29:30 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,14 @@
 extern int		g_signal;
 
 typedef struct s_main_tools t_main_tools;
+
+/******************** COLORS **********************/
+# define END			"\033[0m"
+# define RED     		"\033[31m"
+# define GREEN   		"\033[32m"
+# define BLUE    		"\033[34m"
+# define BOLD_BLUE		"\033[1;34m"
+# define BOLD_CYAN		"\033[1;36m"
 
 /******************** LEXER **********************/
 typedef enum s_token_list
@@ -105,32 +113,27 @@ typedef struct s_main_tools
 	int				pipes;
 	int				*pid;
 	int				finished;
+	int				exit_status;
 }	t_main_tools;
-
-/****************** THE BUILTINS ******************/
-int	msh_echo(t_main_tools *tools, t_simple_cmd *cmd);
-int	msh_pwd(t_main_tools *tools, t_simple_cmd *cmd);
-int	msh_cd(t_main_tools *tools, t_simple_cmd *cmd);
-int	msh_env(t_main_tools *tools, t_simple_cmd *cmd);
 
 /******************* PROTOTYPES *******************/
 //	LEXER
-int	lexer(t_main_tools *tools);
+int				lexer(t_main_tools *tools);
 
 //	PARSER
-void	parser(t_main_tools *tools);
+void			parser(t_main_tools *tools);
 
 //	HEREDOC
-int		heredoc(t_main_tools *tools, t_simple_cmd *cmd);
-char	*delete_quotes(char *str, char c);
+int				heredoc(t_main_tools *tools, t_simple_cmd *cmd);
+char			*delete_quotes(char *str, char c);
 
 //	EXECUTOR
-int	executor(t_main_tools *tools);
-int	read_from(t_simple_cmd *cmd, t_lexer *tmp, t_token_list redirection);
-int	write_to(t_lexer *tmp, t_token_list redirection);
+int				executor(t_main_tools *tools);
+int				read_from(t_simple_cmd *cmd, t_lexer *tmp, t_token_list redirection);
+int				write_to(t_lexer *tmp, t_token_list redirection);
 
 //	EXPANDER
-void	expander(t_simple_cmd *curr_simple_cmd);
+void			expander(t_simple_cmd *curr_simple_cmd);
 
 //	LIBFT
 void			*ft_calloc(size_t nmemb, size_t size);
@@ -145,34 +148,43 @@ char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			**ft_split(char const *s, char c);
 char			*ft_strchr(const char *str, int character);
 char			*ft_strrchr(const char *str, int character);
+int				ft_atoi(const char *nptr);
+int				ft_isdigit(int c);
 
 // PRINTF
-int		ft_printf(const char *format, ...);
-void	ft_putchar_and_strlen(char c, int *count);
-void	ft_num_to_str(int num, int *count);
-void	ft_putstr(char *str, int *count);
-void	ft_u_int_to_str(unsigned int u, int *count);
-void	ft_int_to_hex(char specifier, unsigned int uint_num, int *count);
-void	ft_pointer(unsigned long u_int_num, int *count);
+int				ft_printf(const char *format, ...);
+void			ft_putchar_and_strlen(char c, int *count);
+void			ft_num_to_str(int num, int *count);
+void			ft_putstr(char *str, int *count);
+void			ft_u_int_to_str(unsigned int u, int *count);
+void			ft_int_to_hex(char specifier, unsigned int uint_num, int *count);
+void			ft_pointer(unsigned long u_int_num, int *count);
 
 // REST OF LIBMS
-void	create_list(t_lexer **list, int index, t_token_list tok, char *sub_str);
-t_lexer	*get_last_node(t_lexer *list_head);
-void	tools_to_default_setting(t_main_tools *tools);
-char	*ft_str_sepdup(char *s);
-int		ft_strcmp(char *s1, char *s2);
-char	*ft_strdup(const char *s1);
-void	free_arr(char **split_arr);
-void	ft_putstr_fd_exit(char *message, int fd_num, int exit_num);
-int		substring_counter(char *str);
-char	*ft_strtrim(char const *s1, char const *set);
-void	set_pwd(t_main_tools *tools);
+void			create_list(t_lexer **list, int index, t_token_list tok, char *sub_str);
+t_lexer			*get_last_node(t_lexer *list_head);
+void			tools_to_default_setting(t_main_tools *tools);
+char			*ft_str_sepdup(char *s);
+int				ft_strcmp(char *s1, char *s2);
+char			*ft_strdup(const char *s1);
+void			free_arr(char **split_arr);
+void			ft_putstr_fd_exit(char *message, int fd_num, int exit_num);
+int				substring_counter(char *str);
+char			*ft_strtrim(char const *s1, char const *set);
+void			set_pwd(t_main_tools *tools);
 
 // ENV_MANAGEMENT
-void	copy_env(t_main_tools *tools, char **envp);
-void	change_env(t_main_tools *tools, char *name, char *value);
-void	convert_to_2d(t_main_tools *tools);
-int		get_paths(t_main_tools *tools);
+void			copy_env(t_main_tools *tools, char **envp);
+void			change_env(t_main_tools *tools, char *name, char *value);
+void			convert_to_2d(t_main_tools *tools);
+int				get_paths(t_main_tools *tools);
+
+// BUILTINS
+int				msh_echo(t_main_tools *tools, t_simple_cmd *cmd);
+int				msh_pwd(t_main_tools *tools, t_simple_cmd *cmd);
+int				msh_cd(t_main_tools *tools, t_simple_cmd *cmd);
+int				msh_env(t_main_tools *tools, t_simple_cmd *cmd);
+void			msh_exit(t_main_tools *tools, t_simple_cmd *s_cmd);
 
 // SIGNALS
 // void	handle_sigint(int signum);
@@ -198,13 +210,5 @@ int		get_paths(t_main_tools *tools);
 # define NO_Q			0
 # define SINGLE_Q		1
 # define DOUBLE_Q		2
-
-/******************** COLORS **********************/
-# define END			"\033[0m"
-# define RED     		"\033[31m"
-# define GREEN   		"\033[32m"
-# define BLUE    		"\033[34m"
-# define BOLD_BLUE		"\033[1;34m"
-# define BOLD_CYAN		"\033[1;36m"
 
 #endif
