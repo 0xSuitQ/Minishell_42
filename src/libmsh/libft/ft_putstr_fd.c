@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 13:44:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/12 09:42:11 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/12 19:01:52 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,4 @@
 void	ft_putstr_fd(char *str, int fd)
 {
 	write(fd, str, ft_strlen(str));
-	//write(fd, "\n", 1);
 }
