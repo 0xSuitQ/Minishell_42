@@ -118,6 +118,22 @@ int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 	return (EXIT_SUCCESS);
 }
 
+int wait_pids(t_main_tools *tools)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (tools->pid[i])
+	{
+		waitpid(tools->pid[i], &status, 0);
+		if (WIFEXITED(status))
+			tools->exit_status = WEXITSTATUS(status);
+		i++;
+	}
+	return (EXIT_SUCCESS);
+}
+
 /**
  * @brief:
 	If there pipes in the command, call this function.
@@ -128,7 +144,7 @@ int	execute_with_pipes(t_main_tools *tools)
 {
 	int	fd[2];
 	int	fd_in;
-	//int i = 0;
+	int i;
 
 	fd_in = STDIN_FILENO;
 	while (tools->simple_cmd_list)
@@ -147,10 +163,7 @@ int	execute_with_pipes(t_main_tools *tools)
 			break ;
 	}
 	// wait
-	// while (tools->pid[i])
-	// {
-	// 	waitpid(tools->pid[i++]);
-	// }
+	wait_pids(tools);
 	// reset simple_cmds to the head
 	return (EXIT_SUCCESS);
 }
