@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/09 11:25:43 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/15 13:11:38 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -336,7 +336,7 @@ int	(*builtin_arr(char *str))(t_main_tools *tools, t_simple_cmd *cmd)
 		{"echo", msh_echo}, {"cd", msh_cd},
 		{"pwd", msh_pwd}, {"export", msh_echo},
 		{"unset", msh_echo}, {"env", msh_env},
-		{"exit", msh_echo}};
+		{"exit", msh_exit}};
 
 	i = 0;
 	while (i < 7)

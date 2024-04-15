@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:49:16 by peta              #+#    #+#             */
-/*   Updated: 2024/04/12 20:38:44 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/15 15:20:53 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,15 @@ void	exit_minishell(t_main_tools *tools, int exit_num)
 
 	if (!static_tools)
 		static_tools = tools;
-	else
-	{
-		static_tools->exit_status = exit_num;
-		free_data(static_tools);
-		exit(static_tools->exit_status);
-	}
+	// else
+	// {
+	// 	static_tools->exit_status = exit_num;
+	// 	free_data(static_tools);
+	// 	exit(static_tools->exit_status);
+	// }
+	static_tools->exit_status = exit_num;
+	free_data(static_tools);
+	exit(static_tools->exit_status);
 }
 
 /**

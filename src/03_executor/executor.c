@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/12 20:39:33 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/15 15:39:27 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,21 +69,21 @@ void	run_cmd(t_main_tools *tools, t_simple_cmd *cmd)
 	
 	if (cmd->lexer_list && cmd->lexer_list->token)
 	{
-        if (setup_fd(cmd))
-            exit(1);
-    }
-    // Attempt to execute built-in command first
-    if (cmd->builtin)
+		if (setup_fd(cmd))
+			exit(1);
+	}
+	// Attempt to execute built-in command first
+	if (cmd->builtin)
 	{
 		command_result = cmd->builtin(tools, cmd);
 		exit(command_result);
 	}
 
-    // If not a built-in, try finding an external command
-    if (cmd->str[0][0] != '\0')
-        command_result = locate_and_execute_command(cmd, tools);
+	// If not a built-in, try finding an external command
+	if (cmd->str[0][0] != '\0')
+		command_result = locate_and_execute_command(cmd, tools);
 
-    exit(command_result);
+	exit(command_result);
 }
 
 void	pipe_dup(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
