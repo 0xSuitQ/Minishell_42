@@ -63,7 +63,7 @@ int	setup_fd(t_simple_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
-void	run_cmd(t_main_tools *tools, t_simple_cmd *cmd)
+void	prepare_exec(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	int command_result = 0;
 	
@@ -96,7 +96,7 @@ void	pipe_dup(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 	close(fd[1]);
 	if (cmd->prev)
 		close(fd_in);
-	run_cmd(tools, cmd); // there look for the path and execute the command
+	prepare_exec(tools, cmd); // there look for the path and execute the command
 }
 
 int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
@@ -195,7 +195,7 @@ void	execute_no_pipes(t_main_tools *tools)
 	heredoc(tools, tools->simple_cmd_list);
 	pid = fork();
 	if (pid == 0)
-		run_cmd(tools, tools->simple_cmd_list);
+		prepare_exec(tools, tools->simple_cmd_list);
 	// wait
 	// exitstatus
 }
@@ -212,9 +212,7 @@ void	execute_no_pipes(t_main_tools *tools)
 int	executor(t_main_tools *tools)
 {
 	if (tools->pipes == 0)
-	{
 		execute_no_pipes(tools);
-	}
 	else
 	{
 		tools->pid = malloc((tools->pipes + 2) * sizeof(int));
