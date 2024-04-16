@@ -69,6 +69,7 @@ void	prepare_exec(t_main_tools *tools, t_simple_cmd *cmd)
 	
 	if (cmd->lexer_list && cmd->lexer_list->token)
 	{
+		write(1, "lexer_list->token: ", 19);
 		if (setup_fd(cmd))
 			exit(1);
 	}
@@ -144,7 +145,6 @@ int	execute_with_pipes(t_main_tools *tools)
 {
 	int	fd[2];
 	int	fd_in;
-	int i;
 
 	fd_in = STDIN_FILENO;
 	while (tools->simple_cmd_list)
@@ -199,17 +199,18 @@ int	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
 */
 void	execute_no_pipes(t_main_tools *tools)
 {
-	int	pid;
+	// int	pid;
 
 	expander(tools->simple_cmd_list);
-	if (!check_builtin(tools, tools->simple_cmd_list))
-		return ;
-	// write(2, "executor\n", 9);
 	heredoc(tools, tools->simple_cmd_list);
-	pid = fork();
-	if (pid == 0)
+	tools->pid[0] = fork();
+	if (tools->pid[0] == 0)
+	{
 		prepare_exec(tools, tools->simple_cmd_list);
-	// wait
+		if (!check_builtin(tools, tools->simple_cmd_list))
+			return ;
+	}
+	wait_pids(tools);
 	// exitstatus
 }
 
@@ -225,7 +226,12 @@ void	execute_no_pipes(t_main_tools *tools)
 int	executor(t_main_tools *tools)
 {
 	if (tools->pipes == 0)
+	{
+		tools->pid = malloc(1 * sizeof(int));
+		if (!tools->pid)
+			return (EXIT_FAILURE); // TODO memory error
 		execute_no_pipes(tools);
+	}
 	else
 	{
 		tools->pid = malloc((tools->pipes + 2) * sizeof(int));
