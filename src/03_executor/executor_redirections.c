@@ -38,7 +38,9 @@ int	write_to(t_lexer *tmp, t_token_list redirection)
 	int	fd;
 
 	if (redirection == GREAT)
+	{
 		fd = open(tmp->next->sub_str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	}
 	else
 		fd = open(tmp->next->sub_str, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
