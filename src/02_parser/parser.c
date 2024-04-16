@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/15 13:11:38 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/16 16:42:59 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,8 @@ void	init_simple_cmds(t_simple_cmd **cmd_list, t_lexer *lexer_list)
 */
 void	first_node_not_pipe(t_lexer *lex_head)
 {
+	if (!lex_head)
+		return;
 	if (lex_head->token == PIPE)
 		unexpected_token_officer(lex_head);
 }

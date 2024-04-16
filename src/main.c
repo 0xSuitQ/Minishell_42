@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/15 13:32:47 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/16 17:13:02 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,16 @@ int	minishell_loop(t_main_tools *tools)
 	char	*tmp;
 
 	tools->args = readline(READLINE_MSG);
+	if (!tools->args)
+		return (0);
 	tmp = ft_strtrim(tools->args, " ");
 	free(tools->args);
 	tools->args = tmp;
+	if (ft_strlen(tools->args) == 0)
+	{
+		free(tools->args);
+		return minishell_loop(tools);
+	}
 	lexer(tools);
 	//tester(tools, LEXER_LIST); // ZAKOMENTOVAT
 	parser(tools);
