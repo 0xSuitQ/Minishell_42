@@ -69,7 +69,6 @@ void	prepare_exec(t_main_tools *tools, t_simple_cmd *cmd)
 	
 	if (cmd->lexer_list && cmd->lexer_list->token)
 	{
-		write(1, "lexer_list->token: ", 19);
 		if (setup_fd(cmd))
 			exit(1);
 	}
@@ -145,26 +144,26 @@ int	execute_with_pipes(t_main_tools *tools)
 {
 	int	fd[2];
 	int	fd_in;
+	t_simple_cmd	*cmd;
 
+	cmd = tools->simple_cmd_list;
 	fd_in = STDIN_FILENO;
-	while (tools->simple_cmd_list)
+	while (cmd)
 	{
-		expander(tools->simple_cmd_list);
-		if (tools->simple_cmd_list->next)
+		expander(cmd);
+		if (cmd->next)
 			pipe(fd);
-		heredoc(tools, tools->simple_cmd_list);
-		forking(tools, tools->simple_cmd_list, fd, fd_in);
+		heredoc(tools, cmd);
+		forking(tools, cmd, fd, fd_in);
 		close(fd[1]);
 
-		fd_in = receive_heredoc(fd, tools->simple_cmd_list);
-		if (tools->simple_cmd_list->next)
-			tools->simple_cmd_list = tools->simple_cmd_list->next;
+		fd_in = receive_heredoc(fd, cmd);
+		if (cmd->next)
+			cmd = cmd->next;
 		else
 			break ;
 	}
-	// wait
 	wait_pids(tools);
-	// reset simple_cmds to the head
 	return (EXIT_SUCCESS);
 }
 
@@ -200,14 +199,16 @@ int	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
 void	execute_no_pipes(t_main_tools *tools)
 {
 	// int	pid;
+	t_simple_cmd	*cmd;
 
-	expander(tools->simple_cmd_list);
-	heredoc(tools, tools->simple_cmd_list);
+	cmd = tools->simple_cmd_list;
+	expander(cmd);
+	heredoc(tools, cmd);
 	tools->pid[0] = fork();
 	if (tools->pid[0] == 0)
 	{
-		prepare_exec(tools, tools->simple_cmd_list);
-		if (!check_builtin(tools, tools->simple_cmd_list))
+		prepare_exec(tools, cmd);
+		if (!check_builtin(tools, cmd))
 			return ;
 	}
 	wait_pids(tools);
