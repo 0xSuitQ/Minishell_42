@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_management.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 21:01:08 by nandroso          #+#    #+#             */
-/*   Updated: 2024/03/12 18:20:00 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/04/17 20:08:47 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ void	copy_env(t_main_tools *tools, char **envp)
 	while (*envp)
 	{
 		envp_cpy = ft_split(*envp, '=');
-		//if (!envp_cpy[0] || !envp_cpy[1])
-		//	write(1, "Error: envp_cpy[0] or envp_cpy[1] is NULL\n", 41);
 		add_env(tools, envp_cpy[0], envp_cpy[1]);
 		free(envp_cpy[0]);
 		free(envp_cpy[1]);

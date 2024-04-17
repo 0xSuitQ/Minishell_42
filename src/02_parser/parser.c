@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/17 17:18:14 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 20:14:26 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ void tester(t_main_tools *tools, int signpost);
 char	*token_to_str(t_lexer *token)
 {
 	int						i;
-	static t_token_matrix	tokens[] = {{"|", PIPE},
-									{"<", LESS},
-									{"<<", LESS_LESS},
-									{">", GREAT},
-									{">>", GREAT_GREAT}};
+	static t_token_matrix	tokens[] = {
+		{"|", PIPE},
+		{"<", LESS},
+		{">", GREAT},
+		{"<<", LESS_LESS},
+		{">>", GREAT_GREAT}};
 
 	i = -1;
 	while (++i < TOKEN_NUM)
@@ -335,7 +336,7 @@ int	(*builtin_arr(char *str))(t_main_tools *tools, t_simple_cmd *cmd)
 	static void *builtins[7][2] = {
 		{"echo", msh_echo}, {"cd", msh_cd},
 		{"pwd", msh_pwd}, {"export", msh_echo},
-		{"unset", msh_echo}, {"env", msh_env},
+		{"unset", msh_unset}, {"env", msh_env},
 		{"exit", msh_exit}};
 
 	i = 0;

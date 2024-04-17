@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/17 17:43:47 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 19:45:25 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ int				msh_pwd(t_main_tools *tools, t_simple_cmd *cmd);
 int				msh_cd(t_main_tools *tools, t_simple_cmd *cmd);
 int				msh_env(t_main_tools *tools, t_simple_cmd *cmd);
 int				msh_exit(t_main_tools *tools, t_simple_cmd *s_cmd);
+int				msh_unset(t_main_tools *tools, t_simple_cmd *cmd);
 
 // SIGNALS
 // void	handle_sigint(int signum);

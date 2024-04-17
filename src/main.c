@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/17 17:45:51 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 20:10:51 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,13 @@ int	minishell_loop(t_main_tools *tools)
 	main function is the entry point of the minishell program
 	which is responsible for initializing the main_tools structure
 	and starting the main loop of the program
+	Steps:
+	- Check if there are any arguments
+	- Find the environment variable and add it to the main_tools structure
+	- Set the current working directory
+	- Set the main_tools structure to the default settings
+	- Start the main loop of the program
+	
 */
 int	main(int argc, char **argv, char **envp)
 {

@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/17 17:39:24 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 19:41:44 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,7 +239,7 @@ int	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
 }
 
 /**
- * @brief:
+	@brief:
 	Execute_no_pipes is a function that will be called when there are no pipes
 	in the command. It will check if the command is a built-in command and
 	execute it. If it is not a built-in command, it will execute the command
@@ -270,13 +270,17 @@ void	execute_no_pipes(t_main_tools *tools)
 }
 
 /**
- * @brief:
+	@brief:
 	Executor is the main function here. It will call the appropriate function:
 	either execute_no_pipes or execute_with_pipes. It just a crossroad for
 	the two functions.
 	The executor is the component responsible for actually running the commands
 	entered by the user. Its main tasks include:
-	- 
+	- Executing the command without pipes.
+	- Executing the command with pipes.
+	@returns:
+	EXIT_SUCCESS if the command was executed successfully or EXIT_FAILURE if
+	there was an error.
 */
 int	executor(t_main_tools *tools)
 {
