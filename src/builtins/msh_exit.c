@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:49:16 by peta              #+#    #+#             */
-/*   Updated: 2024/04/15 15:20:53 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 17:01:35 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int	is_num(char *str)
 	Exit the minishell, but before that, check if the argument is a number
 	and if it is, convert it to an integer and exit with that number
 */
-void	msh_exit(t_main_tools *tools, t_simple_cmd *s_cmd)
+int	msh_exit(t_main_tools *tools, t_simple_cmd *s_cmd)
 {
 	char	**args;
 	int		exit_status;
@@ -87,7 +87,7 @@ void	msh_exit(t_main_tools *tools, t_simple_cmd *s_cmd)
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR);
 		tools->exit_status = 1;
-		return ;
+		return (exit_status);
 	}
 	else if (arg_count >= 2 && is_num(args[1]) == FALSE)
 	{
@@ -99,4 +99,5 @@ void	msh_exit(t_main_tools *tools, t_simple_cmd *s_cmd)
 	else if (arg_count == 2 && is_num(args[1]) == TRUE)
 		exit_status = ft_atoi(args[1]) % 256;
 	exit_minishell(tools, exit_status);
+	return (exit_status);
 }

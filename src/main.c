@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/16 17:13:02 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 17:11:38 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	minishell_loop(t_main_tools *tools)
 
 	tools->args = readline(READLINE_MSG);
 	if (!tools->args)
-		return (0);
+		exit (0);
 	tmp = ft_strtrim(tools->args, " ");
 	free(tools->args);
 	tools->args = tmp;
@@ -94,7 +94,6 @@ int	minishell_loop(t_main_tools *tools)
 	executor(tools);
 	if (tools->pid)
 	{
-		write(2, "freeing pid\n", 12);
 		free(tools->pid);
 	}
 	tools->finished = 1;

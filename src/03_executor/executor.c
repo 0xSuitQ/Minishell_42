@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/15 15:39:27 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 16:55:50 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,24 +195,29 @@ int	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
 	in the command. It will check if the command is a built-in command and
 	execute it. If it is not a built-in command, it will execute the command
 	by calling the run_cmd function.
+	cmd->builtin is a function pointer to the built-in command.
 */
 void	execute_no_pipes(t_main_tools *tools)
 {
-	// int	pid;
 	t_simple_cmd	*cmd;
+	int				builtin_result;
 
 	cmd = tools->simple_cmd_list;
 	expander(cmd);
 	heredoc(tools, cmd);
-	tools->pid[0] = fork();
-	if (tools->pid[0] == 0)
+	if (cmd->builtin)
 	{
-		prepare_exec(tools, cmd);
-		if (!check_builtin(tools, cmd))
-			return ;
+		builtin_result = cmd->builtin(tools, cmd);
+		if (cmd->builtin == msh_exit)
+			exit(builtin_result);
 	}
-	wait_pids(tools);
-	// exitstatus
+	else
+	{
+		tools->pid[0] = fork();
+		if (tools->pid[0] == 0)
+			prepare_exec(tools, cmd);
+		wait_pids(tools);
+	}
 }
 
 /**
