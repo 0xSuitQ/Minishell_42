@@ -6,12 +6,19 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/17 16:55:50 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 17:39:24 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/**
+	@brief:
+	receive_heredoc is a function that will receive the heredoc input from
+	the file descriptor. If the heredoc_filename is not NULL, it will open
+	the file and return the file descriptor. If the heredoc_filename is NULL,
+	it will return the file descriptor.
+*/
 int	receive_heredoc(int fd[2], t_simple_cmd *cmd)
 {
 	int	fd_in;
@@ -26,6 +33,14 @@ int	receive_heredoc(int fd[2], t_simple_cmd *cmd)
 	return (fd_in);
 }
 
+/**
+	@brief:
+	locate_and_execute_command is a function that will look for the path of the
+	command and execute it. If the command is not found, it will print an error
+	message and return EXIT_FAILURE.
+	This is the function that will be called when the command is not a built-in
+	command.
+*/
 int	locate_and_execute_command(t_simple_cmd *cmd, t_main_tools *tools)
 {
 	char	*path;
@@ -45,6 +60,14 @@ int	locate_and_execute_command(t_simple_cmd *cmd, t_main_tools *tools)
 	return (EXIT_FAILURE);
 }
 
+/*
+	@brief:
+	setup_fd is a function that will setup the file descriptors for the command.
+	It will go through the lexer_list and check for the redirection tokens.
+	- If the token is LESS or LESS_LESS, it will call the read_from function.
+	- If the token is GREAT or GREAT_GREAT, it will call the write_to function.
+
+*/
 int	setup_fd(t_simple_cmd *cmd)
 {
 	t_lexer	*tmp;
@@ -63,29 +86,46 @@ int	setup_fd(t_simple_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
+/**
+	@brief:
+	prepare_exec is a function that will prepare the execution of the command.
+	It will check if the command is a built-in command and execute it.
+	If it is not a built-in command, it will look for the path and execute
+	the command.
+	1st IF statement:
+		- If the lexer_list is not NULL and the token is not NULL, it will
+		setup the file descriptors for the command.
+	2nd IF statement:
+		- If the command is a built-in command, it will execute it and exit
+		the process.
+	3rd IF statement:
+		- If the command is not a built-in command, it will look for the path
+		and execute the external command.
+*/
 void	prepare_exec(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	int command_result = 0;
 	
 	if (cmd->lexer_list && cmd->lexer_list->token)
-	{
 		if (setup_fd(cmd))
 			exit(1);
-	}
-	// Attempt to execute built-in command first
 	if (cmd->builtin)
 	{
 		command_result = cmd->builtin(tools, cmd);
 		exit(command_result);
 	}
-
-	// If not a built-in, try finding an external command
 	if (cmd->str[0][0] != '\0')
 		command_result = locate_and_execute_command(cmd, tools);
-
 	exit(command_result);
 }
 
+/**
+	@brief:
+	pipe_dup is a function that will duplicate the file descriptors for the
+	commands. It will close the file descriptors that are not needed and
+	call the prepare_exec function. Which will look for the path and execute
+	the command.
+*/
 void	pipe_dup(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 {
 	if (cmd->prev && dup2(fd_in, STDIN_FILENO) < 0)
@@ -96,28 +136,37 @@ void	pipe_dup(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 	close(fd[1]);
 	if (cmd->prev)
 		close(fd_in);
-	prepare_exec(tools, cmd); // there look for the path and execute the command
+	prepare_exec(tools, cmd);
 }
 
+/**
+	@brief:
+	forking is a function that will fork a child process for every command
+	in the simple_cmd_list. It will create a pipe for every command and
+	call the pipe_dup function.
+*/
 int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 {
 	static int	i = 0;
 
 	if (tools->finished == 1)
 	{
-		// write(2, "finished\n", 9);
 		tools->finished = 0;
 		i = 0;
 	}
 	tools->pid[i] = fork();
 	if (tools->pid[i] == 0)
-	{
 		pipe_dup(tools, cmd, fd, fd_in);
-	}
 	i++;
 	return (EXIT_SUCCESS);
 }
 
+/**
+	@brief:
+	wait_pids is a function that will wait for the child processes to finish.
+	For every child process, it will wait for the process to finish and then
+	check the exit status of the process.
+*/
 int wait_pids(t_main_tools *tools)
 {
 	int	i;

@@ -6,12 +6,18 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:10:32 by nandroso          #+#    #+#             */
-/*   Updated: 2024/04/09 20:16:07 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 17:19:59 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../includes/minishell.h"
 
+/**
+	@brief:
+	handle_empty_cd function is used to handle the cd command when the user
+	does not specify any directory. It changes the current working directory
+	to the user's home directory.
+*/
 int	handle_empty_cd(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	char	*home_dir;
@@ -29,6 +35,10 @@ int	handle_empty_cd(t_main_tools *tools, t_simple_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
+/**
+	@brief:
+	Handle the cd command when the user specifies the home directory.
+*/
 int	handle_tild_cd(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	char	*home_dir;
@@ -51,6 +61,12 @@ int	handle_tild_cd(t_main_tools *tools, t_simple_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
+/**
+	@brief:
+	cd is a built-in command that changes the current working directory.
+	If no directory is specified, the command changes to the user's home directory.
+	If the directory does not exist, the command returns an error message.
+*/
 int	msh_cd(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	char	*error_msg;

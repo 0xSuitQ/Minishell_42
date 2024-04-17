@@ -6,14 +6,30 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/17 16:57:59 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 17:43:47 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+/********* DECLARATION OF GLOBAL VARIABLE *********/
+// declare it in .h file allow us to use it anywhere where we include msh.h
+// extern = this exists
+extern int		g_signal;
+
+/******************** COLORS **********************/
+# define END			"\033[0m"
+# define RED     		"\033[31m"
+# define GREEN   		"\033[32m"
+# define BLUE    		"\033[34m"
+# define BOLD_RED		"\033[1;31m"
+# define BOLD_GREEN		"\033[1;32m"
+# define BOLD_BLUE		"\033[1;34m"
+# define BOLD_CYAN		"\033[1;36m"
+
 /******************** iMport **********************/
+# include <unistd.h>
 # include <complex.h>
 # include <fcntl.h>
 # include <readline/history.h>
@@ -23,8 +39,8 @@
 # include <stddef.h>
 # include <stdio.h>	
 # include <stdlib.h>
-# include <unistd.h>
 /*
+# include <unistd.h>			// write
 # include <complex.h>			// For complex numbers
 # include <fcntl.h>				// open, close
 # include <readline/history.h>	// functions related w/ readline
@@ -35,23 +51,10 @@
 # include <stdio.h>				// printf, perror
 # include <stdlib.h>			// malloc, free, exit, getenv
 # include <stdlib.h>			// For EXIT_FAILURE and EXIT_SUCCESS constants
-# include <unistd.h>			// write
 */
 
-/********* DECLARATION OF GLOBAL VARIABLE *********/
-// declare it in .h file allow us to use it anywhere where we include msh.h
-// extern = this exists
-extern int		g_signal;
-
+/******************* STRUCTS *********************/
 typedef struct s_main_tools t_main_tools;
-
-/******************** COLORS **********************/
-# define END			"\033[0m"
-# define RED     		"\033[31m"
-# define GREEN   		"\033[32m"
-# define BLUE    		"\033[34m"
-# define BOLD_BLUE		"\033[1;34m"
-# define BOLD_CYAN		"\033[1;36m"
 
 /******************** LEXER **********************/
 typedef enum s_token_list

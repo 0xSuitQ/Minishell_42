@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/17 17:11:38 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 17:45:51 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ int		minishell_loop(t_main_tools *tools);
 int	g_signal = 0;
 
 /**
- * @brief:
+	@brief:
 	Setting these members to NULL is a way to ensure that the structure starts
 	in a known state, preventing undefined behavior from uninitialized pointers
+	get_paths is used to get the paths from the environment variable, and
+	adding them to the main_tools structure
 */
 void	tools_to_default_setting(t_main_tools *tools)
 {
@@ -28,15 +30,15 @@ void	tools_to_default_setting(t_main_tools *tools)
 	tools->paths = NULL;
 	tools->simple_cmd_list = NULL;
 	tools->pipes = 0;
-	// ft_printf("pipes in tools: %d\naddress of pipes in tools: %p\n--------------\n", tools->pipes, &tools->pipes);
 	tools->pid = NULL;
-	get_paths(tools); // adding tools->paths
+	get_paths(tools);
 	minishell_loop(tools);
 }
 
 /**
- * @brief:
+	@brief:
 	set_pwd function is used to set the current working directory
+	in the main_tools structure
 */
 void	set_pwd(t_main_tools *tools)
 {
@@ -59,7 +61,7 @@ void	set_pwd(t_main_tools *tools)
 }
 
 /**
- * @brief:
+	@brief:
 	minishell_loop function is the main loop of the minishell program
 	which is responsible for reading the input, parsing it, and executing it
 	
@@ -110,7 +112,7 @@ int	minishell_loop(t_main_tools *tools)
 }
 
 /**
- * @brief:
+	@brief:
 	main function is the entry point of the minishell program
 	which is responsible for initializing the main_tools structure
 	and starting the main loop of the program

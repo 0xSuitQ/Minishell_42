@@ -6,12 +6,16 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 16:18:11 by peta              #+#    #+#             */
-/*   Updated: 2024/04/01 17:39:59 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 17:20:16 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/**
+	@brief:
+	Open the file and read the input from the file.
+*/
 int	read_from(t_simple_cmd *cmd, t_lexer *tmp, t_token_list redirection)
 {
 	int	fd;
@@ -33,6 +37,10 @@ int	read_from(t_simple_cmd *cmd, t_lexer *tmp, t_token_list redirection)
 	return (EXIT_SUCCESS);
 }
 
+/**
+	@brief:
+	Open the file and write the output of the command to the file.
+*/
 int	write_to(t_lexer *tmp, t_token_list redirection)
 {
 	int	fd;
