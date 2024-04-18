@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 19:44:39 by peta              #+#    #+#             */
-/*   Updated: 2024/04/17 20:15:21 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 20:19:28 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ int	msh_unset(t_main_tools *tools, t_simple_cmd *s_cmd)
 	}
 	counter = 0;
 	while (s_cmd->str[++counter])
-	{
-		env_remove(&envp, s_cmd->str[counter]); //TODO
-	}
+		env_remove(&envp, s_cmd->str[counter]);
 	tools->exit_status = 0;
 	return (EXIT_SUCCESS);
 }

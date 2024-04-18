@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/17 19:41:44 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 22:27:57 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,9 +191,9 @@ int wait_pids(t_main_tools *tools)
 */
 int	execute_with_pipes(t_main_tools *tools)
 {
-	int	fd[2];
-	int	fd_in;
 	t_simple_cmd	*cmd;
+	int				fd[2];
+	int				fd_in;
 
 	cmd = tools->simple_cmd_list;
 	fd_in = STDIN_FILENO;

@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/17 19:45:25 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/18 14:12:29 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ char			*ft_strjoin(char const *s1, char const *s2);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t			ft_strlen(const char *str);
 char			*ft_strncpy(char *dest, char *src, unsigned int n);
+void			ft_strcpy(char *dest, char *src);
 unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			**ft_split(char const *s, char c);
@@ -189,6 +190,7 @@ int				msh_cd(t_main_tools *tools, t_simple_cmd *cmd);
 int				msh_env(t_main_tools *tools, t_simple_cmd *cmd);
 int				msh_exit(t_main_tools *tools, t_simple_cmd *s_cmd);
 int				msh_unset(t_main_tools *tools, t_simple_cmd *cmd);
+int				msh_export(t_main_tools *tools, t_simple_cmd *cmd);
 
 // SIGNALS
 // void	handle_sigint(int signum);

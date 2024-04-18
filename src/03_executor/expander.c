@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/10 20:19:31 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/18 15:35:44 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,40 +42,40 @@ char	*clear_env_variable(char *str)
 	- from handle_dollar we send the string beggining with $
 	$USER\$USER		-> psimcak\$USER
 */
-void	expand_dollar(char *str)
+int	expand_dollar(char *str)
 {
 	char	*env_expanded;
 	char	*result;
 	char	*after_pure;
 	char	*pure;
-	int		pure_len;
+	int		i;
 
+	i = 0;
 	if (!str[0])
-		return ;
-	result = ft_substr(str, 0, 0);
+		return (i);
 	pure = clear_env_variable(&str[1]);
-	pure_len = ft_strlen(pure);
-	after_pure = ft_strdup(&str[pure_len + 1]);
+	after_pure = ft_strdup(&str[ft_strlen(pure) + 1]);
 	env_expanded = getenv(pure);
 	if (env_expanded)
 	{
-		result = ft_strjoin(result, env_expanded);
-		result = ft_strjoin(result, pure + ft_strlen(env_expanded));
+		result = ft_strdup(env_expanded);
 		result = ft_strjoin(result, after_pure);
-		ft_strlcpy(str, result, ft_strlen(result) + 1);
+		ft_strcpy(str, result);
+		printf("str: %s\n", str);
 		free(result);
 	}
+	else
+		i++;
 	if (pure[0] == '?')
 	{
 		// result = ft_itoa(g_exit_status);
-		result = ft_strjoin(result, pure + 1);
 		result = ft_strjoin(result, after_pure);
-		ft_strlcpy(str, result, ft_strlen(result) + 1);
+		ft_strcpy(str, result);
 		free(result);
 	}
-	if (env_expanded == NULL)
-		ft_strlcpy(str, after_pure, ft_strlen(after_pure) + 1);
 	free(after_pure);
+	free(pure);
+	return (i);
 }
 
 /*
@@ -186,7 +186,7 @@ char	*handle_dollar(char *str)
 		remove_quotes(&tmp[i], '\"');
 		i += handle_backslash(&tmp[i]);
 		while (tmp[i] == '$')
-			expand_dollar(&tmp[i]);
+			i += expand_dollar(&tmp[i]);
 	}
 	return (tmp);
 }
@@ -221,10 +221,11 @@ void	expander(t_simple_cmd *curr_simple_cmd)
 	expanded_str = malloc((i + 1) * sizeof(char*));
 	if (!expanded_str)
 		exit(1);
-    expanded_str[i] = NULL;
+	expanded_str[i] = NULL;
 	i = -1;
 	while (curr_simple_cmd->str[++i])
 		expanded_str[i] = handle_dollar(curr_simple_cmd->str[i]);
+	printf("expanded_str: %s\n", expanded_str[1]);
 	free_arr(curr_simple_cmd->str);
 	curr_simple_cmd->str = expanded_str;
 }

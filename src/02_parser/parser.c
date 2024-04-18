@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/17 20:14:26 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/17 20:34:51 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,7 +335,7 @@ int	(*builtin_arr(char *str))(t_main_tools *tools, t_simple_cmd *cmd)
 	int			i;
 	static void *builtins[7][2] = {
 		{"echo", msh_echo}, {"cd", msh_cd},
-		{"pwd", msh_pwd}, {"export", msh_echo},
+		{"pwd", msh_pwd}, {"export", msh_export},
 		{"unset", msh_unset}, {"env", msh_env},
 		{"exit", msh_exit}};
 
