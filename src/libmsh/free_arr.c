@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:27:09 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/12 10:07:26 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/19 19:48:04 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,8 @@ void	free_arr(char **split_arr)
 {
 	int	i;
 
-	i = 0;
-	while (split_arr[i])
-	{
+	i = -1;
+	while (split_arr[++i])
 		free(split_arr[i]);
-		i++;
-	}
 	free(split_arr);
 }

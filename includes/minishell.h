@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/18 14:12:29 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/19 19:18:27 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ extern int		g_signal;
 # include <stddef.h>
 # include <stdio.h>	
 # include <stdlib.h>
+# include <sys/wait.h>
+
 /*
 # include <unistd.h>			// write
 # include <complex.h>			// For complex numbers
@@ -51,6 +53,7 @@ extern int		g_signal;
 # include <stdio.h>				// printf, perror
 # include <stdlib.h>			// malloc, free, exit, getenv
 # include <stdlib.h>			// For EXIT_FAILURE and EXIT_SUCCESS constants
+# include <sys/wait.h>			// waitpid
 */
 
 /******************* STRUCTS *********************/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/17 22:27:57 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/19 19:14:32 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 	For every child process, it will wait for the process to finish and then
 	check the exit status of the process.
 */
-int wait_pids(t_main_tools *tools)
+int	wait_pids(t_main_tools *tools)
 {
 	int	i;
 	int	status;

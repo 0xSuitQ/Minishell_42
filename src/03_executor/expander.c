@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/18 15:35:44 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/19 20:46:58 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,26 @@ char	*clear_env_variable(char *str)
 		i++;
 	tmp = ft_substr(str, 0, i);
 	return (tmp);
+}
+
+/**
+	@brief:
+	- ft_str_replace function replaces the string with the new string
+	- it allocates memory for the new string, copies the new string into it
+	and frees the old string
+*/
+void	ft_str_replace(char **str, char *result)
+{
+	char *new_str;
+
+	if (str == NULL || *str == NULL || result == NULL)
+		return ;
+	new_str = (char *)malloc(sizeof(char) * ft_strlen(result) + 1);
+	if (new_str == NULL)
+		return ;
+	ft_strcpy(new_str, result);
+	free(*str);
+	*str = new_str;
 }
 
 /*
@@ -58,11 +78,9 @@ int	expand_dollar(char *str)
 	env_expanded = getenv(pure);
 	if (env_expanded)
 	{
-		result = ft_strdup(env_expanded);
-		result = ft_strjoin(result, after_pure);
-		ft_strcpy(str, result);
-		printf("str: %s\n", str);
-		free(result);
+		result = ft_strjoin(env_expanded, after_pure);
+		ft_str_replace(&str, result);
+		// free(result);
 	}
 	else
 		i++;
@@ -70,11 +88,14 @@ int	expand_dollar(char *str)
 	{
 		// result = ft_itoa(g_exit_status);
 		result = ft_strjoin(result, after_pure);
-		ft_strcpy(str, result);
-		free(result);
+		ft_str_replace(&str, result);
+		// free(result);
 	}
+	printf("1 - str: %s\n", str);
 	free(after_pure);
+	printf("2 - str: %s\n", str);
 	free(pure);
+	printf("3 - str: %s\n", str);
 	return (i);
 }
 
@@ -172,23 +193,26 @@ int	quotes_classifier(char *str)
 char	*handle_dollar(char *str)
 {
 	int		i;
-	char	*tmp;
 
 	i = -1;
-	tmp = ft_strdup(str);
-	while (tmp[++i])
+	while (str[++i])
 	{
-		if (quotes_classifier(&tmp[i]) == SINGLE_Q)
+		printf("str[i]: %c\n", str[i]);
+		if (quotes_classifier(&str[i]) == SINGLE_Q)
 		{
-			remove_quotes(&tmp[i], '\'');
+			remove_quotes(&str[i], '\'');
 			break;
 		}
-		remove_quotes(&tmp[i], '\"');
-		i += handle_backslash(&tmp[i]);
-		while (tmp[i] == '$')
-			i += expand_dollar(&tmp[i]);
+		remove_quotes(&str[i], '\"');
+		i += handle_backslash(&str[i]);
+		while (str[i] == '$')
+		{
+			printf("1 str[i]: %s\n", str);
+			i += expand_dollar(&str[i]);
+			printf("2 str[i]: %s\n", str);
+		}
 	}
-	return (tmp);
+	return (str);
 }
 
 /**
@@ -214,18 +238,24 @@ void	expander(t_simple_cmd *curr_simple_cmd)
 {
 	int		i;
 	char	**expanded_str;
+	char	**tmp;
 
 	i = 0;
-	while (curr_simple_cmd->str[i])
+	tmp = curr_simple_cmd->str;
+	while (tmp[i])
 		i++;
 	expanded_str = malloc((i + 1) * sizeof(char*));
 	if (!expanded_str)
 		exit(1);
 	expanded_str[i] = NULL;
 	i = -1;
-	while (curr_simple_cmd->str[++i])
-		expanded_str[i] = handle_dollar(curr_simple_cmd->str[i]);
-	printf("expanded_str: %s\n", expanded_str[1]);
-	free_arr(curr_simple_cmd->str);
+	while (tmp[++i])
+	{
+		printf("--------------------\n");
+		printf("%i - tmp: %s\n", i, tmp[i]);
+		expanded_str[i] = handle_dollar(tmp[i]);
+		printf("%i - expanded_str: %s\n", i, tmp[i]);
+	}
+	// free_arr(curr_simple_cmd->str);
 	curr_simple_cmd->str = expanded_str;
 }
