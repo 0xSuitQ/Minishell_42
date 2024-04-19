@@ -25,11 +25,14 @@ int	receive_heredoc(int fd[2], t_simple_cmd *cmd)
 
 	if (cmd->heredoc_filename)
 	{
-		close(fd[0]);
+		if (fd)
+			close(fd[0]);
 		fd_in = open(cmd->heredoc_filename, O_RDONLY);
 	}
-	else
+	else if (fd != NULL)
 		fd_in = fd[0];
+	else
+		fd_in = STDIN_FILENO;
 	return (fd_in);
 }
 
@@ -250,6 +253,7 @@ void	execute_no_pipes(t_main_tools *tools)
 {
 	t_simple_cmd	*cmd;
 	int				builtin_result;
+	int				fd_in;
 
 	cmd = tools->simple_cmd_list;
 	expander(cmd);
@@ -262,9 +266,13 @@ void	execute_no_pipes(t_main_tools *tools)
 	}
 	else
 	{
+		fd_in = receive_heredoc(NULL, cmd);
 		tools->pid[0] = fork();
 		if (tools->pid[0] == 0)
+		{
+			dup2(fd_in, STDIN_FILENO);
 			prepare_exec(tools, cmd);
+		}
 		wait_pids(tools);
 	}
 }
