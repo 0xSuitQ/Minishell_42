@@ -72,7 +72,7 @@ int	msh_cd(t_main_tools *tools, t_simple_cmd *cmd)
 	char	*error_msg;
 
 	error_msg = "cd: no such file or directory: ";
-	tools->old_pwd = tools->pwd;
+	ft_strcpy(tools->old_pwd, tools->pwd);
 	if (cmd->str[1] == NULL)
 		handle_empty_cd(tools, cmd);
 	else if (cmd->str[1][0] == '~')

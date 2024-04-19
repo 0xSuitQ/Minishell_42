@@ -45,6 +45,8 @@ void	set_pwd(t_main_tools *tools)
 	char	*pwd;
 	size_t	buf_size;
 
+	if (tools->pwd)
+		free(tools->pwd);
 	buf_size = 1024;
 	pwd = malloc(sizeof(char) * buf_size);
 	if (!pwd)
@@ -94,10 +96,10 @@ int	minishell_loop(t_main_tools *tools)
 	// 	tools->simple_cmd_list = tools->simple_cmd_list->next;
 	// }
 	executor(tools);
-	if (tools->pid)
-	{
-		free(tools->pid);
-	}
+	// if (tools->pid)
+	// {
+	// 	free(tools->pid);
+	// }
 	tools->finished = 1;
 	/*
 	while(tools->simple_cmd_list)
@@ -131,7 +133,9 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1 || argv[1] || !envp[0])
 		ft_putstr_fd_exit("Error: don't put any arguments", STDOUT, 0);
 	copy_env(&tools, envp);
+	tools.pwd = NULL;
 	set_pwd(&tools);
+	tools.old_pwd = ft_strdup(tools.pwd);
 	tools.finished = 0;
 	tools_to_default_setting(&tools);
 	minishell_loop(&tools);

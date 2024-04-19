@@ -45,36 +45,6 @@ void	ft_lexeradd_back(t_lexer **lst, t_lexer *new)
 	new->prev = tmp;
 }
 
-int	handle_quotes(int i, char *str, char del)
-{
-	int	j;
-
-	j = 0;
-	if (str[i + j] == del)
-	{
-		j++;
-		while (str[i + j] != del && str[i + j])
-			j++;
-		j++;
-	}
-	return (j);
-}
-
-int	is_whitespace(char c)
-{
-	return (c == ' ' || (c > 8 && c < 14));
-}
-
-int	skip_spaces(char *str, int i)
-{
-	int	j;
-
-	j = 0;
-	while (is_whitespace(str[i + j]))
-		j++;
-	return (j);
-}
-
 int	add_node(char *str, t_token_list token, t_lexer **lexer_list)
 {
 	t_lexer	*node;
@@ -84,25 +54,6 @@ int	add_node(char *str, t_token_list token, t_lexer **lexer_list)
 		return (0);
 	ft_lexeradd_back(lexer_list, node);
 	return (1);
-}
-
-t_token_list	check_token(int c)
-{
-	static int	token_arr[3][2] = {
-	{'|', PIPE},
-	{'>', GREAT},
-	{'<', LESS},
-	};
-	int			i;
-
-	i = 0;
-	while (i < 3)
-	{
-		if (token_arr[i][0] == c)
-			return (token_arr[i][1]);
-		i++;
-	}
-	return (EXIT_SUCCESS);
 }
 
 int	read_words(int i, char *str, t_lexer **lexer_list)
@@ -173,8 +124,8 @@ int	lexer(t_main_tools *tools)
 		else
 			j = read_words(i, tools->args, &tools->lexer_list);
 		if (j < 0)
-			return (EXIT_SUCCESS);
+			return (EXIT_FAILURE);
 		i += j;
 	}
-	return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

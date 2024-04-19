@@ -113,18 +113,27 @@ typedef struct s_main_tools
 	char			*args;
 	char			*pwd;
 	char			*old_pwd;
-	int				pipes;
 	int				*pid;
+	int				pipes;
 	int				finished;
+	int				error_type;
 	int				exit_status;
 }	t_main_tools;
 
 /******************* PROTOTYPES *******************/
+//	MAIN
+int	minishell_loop(t_main_tools *tools);
+
 //	LEXER
 int				lexer(t_main_tools *tools);
+t_token_list	check_token(int c);
+int				handle_quotes(int i, char *str, char del);
+int				is_whitespace(char c);
+int				skip_spaces(char *str, int i);
 
 //	PARSER
 void			parser(t_main_tools *tools);
+void			unexpected_token_officer(t_lexer *head, t_main_tools *tools);
 
 //	HEREDOC
 int				heredoc(t_main_tools *tools, t_simple_cmd *cmd);
@@ -191,6 +200,9 @@ int				msh_env(t_main_tools *tools, t_simple_cmd *cmd);
 int				msh_exit(t_main_tools *tools, t_simple_cmd *s_cmd);
 int				msh_unset(t_main_tools *tools, t_simple_cmd *cmd);
 int				msh_export(t_main_tools *tools, t_simple_cmd *cmd);
+
+// ERROR_MANAGEMENT
+void			error_police(int err_code, t_main_tools *tools);
 
 // SIGNALS
 // void	handle_sigint(int signum);

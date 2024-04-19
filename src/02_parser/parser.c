@@ -16,41 +16,6 @@ void tester(t_main_tools *tools, int signpost);
 
 /**
 	@brief:
-	token_to_str function returns the string representation of the token.
-	It uses 2D array of strings and token_list enum to find the right string
-	and macro to find the right token. If !token, it returns "newline".
-*/
-char	*token_to_str(t_lexer *token)
-{
-	int						i;
-	static t_token_matrix	tokens[] = {
-		{"|", PIPE},
-		{"<", LESS},
-		{">", GREAT},
-		{"<<", LESS_LESS},
-		{">>", GREAT_GREAT}};
-
-	i = -1;
-	while (++i < TOKEN_NUM)
-	if (token && token->token == tokens[i].type)
-		return (tokens[i].str_sym);
-	return ("newline");
-}
-
-/*
-	@brief:
-	unexpected_token_officer is a member of the ERROR_POLICE. It prints an
-	error message with the unexpected token and exits the program.
-*/
-void	unexpected_token_officer(t_lexer *head)
-{
-	ft_printf("syntax error near unexpected token `%s'",
-		token_to_str(head)); // TODO
-	ft_putstr_fd_exit("\n", STDOUT, 0);
-}
-
-/**
-	@brief:
 	append_redirection function appends the redirection to the lexer_list.
 */
 t_lexer	*append_redirection(t_simple_cmd **cmd, t_lexer *arg)
@@ -82,7 +47,7 @@ t_lexer	*append_redirection(t_simple_cmd **cmd, t_lexer *arg)
 	program. If the redirection is a '<' and the file does not exist, it
 	Print&Error. Otherwise, it appends the redirection to the lexer_list.
 */
-int	validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer)
+int	validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer, t_main_tools *tools)
 {
 	t_lexer	*the_arg;
 	t_lexer	*next_arg;
@@ -94,7 +59,7 @@ int	validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer)
 
 	if ((!next_arg || next_arg->token != 0) && the_arg)
 	{
-		unexpected_token_officer(next_arg);
+		unexpected_token_officer(next_arg, tools);
 		return (EXIT_FAILURE);
 	}
 	if (the_arg->token == LESS)
@@ -126,7 +91,7 @@ int	validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer)
 	if the token is anything else (word), it moves to the next node of the
 	list of lexer_list
 */
-void	redirection_pipe_word(t_simple_cmd **cmd, t_lexer *lexer_list)
+void	redirection_pipe_word(t_simple_cmd **cmd, t_lexer *lexer_list, t_main_tools *tools)
 {
 	t_lexer *tmp;
 
@@ -134,11 +99,11 @@ void	redirection_pipe_word(t_simple_cmd **cmd, t_lexer *lexer_list)
 	while (tmp)
 	{
 		if (tmp->token && tmp->token != PIPE)
-			validate_redirection(cmd, &tmp);
+			validate_redirection(cmd, &tmp, tools);
 		if (tmp->token == PIPE)
 		{
 			if (!tmp->next || tmp->next->token == PIPE)
-				unexpected_token_officer(tmp);
+				unexpected_token_officer(tmp, tools);
 			*cmd = (*cmd)->next;
 		}
 		tmp = tmp->next;
@@ -265,12 +230,12 @@ void	init_simple_cmds(t_simple_cmd **cmd_list, t_lexer *lexer_list)
 	first_node_not_pipe function checks if the first node is a pipe. If it
 	is, it prints an error message and exits the program.
 */
-void	first_node_not_pipe(t_lexer *lex_head)
+void	first_node_not_pipe(t_lexer *lex_head, t_main_tools *tools)
 {
 	if (!lex_head)
-		return;
+		return ;
 	if (lex_head->token == PIPE)
-		unexpected_token_officer(lex_head);
+		unexpected_token_officer(lex_head, tools);
 }
 
 /**
@@ -362,7 +327,7 @@ void	fill_builtin(t_simple_cmd **cmd)
 	t_simple_cmd *tmp;
 
 	tmp = *cmd;
-	while (tmp) 
+	while (tmp)
 	{
 		tmp->builtin = builtin_arr(tmp->str[0]);
 		tmp = tmp->next;
@@ -382,10 +347,10 @@ void	parser(t_main_tools *tools)
 
 	lexer_list = tools->lexer_list;
 	s_cmd_list = tools->simple_cmd_list;
-	first_node_not_pipe(lexer_list);
+	first_node_not_pipe(lexer_list, tools);
 	init_simple_cmds(&s_cmd_list, lexer_list);
 	tools->simple_cmd_list = s_cmd_list;
-	redirection_pipe_word(&s_cmd_list, lexer_list);
+	redirection_pipe_word(&s_cmd_list, lexer_list, tools);
 	s_cmd_list = tools->simple_cmd_list;
 	check_cmds(&s_cmd_list, lexer_list);
 	s_cmd_list = tools->simple_cmd_list;
