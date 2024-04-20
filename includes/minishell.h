@@ -205,7 +205,8 @@ int				msh_unset(t_main_tools *tools, t_simple_cmd *cmd);
 int				msh_export(t_main_tools *tools, t_simple_cmd *cmd);
 
 // ERROR_MANAGEMENT
-void			error_police(int err_code, t_main_tools *tools);
+int			error_police(int err_code, t_main_tools *tools);
+void		clear_all(t_main_tools *tools);
 
 // SIGNALS
 // void	handle_sigint(int signum);

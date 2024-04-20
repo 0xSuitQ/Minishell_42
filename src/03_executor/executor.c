@@ -60,6 +60,7 @@ int	locate_and_execute_command(t_simple_cmd *cmd, t_main_tools *tools)
 	}
 	ft_putstr_fd(cmd->str[0], STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	error_police(2, tools);
 	return (EXIT_FAILURE);
 }
 
@@ -132,10 +133,16 @@ void	prepare_exec(t_main_tools *tools, t_simple_cmd *cmd)
 void	pipe_dup(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 {
 	if (cmd->prev && dup2(fd_in, STDIN_FILENO) < 0)
-		write(2, "OOPS\n", 5); //ft_error(4, tools);
+		{
+			ft_putstr_fd("Failed to create pipe\n", STDERR_FILENO);
+			error_police(2, tools);
+		}
 	close(fd[0]);
 	if (cmd->next && dup2(fd[1], STDOUT_FILENO) < 0)
-		write(2, "OOPS\n", 5);//ft_error(4, tools);
+		{
+			ft_putstr_fd("Failed to create pipe\n", STDERR_FILENO);
+			error_police(2, tools);
+		}
 	close(fd[1]);
 	if (cmd->prev)
 		close(fd_in);
@@ -296,14 +303,20 @@ int	executor(t_main_tools *tools)
 	{
 		tools->pid = malloc(1 * sizeof(int));
 		if (!tools->pid)
-			return (EXIT_FAILURE); // TODO memory error
+		{
+			ft_putstr_fd("memory error: unable to assign memory\n", STDERR_FILENO);
+			error_police(2, tools);
+		}
 		execute_no_pipes(tools);
 	}
 	else
 	{
 		tools->pid = malloc((tools->pipes + 2) * sizeof(int));
 		if (!tools->pid)
-			return (EXIT_FAILURE); // TODO memory error 
+		{
+			ft_putstr_fd("memory error: unable to assign memory\n", STDERR_FILENO);
+			error_police(2, tools);
+		} 
 		tools->pid[tools->pipes + 2] = 0;
 		execute_with_pipes(tools);
 	}

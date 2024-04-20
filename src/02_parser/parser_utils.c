@@ -31,7 +31,7 @@ char	*token_to_str(t_lexer *token)
 void	unexpected_token_officer(t_lexer *head, t_main_tools *tools)
 {
 	ft_printf("syntax error near unexpected token `%s'",
-		token_to_str(head)); // TODO
+		token_to_str(head));
 	ft_putstr_fd("\n", STDOUT);
-	error_police(2, tools); // code 2 to continue
+	error_police(2, tools);
 }
