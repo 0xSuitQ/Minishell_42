@@ -101,15 +101,8 @@ int	minishell_loop(t_main_tools *tools)
 	// 	free(tools->pid);
 	// }
 	tools->finished = 1;
-	/*
-	while(tools->simple_cmd_list)
-	{
-		if (tools->simple_cmd_list->builtin)
-			tools->simple_cmd_list->builtin(tools, tools->simple_cmd_list);
-		tools->simple_cmd_list = tools->simple_cmd_list->next;
-	} */
-
-	tools_to_default_setting(tools);
+	clear_for_continue(tools);
+	// tools_to_default_setting(tools);
 	return (0);
 }
 
