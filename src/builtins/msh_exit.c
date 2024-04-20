@@ -26,6 +26,7 @@ void	free_data(t_main_tools *tools)
 	if (tools->pid)
 		free(tools->pid);
 	set_to_null(tools);
+	// clear_all(tools);
 }
 
 /**

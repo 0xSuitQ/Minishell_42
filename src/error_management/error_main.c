@@ -57,7 +57,7 @@ void	clear_simple_cmd(t_main_tools *tools)
 	// free(tools->simple_cmd_list);
 }
 
-void	clear_all(t_main_tools *tools, int exit_status)
+void	clear_all(t_main_tools *tools)
 {
 	if (tools->args)
 		free(tools->args);
@@ -75,7 +75,7 @@ void	clear_all(t_main_tools *tools, int exit_status)
 		free_envp(tools->envp_cpy, tools->env_2d);
 	if (tools->paths)
 		free_arr(tools->paths);
-	exit(exit_status);
+	tools_to_default_setting(tools);
 }
 
 void 	clear_for_continue(t_main_tools *tools)
@@ -91,10 +91,19 @@ void 	clear_for_continue(t_main_tools *tools)
 	tools_to_default_setting(tools);
 }
 
-void	error_police(int err_code, t_main_tools *tools)
+int	error_police(int err_code, t_main_tools *tools)
 {
 	if (err_code == 1)
-		clear_all(tools, tools->exit_status);
+	{
+		clear_all(tools);
+		exit (tools->exit_status);
+	}
 	else if (err_code == 2)
 		clear_for_continue(tools);
+	if (err_code == 3)
+	{
+		clear_all(tools);
+		exit (EXIT_SUCCESS);
+	}
+	return (EXIT_FAILURE);
 }

@@ -67,9 +67,9 @@ int	validate_redirection(t_simple_cmd **cmd, t_lexer **current_lexer, t_main_too
 		if (access(next_arg->sub_str, F_OK) == -1)
 		{
 			ft_putstr_fd("no such file or directory:", STDERR_FILENO);
-			ft_putstr_fd(next_arg->sub_str, STDERR_FILENO); // TODO
+			ft_putstr_fd(next_arg->sub_str, STDERR_FILENO);
 			ft_putstr_fd("\n", STDERR_FILENO);
-			return (EXIT_FAILURE); // Exit on error for non-existing file
+			error_police(2, tools);
 		}
 	}
 	the_arg = append_redirection(cmd, the_arg);
@@ -180,7 +180,7 @@ void	connect_node_to_list(t_simple_cmd **list, t_simple_cmd *new_node)
 	structures. This list is used to store the simple commands that are
 	separeted by pipes.
 */
-void	init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list)
+void	init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list, t_main_tools *tools)
 {
 	t_simple_cmd	*new_node;
 
@@ -191,8 +191,9 @@ void	init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list)
 	new_node->str = malloc((new_node->arg_count + 1) * sizeof(char *));
 	if (!new_node->str)
 	{
-		free(new_node); // TODO
-		return;
+		free(new_node);
+		ft_putstr_fd("memory error: unable to assign memory\n", STDERR_FILENO);
+		error_police(2, tools);
 	}
 	if (*cmd_list == NULL)
 		init_first_scmd(cmd_list, new_node);
@@ -210,17 +211,17 @@ void	init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list)
 	It goes through the lexer_list and calls the init_one_simple_cmd
 	function every time it encounters a pipe.
 */
-void	init_simple_cmds(t_simple_cmd **cmd_list, t_lexer *lexer_list)
+void	init_simple_cmds(t_simple_cmd **cmd_list, t_lexer *lexer_list, t_main_tools *tools)
 {
 	t_lexer	*tmp;
 
 	tmp = lexer_list;
 	if (tmp)
-		init_one_simple_cmd(cmd_list, tmp);
+		init_one_simple_cmd(cmd_list, tmp, tools);
 	while (tmp)
 	{
 		if (tmp->token == PIPE && tmp->next)
-			init_one_simple_cmd(cmd_list, tmp->next);
+			init_one_simple_cmd(cmd_list, tmp->next, tools);
 		tmp = tmp->next;
 	}
 }
@@ -348,7 +349,7 @@ void	parser(t_main_tools *tools)
 	lexer_list = tools->lexer_list;
 	s_cmd_list = tools->simple_cmd_list;
 	first_node_not_pipe(lexer_list, tools);
-	init_simple_cmds(&s_cmd_list, lexer_list);
+	init_simple_cmds(&s_cmd_list, lexer_list, tools);
 	tools->simple_cmd_list = s_cmd_list;
 	redirection_pipe_word(&s_cmd_list, lexer_list, tools);
 	s_cmd_list = tools->simple_cmd_list;
