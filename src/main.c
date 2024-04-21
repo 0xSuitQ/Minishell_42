@@ -50,14 +50,20 @@ void	set_pwd(t_main_tools *tools)
 	buf_size = 1024;
 	pwd = malloc(sizeof(char) * buf_size);
 	if (!pwd)
-		ft_putstr_fd_exit("Error: malloc failed", STDERR, 1);
+	{
+		ft_putstr_fd("memory error: unable to assign memory\n", STDERR_FILENO);
+		error_police(2, tools);
+	}
 	while(getcwd(pwd, buf_size) == NULL)
 	{
 		free(pwd);
 		buf_size *= 2;
 		pwd = malloc(sizeof(char) * buf_size);
 		if (!pwd)
-			ft_putstr_fd_exit("Error: malloc failed", STDERR, 1);
+		{
+			ft_putstr_fd("memory error: unable to assign memory\n", STDERR_FILENO);
+			error_police(2, tools);
+		}
 	}
 	tools->pwd = pwd;
 }
@@ -83,23 +89,12 @@ int	minishell_loop(t_main_tools *tools)
 	if (ft_strlen(tools->args) == 0)
 	{
 		free(tools->args);
-		return minishell_loop(tools);
+		return (minishell_loop(tools));
 	}
+	add_history(tools->args);
 	lexer(tools);
-	//tester(tools, LEXER_LIST); // ZAKOMENTOVAT
 	parser(tools);
-	//tester(tools, CMD_LIST); // ZAKOMENTOVAT
-	// while(tools->simple_cmd_list)
-	// {
-	// 	heredoc(tools, tools->simple_cmd_list);
-	// 	printf("simple_cmd_list->heredoc_filename: %s\n", tools->simple_cmd_list->heredoc_filename);
-	// 	tools->simple_cmd_list = tools->simple_cmd_list->next;
-	// }
 	executor(tools);
-	// if (tools->pid)
-	// {
-	// 	free(tools->pid);
-	// }
 	tools->finished = 1;
 	clear_for_continue(tools);
 	// tools_to_default_setting(tools);

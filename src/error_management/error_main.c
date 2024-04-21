@@ -46,10 +46,10 @@ void	clear_simple_cmd(t_main_tools *tools)
 	{
 		next = current->next;
 		free_arr(current->str);
+		if (current->lexer_list && !current->heredoc_filename)
+			clear_lexer(current->lexer_list);
 		if (current->heredoc_filename)
 			free(current->heredoc_filename);
-		if (current->lexer_list)
-			clear_lexer(current->lexer_list);
 		free(current);
 		current = next;
 	}
@@ -75,7 +75,7 @@ void	clear_all(t_main_tools *tools)
 		free_envp(tools->envp_cpy, tools->env_2d);
 	if (tools->paths)
 		free_arr(tools->paths);
-	tools_to_default_setting(tools);
+	//tools_to_default_setting(tools);
 }
 
 void 	clear_for_continue(t_main_tools *tools)
