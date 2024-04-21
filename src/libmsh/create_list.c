@@ -41,7 +41,7 @@ void	create_list(t_lexer **list, int index, t_token_list tok, char *sub_str)
 		new_node->prev = get_last_node(*list);
 		new_node->prev->next = new_node;
 	}
-	new_node->sub_str = ft_strdup(sub_str); // TODO: mind to freeing it
+	new_node->sub_str = ft_strdup(sub_str);
 	new_node->index = index;
 	new_node->token = tok;
 	new_node->flag = VISIBLE;

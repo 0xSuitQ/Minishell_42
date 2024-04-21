@@ -80,28 +80,29 @@ void	create_heredoc(t_lexer *lexer_list, char *filename)
 	}
 	free(line);
 	close(fd);
+
 }
 
 int	heredoc(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	int				fd;
-	t_lexer			*lexer_list;
+	t_lexer			*tmp;
 	t_simple_cmd	*simple_cmd_list;
 
 	(void)tools;
 	(void)fd;
 	simple_cmd_list = cmd;
-	lexer_list = simple_cmd_list->lexer_list;
-	while (lexer_list)
+	tmp = simple_cmd_list->lexer_list;
+	while (tmp)
 	{
-		if (lexer_list->token == LESS_LESS)
+		if (tmp->token == LESS_LESS)
 		{
 			if (cmd->heredoc_filename)
 				free(cmd->heredoc_filename);
 			cmd->heredoc_filename = gen_filename();
-			create_heredoc(lexer_list, cmd->heredoc_filename);
+			create_heredoc(tmp, cmd->heredoc_filename);
 		}
-		lexer_list = lexer_list->next;
+		tmp = tmp->next;
 	}
 	return (EXIT_SUCCESS);
 }

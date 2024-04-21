@@ -60,7 +60,6 @@ int	locate_and_execute_command(t_simple_cmd *cmd, t_main_tools *tools)
 	}
 	ft_putstr_fd(cmd->str[0], STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
-	error_police(2, tools);
 	return (EXIT_FAILURE);
 }
 
@@ -116,10 +115,14 @@ void	prepare_exec(t_main_tools *tools, t_simple_cmd *cmd)
 	if (cmd->builtin)
 	{
 		command_result = cmd->builtin(tools, cmd);
+		clear_all(tools);
 		exit(command_result);
 	}
 	if (cmd->str[0][0] != '\0')
+	{
 		command_result = locate_and_execute_command(cmd, tools);
+		clear_all(tools);
+	}
 	exit(command_result);
 }
 
