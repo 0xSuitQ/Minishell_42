@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/19 20:46:58 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/21 15:40:27 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,22 @@ int	quotes_classifier(char *str)
 
 /**
 	@brief:
+	env_not_valid function checks if the env-variable is valid
+	- if the env-variable is not valid, it returns 1
+	- if the env-variable is valid, it returns 0
+*/
+int	env_not_valid(char *str)
+{
+	char	*pure;
+
+	pure = clear_env_variable(&str[1]);
+	if (!getenv(pure))
+		return (TRUE);
+	return (FALSE);
+}
+
+/**
+	@brief:
 	handle_dollar function handles the dollar sign in the string
 	it goes through the string and if there is a $, it will be expanded
 */
@@ -207,6 +223,8 @@ char	*handle_dollar(char *str)
 		i += handle_backslash(&str[i]);
 		while (str[i] == '$')
 		{
+			if (env_not_valid(&str[i]))
+				i++;
 			printf("1 str[i]: %s\n", str);
 			i += expand_dollar(&str[i]);
 			printf("2 str[i]: %s\n", str);
@@ -256,6 +274,6 @@ void	expander(t_simple_cmd *curr_simple_cmd)
 		expanded_str[i] = handle_dollar(tmp[i]);
 		printf("%i - expanded_str: %s\n", i, tmp[i]);
 	}
-	// free_arr(curr_simple_cmd->str);
+	free_arr(curr_simple_cmd->str);
 	curr_simple_cmd->str = expanded_str;
 }
