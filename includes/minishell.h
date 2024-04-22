@@ -188,6 +188,7 @@ void			ft_putstr_fd_exit(char *message, int fd_num, int exit_num);
 int				substring_counter(char *str);
 char			*ft_strtrim(char const *s1, char const *set);
 void			set_pwd(t_main_tools *tools);
+char			*ft_strstr(char *str, char *to_find);
 
 // ENV_MANAGEMENT
 void			copy_env(t_main_tools *tools, char **envp);

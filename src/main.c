@@ -68,6 +68,17 @@ void	set_pwd(t_main_tools *tools)
 	tools->pwd = pwd;
 }
 
+void	validate_history(char *args)
+{
+	int		flag;
+
+	flag = 0;
+	if (ft_strstr(args, "<<") != NULL)
+		flag = 1;
+	if (flag == 0)
+		add_history(args);
+}
+
 /**
 	@brief:
 	minishell_loop function is the main loop of the minishell program
@@ -91,7 +102,7 @@ int	minishell_loop(t_main_tools *tools)
 		free(tools->args);
 		return (minishell_loop(tools));
 	}
-	add_history(tools->args);
+	validate_history(tools->args);
 	lexer(tools);
 	parser(tools);
 	executor(tools);
