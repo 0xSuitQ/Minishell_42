@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/19 19:18:27 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/23 20:08:06 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ typedef struct s_main_tools
 {
 	t_lexer			*lexer_list;
 	t_simple_cmd	*simple_cmd_list;
-	t_env			*envp_cpy;
-	char			**env_2d;
+	char			**envp_cpy;
+	// char			**env_2d;
 	char			**paths;
 	char			*args;
 	char			*pwd;
@@ -125,7 +125,7 @@ typedef struct s_main_tools
 
 /******************* PROTOTYPES *******************/
 //	MAIN
-int	minishell_loop(t_main_tools *tools);
+int				minishell_loop(t_main_tools *tools);
 
 //	LEXER
 int				lexer(t_main_tools *tools);
@@ -146,9 +146,17 @@ char			*delete_quotes(char *str, char c);
 int				executor(t_main_tools *tools);
 int				read_from(t_simple_cmd *cmd, t_lexer *tmp, t_token_list redirection);
 int				write_to(t_lexer *tmp, t_token_list redirection);
+int				there_is_dollar_in_list(char **list);
 
 //	EXPANDER
+void			remove_quotes(char *str, char quote_type);
 void			expander(t_simple_cmd *curr_simple_cmd);
+int				num_of_dollars_in_list(char **str);
+int				there_is_dollar_in_str(char *str);
+char			*clear_env_variable(char *str);
+int				quotes_classifier(char *str);
+int				env_not_valid(char *str);
+int				next_dollar(char *str);
 
 //	LIBFT
 void			*ft_calloc(size_t nmemb, size_t size);
@@ -166,6 +174,7 @@ char			*ft_strchr(const char *str, int character);
 char			*ft_strrchr(const char *str, int character);
 int				ft_atoi(const char *nptr);
 int				ft_isdigit(int c);
+void			ft_putendl_fd(char *s, int fd);
 
 // PRINTF
 int				ft_printf(const char *format, ...);
@@ -189,26 +198,31 @@ int				substring_counter(char *str);
 char			*ft_strtrim(char const *s1, char const *set);
 void			set_pwd(t_main_tools *tools);
 char			*ft_strstr(char *str, char *to_find);
+void			ft_str_replace(char **str, char *result);
 
 // ENV_MANAGEMENT
 void			copy_env(t_main_tools *tools, char **envp);
 void			change_env(t_main_tools *tools, char *name, char *value);
 void			convert_to_2d(t_main_tools *tools);
 int				get_paths(t_main_tools *tools);
+char			**ft_arrdup(char **src);
+void			change_path(t_main_tools *tools);
+int				parse_envp(t_main_tools *tools);
+
 
 // BUILTINS
 int				msh_echo(t_main_tools *tools, t_simple_cmd *cmd);
 int				msh_pwd(t_main_tools *tools, t_simple_cmd *cmd);
 int				msh_cd(t_main_tools *tools, t_simple_cmd *cmd);
 int				msh_env(t_main_tools *tools, t_simple_cmd *cmd);
-int				msh_exit(t_main_tools *tools, t_simple_cmd *s_cmd);
+int				msh_exit(t_main_tools *tools, t_simple_cmd *cmd);
 int				msh_unset(t_main_tools *tools, t_simple_cmd *cmd);
 int				msh_export(t_main_tools *tools, t_simple_cmd *cmd);
 
 // ERROR_MANAGEMENT
-int			error_police(int err_code, t_main_tools *tools);
-void		clear_all(t_main_tools *tools);
-void		clear_for_continue(t_main_tools *tools);
+int				error_police(int err_code, t_main_tools *tools);
+void			clear_for_continue(t_main_tools *tools);
+void			clear_all(t_main_tools *tools);
 
 // SIGNALS
 // void	handle_sigint(int signum);

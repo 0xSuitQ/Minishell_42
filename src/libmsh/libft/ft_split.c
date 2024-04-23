@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:15:34 by nandroso          #+#    #+#             */
-/*   Updated: 2024/03/07 14:16:25 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:00:50 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static	char	*str_sepdup(char const *s, char c)
 		i++;
 	}
 	word[i] = '\0';
-	return (word);
+	return (word);	
 }
 
 char	**ft_split(char const *s, char c)

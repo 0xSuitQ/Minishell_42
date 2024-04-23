@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_pwd.c                                          :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/05 10:11:03 by nandroso          #+#    #+#             */
-/*   Updated: 2024/04/23 18:19:21 by nandroso         ###   ########.fr       */
+/*   Created: 2024/02/07 17:12:09 by psimcak           #+#    #+#             */
+/*   Updated: 2024/04/23 18:04:53 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
-int	msh_pwd(t_main_tools *tools, t_simple_cmd *simple_cmd)
+void	ft_putendl_fd(char *s, int fd)
 {
-	(void) simple_cmd;
-	ft_putendl_fd(tools->pwd, STDOUT_FILENO);
-	return (EXIT_SUCCESS);
+	if (!s)
+		return ;
+	if (fd < 0)
+		return ;
+	ft_putstr_fd(s, fd);
+	write(fd, "\n", 1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/19 19:14:32 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/23 21:36:02 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,13 @@ int	locate_and_execute_command(t_simple_cmd *cmd, t_main_tools *tools)
 	int		i;
 
 	i = 0;
+	if (!access(cmd->str[0], F_OK))
+		execve(cmd->str[0], cmd->str, tools->envp_cpy);
 	while (tools->paths[i])
 	{
 		path = ft_strjoin(tools->paths[i], cmd->str[0]);
 		if (access(path, F_OK) == 0)
-			execve(path, cmd->str, tools->env_2d);
+			execve(path, cmd->str, tools->envp_cpy);
 		free(path);
 		i++;
 	}
@@ -107,22 +109,19 @@ int	setup_fd(t_simple_cmd *cmd)
 */
 void	prepare_exec(t_main_tools *tools, t_simple_cmd *cmd)
 {
-	int command_result = 0;
-	
+	int	command_result;
+
+	command_result = 0;
 	if (cmd->lexer_list && cmd->lexer_list->token)
 		if (setup_fd(cmd))
 			exit(1);
 	if (cmd->builtin)
 	{
 		command_result = cmd->builtin(tools, cmd);
-		clear_all(tools);
 		exit(command_result);
 	}
-	if (cmd->str[0][0] != '\0')
-	{
+	if (cmd->str[0] && cmd->str[0][0] != '\0')
 		command_result = locate_and_execute_command(cmd, tools);
-		clear_all(tools);
-	}
 	exit(command_result);
 }
 
@@ -136,16 +135,16 @@ void	prepare_exec(t_main_tools *tools, t_simple_cmd *cmd)
 void	pipe_dup(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 {
 	if (cmd->prev && dup2(fd_in, STDIN_FILENO) < 0)
-		{
-			ft_putstr_fd("Failed to create pipe\n", STDERR_FILENO);
-			error_police(2, tools);
-		}
+	{
+		ft_putstr_fd("Failed to create pipe\n", STDERR_FILENO);
+		error_police(2, tools);
+	}
 	close(fd[0]);
 	if (cmd->next && dup2(fd[1], STDOUT_FILENO) < 0)
-		{
-			ft_putstr_fd("Failed to create pipe\n", STDERR_FILENO);
-			error_police(2, tools);
-		}
+	{
+		ft_putstr_fd("Failed to create pipe\n", STDERR_FILENO);
+		error_police(2, tools);
+	}
 	close(fd[1]);
 	if (cmd->prev)
 		close(fd_in);
@@ -168,6 +167,7 @@ int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 		i = 0;
 	}
 	tools->pid[i] = fork();
+	printf("pid: %d\n", tools->pid[i]);
 	if (tools->pid[i] == 0)
 		pipe_dup(tools, cmd, fd, fd_in);
 	i++;
@@ -180,18 +180,27 @@ int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 	For every child process, it will wait for the process to finish and then
 	check the exit status of the process.
 */
-int	wait_pids(t_main_tools *tools)
+int	wait_pids(t_main_tools *tools, int flag)
 {
 	int	i;
 	int	status;
 
 	i = 0;
-	while (tools->pid[i])
+	if (flag == 1)
 	{
-		waitpid(tools->pid[i], &status, 0);
+		while (tools->pid[i] != 0)
+		{
+			waitpid(tools->pid[i], &status, 0);
+			if (WIFEXITED(status))
+				tools->exit_status = WEXITSTATUS(status);
+			i++;
+		}
+	}
+	else
+	{
+		waitpid(tools->pid[0], &status, 0);
 		if (WIFEXITED(status))
 			tools->exit_status = WEXITSTATUS(status);
-		i++;
 	}
 	return (EXIT_SUCCESS);
 }
@@ -212,20 +221,20 @@ int	execute_with_pipes(t_main_tools *tools)
 	fd_in = STDIN_FILENO;
 	while (cmd)
 	{
-		expander(cmd);
+		if (there_is_dollar_in_list(cmd->str))
+			expander(cmd);
 		if (cmd->next)
 			pipe(fd);
 		heredoc(tools, cmd);
 		forking(tools, cmd, fd, fd_in);
 		close(fd[1]);
-
 		fd_in = receive_heredoc(fd, cmd);
 		if (cmd->next)
 			cmd = cmd->next;
 		else
 			break ;
 	}
-	wait_pids(tools);
+	wait_pids(tools, 1);
 	return (EXIT_SUCCESS);
 }
 
@@ -239,16 +248,13 @@ int	execute_with_pipes(t_main_tools *tools)
 */
 int	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
 {
-	int	exit_status;
-
-	exit_status = EXIT_FAILURE;
-	if (cmd->builtin == msh_echo || cmd->builtin == msh_pwd
-		|| cmd->builtin == msh_cd || cmd->builtin == msh_env)
+	if (cmd->builtin == msh_pwd
+		|| cmd->builtin == msh_cd || cmd->builtin == msh_env) // echo should not be here 
 	{
-		exit_status = cmd->builtin(tools, cmd);
-		return (exit_status);
+		tools->exit_status = cmd->builtin(tools, cmd);
+		return (1);
 	}
-	return (exit_status);
+	return (0);
 }
 
 /**
@@ -262,29 +268,24 @@ int	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
 void	execute_no_pipes(t_main_tools *tools)
 {
 	t_simple_cmd	*cmd;
-	int				builtin_result;
 	int				fd_in;
 
 	cmd = tools->simple_cmd_list;
-	expander(cmd);
+	if (there_is_dollar_in_list(cmd->str))
+		expander(cmd);
+	if (check_builtin(tools, cmd) == 1)
+		return ;
+	// if (cmd->builtin == msh_exit)
+	// 	exit(builtin_result); // TODO
 	heredoc(tools, cmd);
-	if (cmd->builtin)
+	fd_in = receive_heredoc(NULL, cmd);
+	tools->pid[0] = fork();
+	if (tools->pid[0] == 0)
 	{
-		builtin_result = cmd->builtin(tools, cmd);
-		if (cmd->builtin == msh_exit)
-			exit(builtin_result);
+		dup2(fd_in, STDIN_FILENO);
+		prepare_exec(tools, cmd);
 	}
-	else
-	{
-		fd_in = receive_heredoc(NULL, cmd);
-		tools->pid[0] = fork();
-		if (tools->pid[0] == 0)
-		{
-			dup2(fd_in, STDIN_FILENO);
-			prepare_exec(tools, cmd);
-		}
-		wait_pids(tools);
-	}
+	wait_pids(tools, 0);
 }
 
 /**
@@ -296,6 +297,7 @@ void	execute_no_pipes(t_main_tools *tools)
 	entered by the user. Its main tasks include:
 	- Executing the command without pipes.
 	- Executing the command with pipes.
+	STDERR_FILENO = STDERR = 2 = Standard error output
 	@returns:
 	EXIT_SUCCESS if the command was executed successfully or EXIT_FAILURE if
 	there was an error.
@@ -304,12 +306,15 @@ int	executor(t_main_tools *tools)
 {
 	if (tools->pipes == 0)
 	{
-		tools->pid = malloc(1 * sizeof(int));
+		if (tools->pid)
+			free(tools->pid);
+		tools->pid = malloc(2 * sizeof(int));
 		if (!tools->pid)
 		{
-			ft_putstr_fd("memory error: unable to assign memory\n", STDERR_FILENO);
+			ft_putstr_fd("memory error: unable to assign memory\n", STDERR);
 			error_police(2, tools);
 		}
+		tools->pid[1] = 0;
 		execute_no_pipes(tools);
 	}
 	else
@@ -317,11 +322,16 @@ int	executor(t_main_tools *tools)
 		tools->pid = malloc((tools->pipes + 2) * sizeof(int));
 		if (!tools->pid)
 		{
-			ft_putstr_fd("memory error: unable to assign memory\n", STDERR_FILENO);
+			ft_putstr_fd("memory error: unable to assign memory\n", STDERR);
 			error_police(2, tools);
-		} 
-		tools->pid[tools->pipes + 2] = 0;
+		}
+		printf("pipes: %d\n", tools->pipes);
+		tools->pid[tools->pipes + 1] = 0;
 		execute_with_pipes(tools);
+	}
+	if (tools->pid) {
+    	free(tools->pid);
+   	 	tools->pid = NULL;
 	}
 	return (EXIT_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/17 20:34:51 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/23 18:19:49 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,10 +183,12 @@ void	connect_node_to_list(t_simple_cmd **list, t_simple_cmd *new_node)
 void	init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list, t_main_tools *tools)
 {
 	t_simple_cmd	*new_node;
+	int i;
 
+	i = 0;
 	new_node = malloc(sizeof(t_simple_cmd));
 	if (!new_node)
-		return;
+		return ;
 	new_node->arg_count = count_args(lexer_list);
 	new_node->str = malloc((new_node->arg_count + 1) * sizeof(char *));
 	if (!new_node->str)
@@ -194,6 +196,11 @@ void	init_one_simple_cmd(t_simple_cmd **cmd_list, t_lexer *lexer_list, t_main_to
 		free(new_node);
 		ft_putstr_fd("memory error: unable to assign memory\n", STDERR_FILENO);
 		error_police(2, tools);
+	}
+	while (i <= new_node->arg_count)
+	{
+		new_node->str[i] = NULL;
+		i++;
 	}
 	if (*cmd_list == NULL)
 		init_first_scmd(cmd_list, new_node);
@@ -301,8 +308,8 @@ int	(*builtin_arr(char *str))(t_main_tools *tools, t_simple_cmd *cmd)
 	int			i;
 	static void *builtins[7][2] = {
 		{"echo", msh_echo}, {"cd", msh_cd},
-		{"pwd", msh_pwd}, {"export", msh_export},
-		{"unset", msh_unset}, {"env", msh_env},
+		{"pwd", msh_pwd}, {"export", msh_pwd},
+		{"unset", msh_pwd}, {"env", msh_env},
 		{"exit", msh_exit}};
 
 	i = 0;

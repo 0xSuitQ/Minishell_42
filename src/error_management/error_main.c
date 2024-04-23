@@ -17,23 +17,9 @@ void	clear_lexer(t_lexer *lexer_list)
 	// free(lexer_list);
 }
 
-void	free_envp(t_env *envp_cpy, char **env_2d)
+void	free_envp(char **envp_cpy)
 {
-	t_env	*current;
-	t_env	*next;
-
-	current = envp_cpy;
-	while (current)
-	{
-		next = current->next;
-		free(current->name);
-		free(current->value);
-		free(current);
-		current = next;
-	}
-	envp_cpy = NULL;
-	free_arr(env_2d);
-	// free(envp_cpy);
+	free_arr(envp_cpy);
 }
 
 void	clear_simple_cmd(t_main_tools *tools)
@@ -71,8 +57,8 @@ void	clear_all(t_main_tools *tools)
 		clear_lexer(tools->lexer_list);
 	if (tools->simple_cmd_list)
 		clear_simple_cmd(tools);
-	if (tools->envp_cpy || tools->env_2d)
-		free_envp(tools->envp_cpy, tools->env_2d);
+	if (tools->envp_cpy)
+		free_envp(tools->envp_cpy);
 	if (tools->paths)
 		free_arr(tools->paths);
 	//tools_to_default_setting(tools);
@@ -80,14 +66,18 @@ void	clear_all(t_main_tools *tools)
 
 void 	clear_for_continue(t_main_tools *tools)
 {
-	if (tools->args)
-		free(tools->args);
+	free(tools->args);
 	if (tools->pid)
 		free(tools->pid);
+	// free(tools->paths);
 	if (tools->lexer_list)
 		clear_lexer(tools->lexer_list);
 	if (tools->simple_cmd_list)
 		clear_simple_cmd(tools);
+	// if (tools->pwd)
+	// 	free(tools->pwd);
+	// if (tools->old_pwd)
+	// 	free(tools->old_pwd);
 	tools_to_default_setting(tools);
 }
 

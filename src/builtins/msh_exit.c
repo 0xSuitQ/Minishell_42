@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_exit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:49:16 by peta              #+#    #+#             */
-/*   Updated: 2024/04/17 17:01:35 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/23 19:55:25 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ static int	is_num(char *str)
 	Exit the minishell, but before that, check if the argument is a number
 	and if it is, convert it to an integer and exit with that number
 */
-int	msh_exit(t_main_tools *tools, t_simple_cmd *s_cmd)
+int	msh_exit(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	char	**args;
 	int		exit_status;
 	int		arg_count;
 
-	args = s_cmd->str;
+	args = cmd->str;
 	exit_status = 0;
 	arg_count = 0;
 	while (args[arg_count])

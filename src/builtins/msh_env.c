@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:10:56 by nandroso          #+#    #+#             */
-/*   Updated: 2024/04/17 20:05:42 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/23 17:46:17 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,15 @@
 */
 int msh_env(t_main_tools *tools, t_simple_cmd *cmd)
 {
-	t_env	*envp;
-	char	*tmp;
+	int		i;
 
-	(void)cmd;
-	envp = tools->envp_cpy;
-	while (envp)
+	(void) cmd;
+	i = 0;
+	while (tools->envp_cpy[i])
 	{
-		tmp = ft_strjoin(envp->name, "=");
-		tmp = ft_strjoin(tmp, envp->value);
-		ft_putstr_fd(tmp, STDOUT_FILENO);
-		ft_putstr_fd("\n", STDOUT_FILENO);
-		free(tmp);
-		envp = envp->next;
+		ft_putendl_fd(tools->envp_cpy[i], STDOUT_FILENO);
+		i++;
 	}
 	return (EXIT_SUCCESS);
+
 }

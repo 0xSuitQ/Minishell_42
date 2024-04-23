@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:02 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/15 13:31:40 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/23 21:58:09 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_lexer	*ft_lexernew(char *str, t_token_list token)
 	new_element = (t_lexer *)malloc(sizeof(t_lexer));
 	if (!new_element)
 		return (0);
-	new_element->sub_str = str;
+	new_element->sub_str = ft_strdup(str);
 	new_element->token = token;
 	new_element->index = i++;
 	new_element->flag = VISIBLE;
@@ -58,7 +58,8 @@ int	add_node(char *str, t_token_list token, t_lexer **lexer_list)
 
 int	read_words(int i, char *str, t_lexer **lexer_list)
 {
-	int	j;
+	int		j;
+	char	*tmp;
 
 	j = 0;
 	while (str[i + j] && !(check_token(str[i + j])))
@@ -70,8 +71,13 @@ int	read_words(int i, char *str, t_lexer **lexer_list)
 		else
 			j++;
 	}
-	if (!add_node(ft_substr(str, i, j), 0, lexer_list))
+	tmp = ft_substr(str, i, j);
+	if (!add_node(tmp, 0, lexer_list))
+	{
+		free(tmp);
 		return (-1);
+	}
+	free(tmp);
 	return (j);
 }
 
