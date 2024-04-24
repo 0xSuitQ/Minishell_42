@@ -3,21 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   msh_exit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:49:16 by peta              #+#    #+#             */
-/*   Updated: 2024/04/23 19:55:25 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/04/24 16:51:05 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 // TODO
-void	set_to_null(t_main_tools *data)
+void	set_to_null(t_main_tools *tools)
 {
-	data->lexer_list = NULL;
-	data->simple_cmd_list = NULL;
-	data->pid = NULL;
+	tools->lexer_list = NULL;
+	tools->paths = NULL;
+	tools->simple_cmd_list = NULL;
+	tools->pipes = 0;
+	tools->pid = NULL;
+	//get_paths(tools);
 }
 
 // TODO
@@ -56,7 +59,7 @@ void	exit_minishell(t_main_tools *tools, int exit_num)
 */
 static int	is_num(char *str)
 {
-	int		i;
+	int	i;
 
 	i = -1;
 	if (str[0] == '-' || str[0] == '+')

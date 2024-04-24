@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/23 14:31:23 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/24 13:32:37 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,13 @@ char	*handle_dollar(char *str)
 	char	*result;
 
 	i = -1;
-	remove_quotes(&str[i + 1], '\"');
+	remove_quotes(str, '\"');
 	result = ft_substr(str, 0, next_dollar(str));
 	while (str[++i])
 	{
 		if (quotes_classifier(&str[i]) == SINGLE_Q)
 		{
-			remove_quotes(&str[i], '\'');
+			remove_quotes(str, '\'');
 			free(result);
 			return (str);
 		}

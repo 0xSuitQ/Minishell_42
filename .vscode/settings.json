@@ -2,6 +2,7 @@
     "files.associations": {
 		"sstream": "c",
 		"ostream": "c",
-		"ranges": "c"
+		"ranges": "c",
+		"minishell.h": "c"
 	}
 }

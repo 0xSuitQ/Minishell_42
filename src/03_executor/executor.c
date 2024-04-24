@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/23 21:36:02 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/04/24 18:30:09 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,7 +248,7 @@ int	execute_with_pipes(t_main_tools *tools)
 */
 int	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
 {
-	if (cmd->builtin == msh_pwd
+	if (cmd->builtin == msh_pwd || cmd->builtin == msh_export
 		|| cmd->builtin == msh_cd || cmd->builtin == msh_env) // echo should not be here 
 	{
 		tools->exit_status = cmd->builtin(tools, cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/23 20:08:06 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/04/24 18:14:20 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ extern int		g_signal;
 /******************* STRUCTS *********************/
 typedef struct s_main_tools t_main_tools;
 
+typedef struct s_list
+{
+	void			*content;
+	struct s_list	*next;
+}	t_list;
+
 /******************** LEXER **********************/
 typedef enum s_token_list
 {
@@ -103,6 +109,7 @@ typedef struct s_env
 {
 	char			*name;
 	char			*value;
+	char			*full_string;
 	struct s_env	*next;
 }	t_env;
 
@@ -175,6 +182,10 @@ char			*ft_strrchr(const char *str, int character);
 int				ft_atoi(const char *nptr);
 int				ft_isdigit(int c);
 void			ft_putendl_fd(char *s, int fd);
+void			ft_lstadd_back(t_list **lst, t_list *new);
+t_list			*ft_lstnew(void *content);
+int				ft_lstsize(t_list *lst);
+t_list			*ft_lstlast(t_list *lst);
 
 // PRINTF
 int				ft_printf(const char *format, ...);
@@ -231,6 +242,7 @@ void			clear_all(t_main_tools *tools);
 # define STDIN			0
 # define STDOUT			1
 # define STDERR			2
+# define EXIT_MALLOC	4
 
 # define INVISIBLE		0
 # define VISIBLE		1

@@ -6,12 +6,21 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/20 18:06:50 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/24 12:44:33 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/**
+	@brief:
+	- ft_substr function allocates memory for a new string
+	- the new string is a substring of the string s
+	- the substring begins at index start and is of length len
+	- if start is out of range, the function returns an empty string
+	- if len is out of range, the function returns the string from start to the
+	end
+*/
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	unsigned int	i;
