@@ -82,7 +82,6 @@ void	create_heredoc(t_lexer *lexer_list, char *filename)
 	}
 	free(line);
 	close(fd);
-
 }
 
 int	heredoc(t_main_tools *tools, t_simple_cmd *cmd)
