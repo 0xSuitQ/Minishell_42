@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/25 14:36:09 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/25 21:29:29 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,9 @@ void	tools_to_default_setting(t_main_tools *tools)
 */
 void	exit_minishell(t_main_tools *tools, int exit_num)
 {
-	static t_main_tools	*static_tools;
-
-	if (!static_tools)
-		static_tools = tools;
-	static_tools->exit_status = exit_num;
-	clear_all(static_tools);
-	exit(static_tools->exit_status);
+	if (tools)
+		clear_all(tools);
+	exit(exit_num);
 }
 
 /**
@@ -96,6 +92,13 @@ void	validate_history(char *args)
 		add_history(args);
 }
 
+void	strl_d(void)
+{
+	ft_putstr_fd("exit\n", STDOUT);
+	// exit(0);
+	exit_minishell(NULL, 2);
+}
+
 /**
 	@brief:
 	minishell_loop function is the main loop of the minishell program
@@ -111,7 +114,7 @@ int	minishell_loop(t_main_tools *tools)
 	signal(SIGINT, handle_sigint);
 	tools->args = readline(READLINE_MSG);
 	if (!tools->args)
-		exit (0);
+		strl_d();
 	tmp = ft_strtrim(tools->args, " ");
 	free(tools->args);
 	tools->args = tmp;

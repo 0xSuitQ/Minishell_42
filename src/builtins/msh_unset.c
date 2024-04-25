@@ -1,68 +1,112 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   msh_unset.c                                        :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2024/04/17 19:44:39 by peta              #+#    #+#             */
-// /*   Updated: 2024/04/17 20:19:28 by peta             ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   msh_unset.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/17 19:44:39 by peta              #+#    #+#             */
+/*   Updated: 2024/04/25 22:10:11 by psimcak          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// #include "../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-// void	env_remove(t_env **envp, char *name)
-// {
-// 	t_env	*tmp;
-// 	t_env	*prev;
+size_t	equal_sign(char *str)
+{
+	size_t	i;
 
-// 	tmp = *envp;
-// 	prev = NULL;
-// 	while (tmp)
-// 	{
-// 		if (ft_strcmp(tmp->name, name) == 0)
-// 		{
-// 			if (prev == NULL)
-// 				*envp = tmp->next;
-// 			else
-// 				prev->next = tmp->next;
-// 			free(tmp->name);
-// 			free(tmp->value);
-// 			free(tmp);
-// 			return ;
-// 		}
-// 		prev = tmp;
-// 		tmp = tmp->next;
-// 	}
-// }
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (i + 1);
+		i++;
+	}
+	return (0);
+}
 
-// /**
-// 	@brief Removes a variable from the environment variable linked list.
-// 	This function removes one or more variables from the linked list of
-// 	environment variables.
-// 	If no variables are provided, the function exits
-// 	with a status of 0. Otherwise, it iterates through the provided variable
-// 	names and removes them from the environment variable list.
-//  */
+char	**whileloop_del_var(char **arr, char **rtn, char *str)
+{
+	int	i;
+	int	j;
 
-// int	msh_unset(t_main_tools *tools, t_simple_cmd *s_cmd)
-// {
-// 	t_env	*envp;
-// 	int		counter;
+	i = 0;
+	j = 0;
+	while (arr[i] != NULL)
+	{
+		if (!(ft_strncmp(arr[i], str, equal_sign(arr[i]) - 1) == 0
+				&& str[equal_sign(arr[i])] == '\0'
+				&& arr[i][ft_strlen(str)] == '='))
+		{
+			rtn[j] = ft_strdup(arr[i]);
+			if (rtn[j] == NULL)
+			{
+				free_arr(rtn);
+				return (rtn);
+			}
+			j++;
+		}	
+		i++;
+	}
+	return (rtn);
+}
 
-// 	envp = tools->envp_cpy;
-// 	counter = 0;
-// 	while (s_cmd->str[counter])
-// 		counter++;
-// 	if (counter == 1)
-// 	{
-// 		tools->exit_status = 0;
-// 		return (EXIT_SUCCESS);
-// 	}
-// 	counter = 0;
-// 	while (s_cmd->str[++counter])
-// 		env_remove(&envp, s_cmd->str[counter]);
-// 	tools->exit_status = 0;
-// 	return (EXIT_SUCCESS);
-// }
+char	**del_var(char **arr, char *str)
+{
+	char	**rtn;
+	size_t	i;
+
+	i = 0;
+	while (arr[i] != NULL)
+		i++;
+	rtn = ft_calloc(sizeof(char *), i + 1);
+	if (!rtn)
+		return (NULL);
+	rtn = whileloop_del_var(arr, rtn, str);
+	return (rtn);
+}
+
+int	unset_error(t_simple_cmd *simple_cmd)
+{
+	int		i;
+
+	i = 0;
+	if (!simple_cmd->str[1])
+	{
+		ft_putendl_fd("minishell: unset: not enough arguments", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	while (simple_cmd->str[1][i])
+	{
+		if (simple_cmd->str[1][i++] == '/')
+		{
+			ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
+			ft_putstr_fd(simple_cmd->str[1], STDERR_FILENO);
+			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+			return (EXIT_FAILURE);
+		}
+	}
+	if (equal_sign(simple_cmd->str[1]) != 0)
+	{
+		ft_putendl_fd("minishell: unset: not a valid identifier",
+			STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	msh_unset(t_main_tools *tools, t_simple_cmd *simple_cmd)
+{
+	char	**tmp;
+
+	if (unset_error(simple_cmd) == 1)
+		return (EXIT_FAILURE);
+	else
+	{
+		tmp = del_var(tools->envp_cpy, simple_cmd->str[1]);
+		free_arr(tools->envp_cpy);
+		tools->envp_cpy = tmp;
+	}
+	return (EXIT_SUCCESS);
+}

@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/25 14:18:27 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/25 21:46:47 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,8 @@ int	execute_with_pipes(t_main_tools *tools)
 int	check_builtin(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	if (cmd->builtin == msh_pwd || cmd->builtin == msh_export
-		|| cmd->builtin == msh_cd || cmd->builtin == msh_env) // echo should not be here 
+		|| cmd->builtin == msh_cd || cmd->builtin == msh_env
+		|| cmd->builtin == msh_exit || cmd->builtin == msh_unset) // echo should not be here 
 	{
 		tools->exit_status = cmd->builtin(tools, cmd);
 		return (1);
@@ -276,8 +277,6 @@ void	execute_no_pipes(t_main_tools *tools)
 		expander(cmd);
 	if (check_builtin(tools, cmd) == 1)
 		return ;
-	// if (cmd->builtin == msh_exit)
-	// 	exit(builtin_result); // TODO
 	heredoc(tools, cmd);
 	fd_in = receive_heredoc(NULL, cmd);
 	tools->pid[0] = fork();
