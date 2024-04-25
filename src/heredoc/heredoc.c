@@ -12,6 +12,10 @@
 
 #include "../../includes/minishell.h"
 
+/**
+	@brief:
+	gen_filename is a function that will generate a filename for the heredoc
+*/
 char	*gen_filename(void)
 {
 	char 		*filename;
@@ -24,8 +28,9 @@ char	*gen_filename(void)
 	free(number);
 	return (filename);
 }
-/*
-	"hello 'nikita' how r u"
+/**
+	@brief:
+	delete_quotes is a function that will delete the quotes from the string
 */
 char	*delete_quotes(char *str, char c)
 {
@@ -47,6 +52,11 @@ char	*delete_quotes(char *str, char c)
 	return (str);
 }
 
+/**
+	@brief:
+	quote_check is a function that will check if the delimiter is a quote
+	and delete the quotes from the delimiter
+*/
 void	quote_check(char **delimiter)
 {
 	if ((*delimiter)[0] == '\'' || (*delimiter)[0] == '\"')
@@ -58,6 +68,10 @@ void	quote_check(char **delimiter)
 
 // todo = add signal handling
 // signal(SIGINT, handle_sigint_heredoc);
+/**
+	@brief:
+	create_heredoc is a function that will create a heredoc file
+*/
 void	create_heredoc(t_lexer *lexer_list, char *filename)
 {
 	int		fd;
@@ -84,6 +98,11 @@ void	create_heredoc(t_lexer *lexer_list, char *filename)
 	close(fd);
 }
 
+/**
+	@brief:
+	heredoc is a function that will go through the lexer_list and check for the
+	heredoc token. If the token is found, it will create a heredoc file.
+*/
 int	heredoc(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	int				fd;
