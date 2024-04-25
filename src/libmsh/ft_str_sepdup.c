@@ -6,12 +6,17 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 09:48:40 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/12 09:48:54 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/25 23:17:55 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/**
+	@brief:
+	ft_str_sep_len is a function that will return the length of the string
+	until the first separator
+*/
 static	int	ft_str_sep_len(char const *s)
 {
 	int	i;
@@ -22,6 +27,11 @@ static	int	ft_str_sep_len(char const *s)
 	return (i);
 }
 
+/**
+	@brief:
+	ft_str_sepdup is a function that will duplicate the string until the first
+	separator
+*/
 char	*ft_str_sepdup(char *s)
 {
 	char	*word;

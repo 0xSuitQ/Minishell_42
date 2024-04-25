@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:23:21 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/25 20:23:40 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/25 23:10:44 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,26 @@ void	clear_simple_cmd(t_main_tools *tools)
 	}
 	tools->simple_cmd_list = NULL;
 	// free(tools->simple_cmd_list);
+}
+
+/**
+	@brief:
+	Setting these members to NULL is a way to ensure that the structure starts
+	in a known state, preventing undefined behavior from uninitialized pointers
+	get_paths is used to get the paths from the environment variable, and
+	adding them to the main_tools structure
+*/
+void	tools_to_default_setting(t_main_tools *tools)
+{
+	tools->lexer_list = NULL;
+	tools->paths = NULL;
+	tools->simple_cmd_list = NULL;
+	tools->pipes = 0;
+	tools->pid = NULL;
+	//get_paths(tools);
+	
+	parse_envp(tools);
+	minishell_loop(tools);
 }
 
 void	clear_all(t_main_tools *tools)

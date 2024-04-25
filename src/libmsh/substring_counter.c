@@ -6,12 +6,17 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 09:50:39 by psimcak           #+#    #+#             */
-/*   Updated: 2024/02/12 09:54:34 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/25 23:18:04 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/**
+	@brief:
+	substring_counter is a function that will count the number of substrings
+	in a string
+*/
 int	substring_counter(char *str)
 {
 	int	i;

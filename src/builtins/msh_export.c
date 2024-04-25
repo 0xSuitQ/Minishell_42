@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 12:46:13 by nandroso          #+#    #+#             */
-/*   Updated: 2024/04/24 18:29:42 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/25 23:14:08 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,6 @@ int	msh_export(t_main_tools *tools, t_simple_cmd *cmd)
 			if (tools->envp_cpy)
 				write(2, "we are here\n", 12);
 			tools->envp_cpy = tmp;
-			// int j = 0;
-			// while (tools->envp_cpy[j])
-			// {
-			// 	write(2, tools->envp_cpy[j], ft_strlen(tools->envp_cpy[j]));
-			// 	write(2, "\n", 1);
-			// 	j++;
-			// }
 		}
 		else
 			ft_putstr_fd("export: not a valid identifier\n", STDERR_FILENO);

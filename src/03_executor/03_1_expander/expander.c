@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/24 13:32:37 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/25 23:05:19 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,12 @@ char	*expand_dollar(char *str)
 	{
 		result = ft_strjoin(env_expanded, after_pure);
 		ft_str_replace(&str, result);
-		// free(result);
 	}
 	if (pure[0] == '?')
 	{
-		// result = ft_itoa(g_exit_status);
+		result = ft_itoa(g_signal);
 		result = ft_strjoin(result, after_pure);
 		ft_str_replace(&str, result);
-		// free(result);
 	}
 	free(after_pure);
 	free(pure);
@@ -77,7 +75,7 @@ char	*handle_dollar(char *str)
 		}
 		if (str[i] == '$')
 		{
-			if (env_not_valid(&str[i]))
+			if (env_not_valid(&str[i]) && str[i + 1] != '?')
 			{
 				tmp = ft_substr(&str[i], 0, next_dollar(&str[i] + 1) + 1);
 				result = ft_strjoin(result, tmp);

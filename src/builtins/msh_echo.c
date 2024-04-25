@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_echo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:10:42 by nandroso          #+#    #+#             */
-/*   Updated: 2024/04/09 20:16:48 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/25 23:13:44 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	output_stuff(char **str, int n, int i)
 	{
 		ft_putstr_fd(str[i], STDOUT_FILENO);
 		i++;
-		if (str[i]) // if the next string is not NULL, print a space
+		if (str[i])
 			write(STDOUT_FILENO, " ", 1);
 	}
 	if (n == 0)

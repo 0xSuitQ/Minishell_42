@@ -66,8 +66,6 @@ void	quote_check(char **delimiter)
 	}
 }
 
-// todo = add signal handling
-// signal(SIGINT, handle_sigint_heredoc);
 /**
 	@brief:
 	create_heredoc is a function that will create a heredoc file
@@ -86,6 +84,7 @@ void	create_heredoc(t_lexer *lexer_list, char *filename)
 	}
 	delimiter = lexer_list->next->sub_str;
 	quote_check(&delimiter);
+	signal(SIGINT, handle_sigint_heredoc);
 	line = readline("heredoc> ");
 	while (line && ft_strncmp(line, delimiter, ft_strlen(delimiter)) != 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/25 21:46:47 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/25 23:06:15 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,6 @@ int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 		i = 0;
 	}
 	tools->pid[i] = fork();
-	printf("pid: %d\n", tools->pid[i]);
 	if (tools->pid[i] == 0)
 		pipe_dup(tools, cmd, fd, fd_in);
 	i++;
@@ -325,7 +324,7 @@ int	executor(t_main_tools *tools)
 			ft_putstr_fd("memory error: unable to assign memory\n", STDERR);
 			error_police(2, tools);
 		}
-		printf("pipes: %d\n", tools->pipes);
+
 		tools->pid[tools->pipes + 1] = 0;
 		execute_with_pipes(tools);
 	}
