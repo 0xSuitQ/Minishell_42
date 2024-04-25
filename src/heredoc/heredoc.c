@@ -56,6 +56,8 @@ void	quote_check(char **delimiter)
 	}
 }
 
+// todo = add signal handling
+// signal(SIGINT, handle_sigint_heredoc);
 void	create_heredoc(t_lexer *lexer_list, char *filename)
 {
 	int		fd;

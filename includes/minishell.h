@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/24 18:14:20 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/25 14:34:42 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ typedef struct s_main_tools
 /******************* PROTOTYPES *******************/
 //	MAIN
 int				minishell_loop(t_main_tools *tools);
+void			exit_minishell(t_main_tools *tools, int exit_num);
 
 //	LEXER
 int				lexer(t_main_tools *tools);
@@ -236,7 +237,11 @@ void			clear_for_continue(t_main_tools *tools);
 void			clear_all(t_main_tools *tools);
 
 // SIGNALS
-// void	handle_sigint(int signum);
+int				signal_exit_of_child(int *status);
+void			handle_sigint(int sig_num);
+void			handle_sigint_when_child_running(int sig_num);
+void			handle_sigint_heredoc(int sig_num);
+void			reset_signals_default(void);
 
 /******************** MACROS **********************/
 # define STDIN			0

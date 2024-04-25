@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/23 22:19:16 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/04/25 14:36:09 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,21 @@ void	tools_to_default_setting(t_main_tools *tools)
 	
 	parse_envp(tools);
 	minishell_loop(tools);
+}
+
+/**
+	@brief:
+	Exit the minishell with the given exit number and free all the data
+*/
+void	exit_minishell(t_main_tools *tools, int exit_num)
+{
+	static t_main_tools	*static_tools;
+
+	if (!static_tools)
+		static_tools = tools;
+	static_tools->exit_status = exit_num;
+	clear_all(static_tools);
+	exit(static_tools->exit_status);
 }
 
 /**
@@ -93,6 +108,7 @@ int	minishell_loop(t_main_tools *tools)
 {
 	char	*tmp;
 
+	signal(SIGINT, handle_sigint);
 	tools->args = readline(READLINE_MSG);
 	if (!tools->args)
 		exit (0);

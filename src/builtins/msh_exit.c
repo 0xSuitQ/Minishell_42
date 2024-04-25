@@ -6,52 +6,11 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:49:16 by peta              #+#    #+#             */
-/*   Updated: 2024/04/24 16:51:05 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/25 14:39:12 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// TODO
-void	set_to_null(t_main_tools *tools)
-{
-	tools->lexer_list = NULL;
-	tools->paths = NULL;
-	tools->simple_cmd_list = NULL;
-	tools->pipes = 0;
-	tools->pid = NULL;
-	//get_paths(tools);
-}
-
-// TODO
-void	free_data(t_main_tools *tools)
-{
-	if (tools->pid)
-		free(tools->pid);
-	set_to_null(tools);
-	// clear_all(tools);
-}
-
-/**
-	@brief:
-	Exit the minishell with the given exit number and free all the data
-*/
-void	exit_minishell(t_main_tools *tools, int exit_num)
-{
-	static t_main_tools	*static_tools;
-
-	if (!static_tools)
-		static_tools = tools;
-	// else
-	// {
-	// 	static_tools->exit_status = exit_num;
-	// 	free_data(static_tools);
-	// 	exit(static_tools->exit_status);
-	// }
-	static_tools->exit_status = exit_num;
-	free_data(static_tools);
-	exit(static_tools->exit_status);
-}
 
 /**
 	@brief:

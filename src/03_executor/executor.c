@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/24 18:30:09 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/25 14:18:27 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,7 @@ int	execute_with_pipes(t_main_tools *tools)
 			pipe(fd);
 		heredoc(tools, cmd);
 		forking(tools, cmd, fd, fd_in);
+		signal(SIGINT, handle_sigint_when_child_running);
 		close(fd[1]);
 		fd_in = receive_heredoc(fd, cmd);
 		if (cmd->next)

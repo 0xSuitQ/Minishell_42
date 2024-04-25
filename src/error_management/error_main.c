@@ -61,7 +61,7 @@ void	clear_all(t_main_tools *tools)
 		free_envp(tools->envp_cpy);
 	if (tools->paths)
 		free_arr(tools->paths);
-	//tools_to_default_setting(tools);
+	// tools_to_default_setting(tools);
 }
 
 void 	clear_for_continue(t_main_tools *tools)
