@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 18:54:39 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/22 18:54:41 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/26 16:52:33 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,10 @@ int	env_not_valid(char *str)
 
 	pure = clear_env_variable(&str[1]);
 	if (!getenv(pure))
+	{
+		free(pure);
 		return (TRUE);
+	}
+	free(pure);
 	return (FALSE);
 }

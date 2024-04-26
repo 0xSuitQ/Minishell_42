@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/25 14:34:42 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/26 20:23:17 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,18 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }	t_list;
+
+/******************* EXECUTOR ********************/
+typedef struct s_expander
+{
+	char			*first;
+	char			*second;
+	char			*tmp_1;
+	char			*tmp_2;
+	char			*final;
+	t_list			*exp_list;
+	int				i;
+}	t_expander;
 
 /******************** LEXER **********************/
 typedef enum s_token_list

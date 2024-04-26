@@ -3,6 +3,8 @@
 		"sstream": "c",
 		"ostream": "c",
 		"ranges": "c",
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"string": "c",
+		"string_view": "c"
 	}
 }

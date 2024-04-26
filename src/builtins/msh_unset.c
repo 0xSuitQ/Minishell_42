@@ -6,12 +6,17 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 19:44:39 by peta              #+#    #+#             */
-/*   Updated: 2024/04/25 22:10:11 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/27 01:10:53 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
+/**
+	@brief:
+	- equal_sign function finds the index of the equal sign in the string
+	- if the equal sign is found, it returns the index of the equal sign
+	- if the equal sign is not found, it returns 0
+*/
 size_t	equal_sign(char *str)
 {
 	size_t	i;
@@ -26,6 +31,12 @@ size_t	equal_sign(char *str)
 	return (0);
 }
 
+/**
+	@brief:
+	- whileloop_del_var function goes through the array and if the variable is
+	found, it is deleted
+	- the new array is returned
+*/
 char	**whileloop_del_var(char **arr, char **rtn, char *str)
 {
 	int	i;
@@ -52,6 +63,12 @@ char	**whileloop_del_var(char **arr, char **rtn, char *str)
 	return (rtn);
 }
 
+/**
+	@brief:
+	- del_var function deletes the environment variable
+	- it goes through the array and if the variable is found, it is deleted
+	- the new array is returned
+*/
 char	**del_var(char **arr, char *str)
 {
 	char	**rtn;
@@ -67,6 +84,13 @@ char	**del_var(char **arr, char *str)
 	return (rtn);
 }
 
+/**
+	@brief:
+	- unset_error function checks if the unset command has the correct number of
+	arguments
+	- if the number of arguments is correct, it returns 0 = EXIT_SUCCESS
+	- if the number of arguments is incorrect, it returns 1 = EXIT_FAILURE
+*/
 int	unset_error(t_simple_cmd *simple_cmd)
 {
 	int		i;
@@ -96,6 +120,10 @@ int	unset_error(t_simple_cmd *simple_cmd)
 	return (EXIT_SUCCESS);
 }
 
+/**
+	@brief:
+	Unset the environment variable
+*/
 int	msh_unset(t_main_tools *tools, t_simple_cmd *simple_cmd)
 {
 	char	**tmp;

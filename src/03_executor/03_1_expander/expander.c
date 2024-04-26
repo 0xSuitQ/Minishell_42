@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/25 23:05:19 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/27 00:01:09 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,28 @@
 
 /*
 	@brief:
-	- expand_dollar function expands the dollar sign and the env-variable
-	- it take the string till the $ and join it with the environment variable
-	- the power is, that it works only for one $, so if there are more $, which 
-	have for exaple backslash before, it will not work for them
-	- from handle_dollar we send the string beggining with $
-	$USER\$USER		-> psimcak\$USER
+	- expand_dollar function expands the dollar sign in the string
+	- if the string is empty, it returns the string
+	- if the string is not empty, it expands the dollar sign
+	- if the string is a question mark, it returns the signal
 */
 char	*expand_dollar(char *str)
 {
 	char	*env_expanded;
-	char	*result;
-	char	*after_pure;
-	char	*pure;
-	int		i;
 
-	i = 0;
 	if (!str[0])
 		return (str);
-	pure = clear_env_variable(&str[1]);
-	after_pure = ft_strdup(&str[ft_strlen(pure) + 1]);
-	env_expanded = getenv(pure);
+	env_expanded = getenv(str + 1);
 	if (env_expanded)
 	{
-		result = ft_strjoin(env_expanded, after_pure);
-		ft_str_replace(&str, result);
+		free(str);
+		str = ft_strdup(env_expanded);
 	}
-	if (pure[0] == '?')
+	if (str[0] == '?')
 	{
-		result = ft_itoa(g_signal);
-		result = ft_strjoin(result, after_pure);
-		ft_str_replace(&str, result);
+		free(str);
+		str = ft_itoa(g_signal);
 	}
-	free(after_pure);
-	free(pure);
 	return (str);
 }
 
@@ -56,59 +44,142 @@ char	*expand_dollar(char *str)
 	handle_dollar function handles the dollar sign in the string
 	it goes through the string and if there is a $, it will be expanded
 */
-char	*handle_dollar(char *str)
+int	there_is_single_quote(char *str)
 {
-	int		i;
-	char	*tmp;
-	char	*result;
-
-	i = -1;
-	remove_quotes(str, '\"');
-	result = ft_substr(str, 0, next_dollar(str));
-	while (str[++i])
+	if (quotes_classifier(str) == SINGLE_Q)
 	{
-		if (quotes_classifier(&str[i]) == SINGLE_Q)
-		{
-			remove_quotes(str, '\'');
-			free(result);
-			return (str);
-		}
-		if (str[i] == '$')
-		{
-			if (env_not_valid(&str[i]) && str[i + 1] != '?')
-			{
-				tmp = ft_substr(&str[i], 0, next_dollar(&str[i] + 1) + 1);
-				result = ft_strjoin(result, tmp);
-				continue ;
-			}
-			str = expand_dollar(&str[i]);
-			tmp = ft_substr(str, 0, next_dollar(str + 1) + 1);
-			result = ft_strjoin(result, tmp);
-			i = -1;
-		}
+		remove_quotes(str, '\'');
+		return (TRUE);
 	}
-	ft_str_replace(&str, result);
-	free(result);
-	return (str);
+	return (FALSE);
 }
 
+/**
+	@brief:
+	impossible_to_expand function adds the unedited string to the list
+*/
+void	impossible_to_expand(t_expander *exp, char *str)
+{
+	char	*sub_str;
+
+	sub_str = ft_substr(str, 0, next_dollar(str + 1) + 1);
+	ft_lstadd_back(&exp->exp_list, ft_lstnew(sub_str));
+}
+
+/**
+	@brief:
+	possible_to_expand function expands the string and adds it to the list
+*/
+void	possible_to_expand(t_expander *exp, char *str)
+{
+	char	*sub_str;
+	char	*expanded;
+
+	sub_str = ft_substr(str, 0, next_dollar(&str[1]) + 1);
+	expanded = expand_dollar(sub_str);
+	ft_lstadd_back(&exp->exp_list, ft_lstnew(expanded));
+}
+
+/**
+	@brief:
+	free_list function frees the list
+*/
+void	free_list(t_list *exp_list)
+{
+	t_list	*tmp;
+
+	while (exp_list)
+	{
+		tmp = exp_list;
+		exp_list = exp_list->next;
+		free(tmp->content);
+		free(tmp);
+	}
+}
+
+/**
+	@brief:
+	list_to_array function converts the list to an array
+*/
+char	*list_to_array(t_list *exp_list)
+{
+	t_list	*tmp;
+	char	*result;
+	char	*joined_result;
+
+	tmp = exp_list;
+	result = ft_strdup(tmp->content);
+	tmp = tmp->next;
+	while (tmp)
+	{
+		joined_result = ft_strjoin(result, tmp->content);
+		free(result);
+		result = joined_result;
+		tmp = tmp->next;
+	}
+	free_list(exp_list);
+	return (result);
+}
+
+/**
+	@brief:
+	first_char_not_dollar function checks if the first character is not a 
+	dollar sign
+*/
+int	first_char_not_dollar(char *str)
+{
+	if (str[0] != '$')
+		return (TRUE);
+	return (FALSE);
+}
+
+/**
+	@brief:
+	handle_dollar function handles the dollar sign in the string
+	- it removes the quotes
+	- if there is a single quote, it returns the string
+	- if the first character is not a dollar sign, it adds the string to the
+	list
+	- if the it is not possible to expand, it adds the string to the list
+	- if it is possible to expand, it expands the string and adds it to the list
+	- it converts the list to an array and returns the result
+*/
+char	*handle_dollar(char *str)
+{
+	t_expander	exp;
+
+	remove_quotes(str, '\"');
+	if (there_is_single_quote(str))
+		return (str);
+	exp.exp_list = NULL;
+	if (first_char_not_dollar(str))
+	{
+		exp.first = ft_substr(str, 0, next_dollar(str));
+		exp.exp_list = ft_lstnew(exp.first);
+	}
+	exp.i = -1;
+	while (str[++exp.i])
+	{
+		if (str[exp.i] == '$')
+		{
+			if (env_not_valid(&str[exp.i]) && str[exp.i + 1] != '?')
+			{
+				impossible_to_expand(&exp, &str[exp.i]);
+				continue ;
+			}
+			possible_to_expand(&exp, &str[exp.i]);
+		}
+	}
+	free(str);
+	str = list_to_array(exp.exp_list);
+	return (str);
+}
 /**
 	@brief:
 	The expander is responsible for expanding special characters and variables
 	within the user's command input. Its primary purpose is to handle the
 	expansion of dollar signs ($) and their associated environment variables or
 	special symbols (e.g., $? for the exit status of the last command).
-
-	When a user enters a command like echo $USER, the expander's job is to
-	replace $USER with the actual value of the USER environment variable before
-	executing the command
-
-	Main tasks:
-	- expands environment variables (e.g., $USER)
-	- removes quotes (single or double)
-
-	Example:
-	echo $USER > "test.txt" | cat test.txt
 */
 void	expander(t_simple_cmd *curr_simple_cmd)
 {

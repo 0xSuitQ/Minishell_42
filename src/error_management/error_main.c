@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:23:21 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/25 23:10:44 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/26 21:23:25 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	clear_lexer(t_lexer *lexer_list)
 		current = next;
 	}
 	lexer_list = NULL;
-	// free(lexer_list);
 }
 
 void	free_envp(char **envp_cpy)
@@ -44,15 +43,14 @@ void	clear_simple_cmd(t_main_tools *tools)
 	{
 		next = current->next;
 		free_arr(current->str);
-		if (current->lexer_list && !current->heredoc_filename)
-			clear_lexer(current->lexer_list);
+		// if (current->lexer_list != NULL)
+		// 	clear_lexer(current->lexer_list);
 		if (current->heredoc_filename)
 			free(current->heredoc_filename);
 		free(current);
 		current = next;
 	}
 	tools->simple_cmd_list = NULL;
-	// free(tools->simple_cmd_list);
 }
 
 /**
@@ -69,10 +67,8 @@ void	tools_to_default_setting(t_main_tools *tools)
 	tools->simple_cmd_list = NULL;
 	tools->pipes = 0;
 	tools->pid = NULL;
-	//get_paths(tools);
-	
-	parse_envp(tools);
-	minishell_loop(tools);
+	tools->exit_status = 0;
+	tools->error_type = 0;
 }
 
 void	clear_all(t_main_tools *tools)
@@ -93,7 +89,6 @@ void	clear_all(t_main_tools *tools)
 		free_envp(tools->envp_cpy);
 	if (tools->paths)
 		free_arr(tools->paths);
-	// tools_to_default_setting(tools);
 }
 
 void 	clear_for_continue(t_main_tools *tools)
@@ -101,16 +96,15 @@ void 	clear_for_continue(t_main_tools *tools)
 	free(tools->args);
 	if (tools->pid)
 		free(tools->pid);
-	// free(tools->paths);
+	if (tools->paths)
+		free_arr(tools->paths);
 	if (tools->lexer_list)
 		clear_lexer(tools->lexer_list);
 	if (tools->simple_cmd_list)
 		clear_simple_cmd(tools);
-	// if (tools->pwd)
-	// 	free(tools->pwd);
-	// if (tools->old_pwd)
-	// 	free(tools->old_pwd);
 	tools_to_default_setting(tools);
+	parse_envp(tools);
+	minishell_loop(tools);
 }
 
 int	error_police(int err_code, t_main_tools *tools)
@@ -118,7 +112,7 @@ int	error_police(int err_code, t_main_tools *tools)
 	if (err_code == 1)
 	{
 		clear_all(tools);
-		exit (tools->exit_status);
+		exit (EXIT_SUCCESS);
 	}
 	else if (err_code == 2)
 		clear_for_continue(tools);

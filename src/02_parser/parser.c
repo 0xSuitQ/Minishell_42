@@ -6,13 +6,11 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/25 21:47:05 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/27 00:51:46 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-// ZAKOMENTOVAT
-void tester(t_main_tools *tools, int signpost);
 
 /**
 	@brief:
@@ -269,8 +267,9 @@ void	check_cmds(t_simple_cmd **cmd, t_lexer *lexer_list)
 			tmp = tmp->next;
 		else
 		{
-			(*cmd)->str[i++] = ft_strdup(tmp->sub_str);
+			(*cmd)->str[i] = ft_strdup(tmp->sub_str);
 			tmp = tmp->next;
+			i++;
 		}
 	}
 	(*cmd)->str[i] = NULL;
