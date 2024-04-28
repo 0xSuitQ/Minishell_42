@@ -6,27 +6,12 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/26 20:23:17 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 19:15:35 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
-/********* DECLARATION OF GLOBAL VARIABLE *********/
-// declare it in .h file allow us to use it anywhere where we include msh.h
-// extern = this exists
-extern int		g_signal;
-
-/******************** COLORS **********************/
-# define END			"\033[0m"
-# define RED     		"\033[31m"
-# define GREEN   		"\033[32m"
-# define BLUE    		"\033[34m"
-# define BOLD_RED		"\033[1;31m"
-# define BOLD_GREEN		"\033[1;32m"
-# define BOLD_BLUE		"\033[1;34m"
-# define BOLD_CYAN		"\033[1;36m"
 
 /******************** iMport **********************/
 # include <unistd.h>
@@ -51,13 +36,20 @@ extern int		g_signal;
 # include <stdarg.h>			//
 # include <stddef.h>			//
 # include <stdio.h>				// printf, perror
-# include <stdlib.h>			// malloc, free, exit, getenv
-# include <stdlib.h>			// For EXIT_FAILURE and EXIT_SUCCESS constants
+# include <stdlib.h>			// malloc, free, exit, getenv, EXIT_FAILURE, ...
 # include <sys/wait.h>			// waitpid
 */
 
+# define BLUE			"\033[1;34m"
+# define CYAN			"\033[1;36m"
+# define RESET			"\033[0m"
+/********* DECLARATION OF GLOBAL VARIABLE *********/
+// declare it in .h file allow us to use it anywhere where we include msh.h
+// extern = this exists
+extern int					g_signal;
+
 /******************* STRUCTS *********************/
-typedef struct s_main_tools t_main_tools;
+typedef struct s_main_tools	t_main_tools;
 
 typedef struct s_list
 {
@@ -130,7 +122,6 @@ typedef struct s_main_tools
 	t_lexer			*lexer_list;
 	t_simple_cmd	*simple_cmd_list;
 	char			**envp_cpy;
-	// char			**env_2d;
 	char			**paths;
 	char			*args;
 	char			*pwd;
@@ -153,10 +144,23 @@ t_token_list	check_token(int c);
 int				handle_quotes(int i, char *str, char del);
 int				is_whitespace(char c);
 int				skip_spaces(char *str, int i);
+int				add_node(char *str, t_token_list token, t_lexer **lexer_list);
 
 //	PARSER
 void			parser(t_main_tools *tools);
 void			unexpected_token_officer(t_lexer *head, t_main_tools *tools);
+void			connect_node_to_list(t_simple_cmd **list, t_simple_cmd *nn);
+int				count_pipes(t_lexer *lexer_list);
+int				count_args(t_lexer *lexer_list);
+t_simple_cmd	*get_last_cmd_node(t_simple_cmd **lexer_list);
+void			first_node_not_pipe(t_lexer *lex_head, t_main_tools *tools);
+void			init_first_scmd(t_simple_cmd **list, t_simple_cmd *new_node);
+void			isc(t_simple_cmd **cl, t_lexer *ll, t_main_tools *t);
+void			r_p_word(t_simple_cmd **cmd, t_lexer *ll, t_main_tools *t);
+int				val_red(t_simple_cmd **cmd, t_lexer **cl, t_main_tools *t);
+void			i_cmd(t_simple_cmd **cmd_list, t_lexer *ll, t_main_tools *t);
+t_lexer			*append_redirection(t_simple_cmd **cmd, t_lexer *arg);
+void			check_cmds(t_simple_cmd **cmd, t_lexer *lexer_list);
 
 //	HEREDOC
 int				heredoc(t_main_tools *tools, t_simple_cmd *cmd);
@@ -164,19 +168,25 @@ char			*delete_quotes(char *str, char c);
 
 //	EXECUTOR
 int				executor(t_main_tools *tools);
-int				read_from(t_simple_cmd *cmd, t_lexer *tmp, t_token_list redirection);
+int				read_from(t_simple_cmd *cmd, t_lexer *tmp, t_token_list r);
 int				write_to(t_lexer *tmp, t_token_list redirection);
-int				there_is_dollar_in_list(char **list);
+int				check_builtin(t_main_tools *tools, t_simple_cmd *cmd);
+void			prepare_exec(t_main_tools *tools, t_simple_cmd *cmd);
+int				forking(t_main_tools *t, t_simple_cmd *cmd, int fd[2], int f);
 
 //	EXPANDER
-void			remove_quotes(char *str, char quote_type);
 void			expander(t_simple_cmd *curr_simple_cmd);
-int				num_of_dollars_in_list(char **str);
-int				there_is_dollar_in_str(char *str);
+void			remove_quotes(char *str, char quote_type);
+int				there_is_single_quote(char *str);
 char			*clear_env_variable(char *str);
 int				quotes_classifier(char *str);
 int				env_not_valid(char *str);
+int				there_is_dollar_in_str(char *str);
+int				there_is_dollar_in_list(char **list);
+int				num_of_dollars_in_list(char **str);
 int				next_dollar(char *str);
+int				first_char_not_dollar(char *str);
+void			exp_to_default(t_expander *exp);
 
 //	LIBFT
 void			*ft_calloc(size_t nmemb, size_t size);
@@ -206,11 +216,11 @@ void			ft_putchar_and_strlen(char c, int *count);
 void			ft_num_to_str(int num, int *count);
 void			ft_putstr(char *str, int *count);
 void			ft_u_int_to_str(unsigned int u, int *count);
-void			ft_int_to_hex(char specifier, unsigned int uint_num, int *count);
+void			ft_int_to_hex(char specifier, unsigned int uint_num, int *c);
 void			ft_pointer(unsigned long u_int_num, int *count);
 
 // REST OF LIBMS
-void			create_list(t_lexer **list, int index, t_token_list tok, char *sub_str);
+void			create_list(t_lexer **list, int i, t_token_list tok, char *s);
 t_lexer			*get_last_node(t_lexer *list_head);
 void			tools_to_default_setting(t_main_tools *tools);
 char			*ft_str_sepdup(char *s);
@@ -223,16 +233,16 @@ char			*ft_strtrim(char const *s1, char const *set);
 void			set_pwd(t_main_tools *tools);
 char			*ft_strstr(char *str, char *to_find);
 void			ft_str_replace(char **str, char *result);
+char			*list_to_array(t_list *list);
+void			free_list(t_list *list);
+void			set_pwd(t_main_tools *tools);
+void			validate_history(char *args);
 
 // ENV_MANAGEMENT
-void			copy_env(t_main_tools *tools, char **envp);
-void			change_env(t_main_tools *tools, char *name, char *value);
-void			convert_to_2d(t_main_tools *tools);
 int				get_paths(t_main_tools *tools);
 char			**ft_arrdup(char **src);
 void			change_path(t_main_tools *tools);
 int				parse_envp(t_main_tools *tools);
-
 
 // BUILTINS
 int				msh_echo(t_main_tools *tools, t_simple_cmd *cmd);
@@ -247,6 +257,8 @@ int				msh_export(t_main_tools *tools, t_simple_cmd *cmd);
 int				error_police(int err_code, t_main_tools *tools);
 void			clear_for_continue(t_main_tools *tools);
 void			clear_all(t_main_tools *tools);
+void			memory_error(void *p, t_main_tools *t, int ec, t_simple_cmd *c);
+void			file_error(t_lexer *next_arg, t_main_tools *tools);
 
 // SIGNALS
 int				signal_exit_of_child(int *status);
@@ -254,6 +266,7 @@ void			handle_sigint(int sig_num);
 void			handle_sigint_when_child_running(int sig_num);
 void			handle_sigint_heredoc(int sig_num);
 void			reset_signals_default(void);
+void			ctrl_d(void);
 
 /******************** MACROS **********************/
 # define STDIN			0
@@ -271,8 +284,8 @@ void			reset_signals_default(void);
 # define TRUE			1
 
 # define TOKEN_NUM		5
-# define HEREDOC_MSG	BOLD_BLUE"> "END
-# define READLINE_MSG	BOLD_CYAN"nikita&peta:msh"BLUE"$ "END
+# define HEREDOC_MSG	"\033[1;34m> \033[0m"
+# define READLINE_MSG	"\033[1;36mnikita&peta:msh\033[34m$ \033[0m"
 
 # define NO_Q			0
 # define SINGLE_Q		1

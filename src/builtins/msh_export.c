@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 12:46:13 by nandroso          #+#    #+#             */
-/*   Updated: 2024/04/25 23:14:08 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 19:15:35 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ char static	**helper(char **arr, char **mem, char *str)
 	return (mem);
 }
 
-
 char	**rewrite_envp(char **arr, char *str)
 {
 	char	**mem;
@@ -78,25 +77,14 @@ int	msh_export(t_main_tools *tools, t_simple_cmd *cmd)
 		msh_env(tools, cmd);
 	while (cmd->str[++i])
 	{
-		printf("cmd->str[%d]: %s\n", i, cmd->str[i]);
 		if (ft_strchr(cmd->str[i], '='))
 		{
 			tmp = rewrite_envp(tools->envp_cpy, cmd->str[i]);
 			free_arr(tools->envp_cpy);
-			if (tools->envp_cpy)
-				write(2, "we are here\n", 12);
 			tools->envp_cpy = tmp;
 		}
 		else
 			ft_putstr_fd("export: not a valid identifier\n", STDERR_FILENO);
-	}
-	int j = 0;
-	write(2, "still here\n", 12);
-	while (tools->envp_cpy[j])
-	{
-		write(2, tools->envp_cpy[j], ft_strlen(tools->envp_cpy[j]));
-		write(2, "\n", 1);
-		j++;
 	}
 	return (EXIT_SUCCESS);
 }

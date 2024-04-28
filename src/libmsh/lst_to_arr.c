@@ -1,35 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strstr.c                                        :+:      :+:    :+:   */
+/*   lst_to_arr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/25 20:24:34 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/28 19:15:35 by psimcak          ###   ########.fr       */
+/*   Created: 2024/04/28 13:07:25 by psimcak           #+#    #+#             */
+/*   Updated: 2024/04/28 13:07:33 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*ft_strstr(char *str, char *to_find)
+/**
+	@brief:
+	list_to_array function converts the list to an array
+*/
+char	*list_to_array(t_list *exp_list)
 {
-	int	i;
-	int	j;
+	t_list	*tmp;
+	char	*result;
+	char	*joined_result;
 
-	i = 0;
-	if (to_find[0] == '\0')
-		return (str);
-	while (str[i] != '\0')
+	tmp = exp_list;
+	result = ft_strdup(tmp->content);
+	tmp = tmp->next;
+	while (tmp)
 	{
-		j = 0;
-		while (str[i + j] != '\0' && str[i + j] == to_find[j])
-		{
-			if (to_find[j + 1] == '\0')
-				return (&str[i]);
-			++j;
-		}
-		++i;
+		joined_result = ft_strjoin(result, tmp->content);
+		free(result);
+		result = joined_result;
+		tmp = tmp->next;
 	}
-	return (0);
+	free_list(exp_list);
+	return (result);
 }

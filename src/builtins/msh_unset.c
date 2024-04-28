@@ -6,11 +6,12 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 19:44:39 by peta              #+#    #+#             */
-/*   Updated: 2024/04/27 01:10:53 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 19:15:36 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
 /**
 	@brief:
 	- equal_sign function finds the index of the equal sign in the string
@@ -57,7 +58,7 @@ char	**whileloop_del_var(char **arr, char **rtn, char *str)
 				return (rtn);
 			}
 			j++;
-		}	
+		}
 		i++;
 	}
 	return (rtn);

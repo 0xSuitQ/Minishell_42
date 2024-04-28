@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ctrl_d.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/07 17:12:09 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/28 19:15:36 by psimcak          ###   ########.fr       */
+/*   Created: 2024/04/28 14:57:11 by psimcak           #+#    #+#             */
+/*   Updated: 2024/04/28 15:01:14 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-void	ft_putendl_fd(char *s, int fd)
+/**
+	@brief:
+	Ctrl + D signal handler
+*/
+void	ctrl_d(void)
 {
-	if (!s)
-		return ;
-	if (fd < 0)
-		return ;
-	ft_putstr_fd(s, fd);
-	write(fd, "\n", 1);
+	ft_putstr_fd("exit\n", STDOUT);
+	exit_minishell(NULL, 2);
 }

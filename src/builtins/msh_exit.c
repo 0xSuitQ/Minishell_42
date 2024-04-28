@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:49:16 by peta              #+#    #+#             */
-/*   Updated: 2024/04/25 14:39:12 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 19:15:35 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@ static int	is_num(char *str)
 		if (str[i] >= '0' && str[i] <= '9')
 			return (TRUE);
 	return (FALSE);
+}
+
+int	error_in_msh_exit(char **args)
+{
+	ft_putstr_fd("minishell: exit: ", STDERR);
+	ft_putstr_fd(args[1], STDERR);
+	ft_putstr_fd(": numeric argument required\n", STDERR);
+	return (2);
 }
 
 /**
@@ -53,12 +61,7 @@ int	msh_exit(t_main_tools *tools, t_simple_cmd *cmd)
 		return (exit_status);
 	}
 	else if (arg_count >= 2 && is_num(args[1]) == FALSE)
-	{
-		ft_putstr_fd("minishell: exit: ", STDERR);
-		ft_putstr_fd(args[1], STDERR);
-		ft_putstr_fd(": numeric argument required\n", STDERR);
-		exit_status = 2;
-	}
+		exit_status = error_in_msh_exit(args);
 	else if (arg_count == 2 && is_num(args[1]) == TRUE)
 		exit_status = ft_atoi(args[1]) % 256;
 	exit_minishell(tools, exit_status);

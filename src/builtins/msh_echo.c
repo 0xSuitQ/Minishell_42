@@ -6,13 +6,13 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:10:42 by nandroso          #+#    #+#             */
-/*   Updated: 2024/04/25 23:13:44 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 19:15:35 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-void	output_stuff(char **str, int n, int i) 
+void	output_stuff(char **str, int n, int i)
 {
 	while (str[i])
 	{
@@ -25,7 +25,7 @@ void	output_stuff(char **str, int n, int i)
 		write(STDOUT_FILENO, "\n", 1);
 }
 
-int msh_echo(t_main_tools *tools, t_simple_cmd *cmd)
+int	msh_echo(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	int	i;
 	int	j;
@@ -42,7 +42,7 @@ int msh_echo(t_main_tools *tools, t_simple_cmd *cmd)
 		if (cmd->str[i][j] == '\0')
 			n = 1;
 		else
-			break;
+			break ;
 		i++;
 	}
 	output_stuff(cmd->str, n, i);

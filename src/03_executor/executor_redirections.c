@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_redirections.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 16:18:11 by peta              #+#    #+#             */
-/*   Updated: 2024/04/17 17:20:16 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/28 19:15:35 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	read_from(t_simple_cmd *cmd, t_lexer *tmp, t_token_list redirection)
 	int	fd;
 
 	if (redirection == LESS)
-			fd = open(tmp->next->sub_str, O_RDONLY);
+		fd = open(tmp->next->sub_str, O_RDONLY);
 	else
 		fd = open(cmd->heredoc_filename, O_RDONLY);
 	if (fd < 0)
@@ -46,9 +46,7 @@ int	write_to(t_lexer *tmp, t_token_list redirection)
 	int	fd;
 
 	if (redirection == GREAT)
-	{
 		fd = open(tmp->next->sub_str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	}
 	else
 		fd = open(tmp->next->sub_str, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)

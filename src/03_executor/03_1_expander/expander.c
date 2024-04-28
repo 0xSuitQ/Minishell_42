@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/27 00:01:09 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 19:15:35 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,6 @@ char	*expand_dollar(char *str)
 
 /**
 	@brief:
-	handle_dollar function handles the dollar sign in the string
-	it goes through the string and if there is a $, it will be expanded
-*/
-int	there_is_single_quote(char *str)
-{
-	if (quotes_classifier(str) == SINGLE_Q)
-	{
-		remove_quotes(str, '\'');
-		return (TRUE);
-	}
-	return (FALSE);
-}
-
-/**
-	@brief:
 	impossible_to_expand function adds the unedited string to the list
 */
 void	impossible_to_expand(t_expander *exp, char *str)
@@ -82,59 +67,6 @@ void	possible_to_expand(t_expander *exp, char *str)
 
 /**
 	@brief:
-	free_list function frees the list
-*/
-void	free_list(t_list *exp_list)
-{
-	t_list	*tmp;
-
-	while (exp_list)
-	{
-		tmp = exp_list;
-		exp_list = exp_list->next;
-		free(tmp->content);
-		free(tmp);
-	}
-}
-
-/**
-	@brief:
-	list_to_array function converts the list to an array
-*/
-char	*list_to_array(t_list *exp_list)
-{
-	t_list	*tmp;
-	char	*result;
-	char	*joined_result;
-
-	tmp = exp_list;
-	result = ft_strdup(tmp->content);
-	tmp = tmp->next;
-	while (tmp)
-	{
-		joined_result = ft_strjoin(result, tmp->content);
-		free(result);
-		result = joined_result;
-		tmp = tmp->next;
-	}
-	free_list(exp_list);
-	return (result);
-}
-
-/**
-	@brief:
-	first_char_not_dollar function checks if the first character is not a 
-	dollar sign
-*/
-int	first_char_not_dollar(char *str)
-{
-	if (str[0] != '$')
-		return (TRUE);
-	return (FALSE);
-}
-
-/**
-	@brief:
 	handle_dollar function handles the dollar sign in the string
 	- it removes the quotes
 	- if there is a single quote, it returns the string
@@ -151,13 +83,12 @@ char	*handle_dollar(char *str)
 	remove_quotes(str, '\"');
 	if (there_is_single_quote(str))
 		return (str);
-	exp.exp_list = NULL;
+	exp_to_default(&exp);
 	if (first_char_not_dollar(str))
 	{
 		exp.first = ft_substr(str, 0, next_dollar(str));
 		exp.exp_list = ft_lstnew(exp.first);
 	}
-	exp.i = -1;
 	while (str[++exp.i])
 	{
 		if (str[exp.i] == '$')
@@ -171,9 +102,9 @@ char	*handle_dollar(char *str)
 		}
 	}
 	free(str);
-	str = list_to_array(exp.exp_list);
-	return (str);
+	return (list_to_array(exp.exp_list));
 }
+
 /**
 	@brief:
 	The expander is responsible for expanding special characters and variables
@@ -189,7 +120,7 @@ void	expander(t_simple_cmd *curr_simple_cmd)
 
 	tmp = curr_simple_cmd->str;
 	i = num_of_dollars_in_list(tmp);
-	expanded_str = malloc((i + 1) * sizeof(char*));
+	expanded_str = malloc((i + 1) * sizeof(char *));
 	if (!expanded_str)
 		exit(1);
 	expanded_str[i] = NULL;

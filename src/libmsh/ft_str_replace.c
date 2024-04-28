@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 18:51:06 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/26 16:35:00 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 19:15:35 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 */
 void	ft_str_replace(char **str, char *result)
 {
-	char *new_str;
+	char	*new_str;
 
 	if (str == NULL || *str == NULL || result == NULL)
 		return ;
@@ -28,6 +28,5 @@ void	ft_str_replace(char **str, char *result)
 	if (new_str == NULL)
 		return ;
 	ft_strcpy(new_str, result);
-	// free(*str);
 	*str = new_str;
 }

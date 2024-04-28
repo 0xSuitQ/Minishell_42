@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quotes_tools.c                                     :+:      :+:    :+:   */
+/*   tools_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 18:46:40 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/22 18:47:07 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 19:15:35 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	remove_quotes(char *str, char quote_type)
 			while (str[i + j] != quote_type)
 				j++;
 			ft_strlcpy(&str[i], &str[i + 1], j);
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -52,7 +52,7 @@ void	remove_quotes(char *str, char quote_type)
 int	quotes_classifier(char *str)
 {
 	int		i;
-	
+
 	i = 0;
 	while (str[i])
 	{
@@ -63,4 +63,19 @@ int	quotes_classifier(char *str)
 		i++;
 	}
 	return (NO_Q);
+}
+
+/**
+	@brief:
+	handle_dollar function handles the dollar sign in the string
+	it goes through the string and if there is a $, it will be expanded
+*/
+int	there_is_single_quote(char *str)
+{
+	if (quotes_classifier(str) == SINGLE_Q)
+	{
+		remove_quotes(str, '\'');
+		return (TRUE);
+	}
+	return (FALSE);
 }

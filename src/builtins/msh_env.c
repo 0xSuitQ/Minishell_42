@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:10:56 by nandroso          #+#    #+#             */
-/*   Updated: 2024/04/23 17:46:17 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/04/28 19:15:35 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 	3. Print the environment variables
 	4. Return EXIT_SUCCESS
 */
-int msh_env(t_main_tools *tools, t_simple_cmd *cmd)
+int	msh_env(t_main_tools *tools, t_simple_cmd *cmd)
 {
 	int		i;
 
@@ -33,5 +33,4 @@ int msh_env(t_main_tools *tools, t_simple_cmd *cmd)
 		i++;
 	}
 	return (EXIT_SUCCESS);
-
 }

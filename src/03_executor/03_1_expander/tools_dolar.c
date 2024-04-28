@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   there_is_dollar.c                                  :+:      :+:    :+:   */
+/*   tools_dolar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 18:44:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/22 19:22:37 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 13:06:02 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,16 @@ int	num_of_dollars_in_list(char **str)
 		if (there_is_dollar_in_str(str[i]))
 			count++;
 	return (count);
+}
+
+/**
+	@brief:
+	first_char_not_dollar function checks if the first character is not a 
+	dollar sign
+*/
+int	first_char_not_dollar(char *str)
+{
+	if (str[0] != '$')
+		return (TRUE);
+	return (FALSE);
 }

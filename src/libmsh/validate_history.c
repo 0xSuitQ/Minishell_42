@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   validate_history.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/07 17:12:09 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/28 19:15:36 by psimcak          ###   ########.fr       */
+/*   Created: 2024/04/28 15:02:21 by psimcak           #+#    #+#             */
+/*   Updated: 2024/04/28 15:04:50 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-void	ft_putendl_fd(char *s, int fd)
+/**
+	@brief:
+	validates the history of the commands
+*/
+void	validate_history(char *args)
 {
-	if (!s)
-		return ;
-	if (fd < 0)
-		return ;
-	ft_putstr_fd(s, fd);
-	write(fd, "\n", 1);
+	int		flag;
+
+	flag = 0;
+	if (ft_strstr(args, "<<") != NULL)
+		flag = 1;
+	if (flag == 0)
+		add_history(args);
 }

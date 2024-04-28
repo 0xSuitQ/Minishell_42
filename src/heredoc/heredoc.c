@@ -18,7 +18,7 @@
 */
 char	*gen_filename(void)
 {
-	char 		*filename;
+	char		*filename;
 	char		*number;
 	static int	i;
 
@@ -28,6 +28,7 @@ char	*gen_filename(void)
 	free(number);
 	return (filename);
 }
+
 /**
 	@brief:
 	delete_quotes is a function that will delete the quotes from the string
