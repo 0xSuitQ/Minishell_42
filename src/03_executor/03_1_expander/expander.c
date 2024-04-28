@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:19:08 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/28 19:16:23 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 22:07:44 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*expand_dollar(char *str)
 		free(str);
 		str = ft_strdup(env_expanded);
 	}
-	if (str[0] == '?')
+	if (str[1] == '?')
 	{
 		free(str);
 		str = ft_itoa(g_signal);

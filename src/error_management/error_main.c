@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:23:21 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/28 21:57:37 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 22:24:59 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	error_police(int err_code, t_main_tools *tools)
 {
 	if (err_code == 1)
 	{
-		clear_all(tools);
-		exit (EXIT_SUCCESS);
+		g_signal = 127;
+		exit_minishell(tools, g_signal);
 	}
 	else if (err_code == 2)
 		clear_for_continue(tools);

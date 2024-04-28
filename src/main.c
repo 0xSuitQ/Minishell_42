@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 20:19:18 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/28 21:48:30 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 22:28:52 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	minishell_loop(t_main_tools *tools)
 	char	*tmp;
 
 	signal(SIGINT, handle_sigint);
+	g_signal = 0;
 	tools->args = readline(READLINE_MSG);
 	if (!tools->args)
 		ctrl_d();

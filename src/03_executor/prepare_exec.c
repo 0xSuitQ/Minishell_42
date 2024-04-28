@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 13:17:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/28 14:05:55 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 22:10:49 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static int	locate_and_execute_command(t_simple_cmd *cmd, t_main_tools *tools)
 	}
 	ft_putstr_fd(cmd->str[0], STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	g_signal = 127;
 	error_police(1, tools);
 	return (EXIT_FAILURE);
 }
