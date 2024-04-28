@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/28 19:16:23 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 21:10:14 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ void			isc(t_simple_cmd **cl, t_lexer *ll, t_main_tools *t);
 void			r_p_word(t_simple_cmd **cmd, t_lexer *ll, t_main_tools *t);
 int				val_red(t_simple_cmd **cmd, t_lexer **cl, t_main_tools *t);
 void			i_cmd(t_simple_cmd **cmd_list, t_lexer *ll, t_main_tools *t);
-t_lexer			*append_redirection(t_simple_cmd **cmd, t_lexer *arg);
+void			append_redirection(t_simple_cmd **cmd, t_lexer *arg);
 void			check_cmds(t_simple_cmd **cmd, t_lexer *lexer_list);
 
 //	HEREDOC

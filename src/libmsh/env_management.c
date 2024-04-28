@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 21:01:08 by nandroso          #+#    #+#             */
-/*   Updated: 2024/04/25 23:17:29 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 22:01:05 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,17 @@ int	parse_envp(t_main_tools *tools)
 	path_from_envp = find_path(tools->envp_cpy);
 	tools->paths = ft_split(path_from_envp, ':');
 	free(path_from_envp);
-	i = 0;
-	while (tools->paths[i])
+	i = -1;
+	while (tools->paths[++i])
 	{
 		if (ft_strncmp(&tools->paths[i][ft_strlen(tools->paths[i]) - 1],
 			"/", 1) != 0)
 		{
 			tmp = ft_strjoin(tools->paths[i], "/");
 			free(tools->paths[i]);
-			tools->paths[i] = tmp;
+			tools->paths[i] = ft_strdup(tmp);
+			free(tmp);
 		}
-		i++;
 	}
 	return (EXIT_SUCCESS);
 }

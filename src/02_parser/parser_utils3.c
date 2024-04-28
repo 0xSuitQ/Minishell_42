@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 19:03:51 by nandroso          #+#    #+#             */
-/*   Updated: 2024/04/28 19:13:08 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 21:09:17 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,13 @@
 	@brief:
 	append_redirection function appends the redirection to the lexer_list.
 */
-t_lexer	*append_redirection(t_simple_cmd **cmd, t_lexer *arg)
+void	append_redirection(t_simple_cmd **cmd, t_lexer *arg)
 {
 	t_lexer	*new_arg;
 	t_lexer	*last;
 
-	new_arg = malloc(sizeof(t_lexer));
-	if (!new_arg)
-		return (NULL);
 	arg->flag = INVISIBLE;
-	*new_arg = *arg;
+	new_arg = arg;
 	new_arg->next = NULL;
 	new_arg->prev = NULL;
 	if (!(*cmd)->lexer_list)
@@ -36,7 +33,6 @@ t_lexer	*append_redirection(t_simple_cmd **cmd, t_lexer *arg)
 		last->next = new_arg;
 		new_arg->prev = last;
 	}
-	return (new_arg);
 }
 
 /**

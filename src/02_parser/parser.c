@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:03:55 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/28 18:59:32 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 21:10:33 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ int	val_red(t_simple_cmd **cmd, t_lexer **current_lexer, t_main_tools *tools)
 		if (access(next_arg->sub_str, F_OK) == -1)
 			file_error(next_arg, tools);
 	}
-	the_arg = append_redirection(cmd, the_arg);
+	append_redirection(cmd, the_arg);
 	if (next_arg)
 	{
-		next_arg = append_redirection(cmd, next_arg);
+		append_redirection(cmd, next_arg);
 		if ((*current_lexer)->next->next)
 			*current_lexer = (*current_lexer)->next->next;
 		else

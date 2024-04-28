@@ -6,7 +6,7 @@
 /*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 14:17:27 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/28 19:16:24 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/28 21:43:58 by psimcak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	clear_lexer(t_lexer *lexer_list)
 	while (current)
 	{
 		next = current->next;
-		free(current->sub_str);
+		if (current->sub_str)
+			free(current->sub_str);
 		free(current);
 		current = next;
 	}
@@ -80,6 +81,7 @@ void	clear_all(t_main_tools *tools)
 		free_arr(tools->envp_cpy);
 	if (tools->paths)
 		free_arr(tools->paths);
+	tools_to_default_setting(tools);
 }
 
 /**
