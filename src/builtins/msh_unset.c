@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_unset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 19:44:39 by peta              #+#    #+#             */
-/*   Updated: 2024/04/28 19:16:24 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/29 19:54:00 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,14 @@ size_t	equal_sign(char *str)
 	i = 0;
 	while (str[i])
 	{
+		// write(2, &?str[i], 1);
 		if (str[i] == '=')
-			return (i + 1);
+		{
+			if (str[i + 1] == '\0')
+				return (i + 1);
+			else
+				return (i);
+		}
 		i++;
 	}
 	return (0);
@@ -45,7 +51,7 @@ char	**whileloop_del_var(char **arr, char **rtn, char *str)
 
 	i = 0;
 	j = 0;
-	while (arr[i] != NULL)
+	while (arr[i] != NULL)	
 	{
 		if (!(ft_strncmp(arr[i], str, equal_sign(arr[i]) - 1) == 0
 				&& str[equal_sign(arr[i])] == '\0'

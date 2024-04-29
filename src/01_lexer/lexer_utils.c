@@ -3,26 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 23:12:19 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/25 23:12:21 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/29 20:40:19 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_quotes(int i, char *str, char del)
+int	handle_quotes(int i, char *str, char quote)
 {
 	int	j;
 
 	j = 0;
-	if (str[i + j] == del)
+	if (str[i] == quote)
 	{
-		j++;
-		while (str[i + j] != del && str[i + j])
+		i++;
+		while (str[i + j] && str[i + j] != quote)
 			j++;
-		j++;
+		if (str[i + j] == quote)
+			j++;
 	}
 	return (j);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:02 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/28 19:16:23 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/29 20:35:49 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,15 @@ int	read_words(int i, char *str, t_lexer **lexer_list)
 	j = 0;
 	while (str[i + j] && !(check_token(str[i + j])))
 	{
-		j += handle_quotes(i + j, str, '\"');
 		j += handle_quotes(i + j, str, '\'');
+		j += handle_quotes(i + j, str, '\"');
 		if (is_whitespace(str[i + j]))
 			break ;
 		else
 			j++;
 	}
+	if (j == 0)
+    	return (0); 
 	tmp = ft_substr(str, i, j);
 	if (!add_node(tmp, 0, lexer_list))
 	{
