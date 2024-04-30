@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:02 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/29 20:35:49 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:36:55 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	read_words(int i, char *str, t_lexer **lexer_list)
 			j++;
 	}
 	if (j == 0)
-    	return (0); 
+		return (0);
 	tmp = ft_substr(str, i, j);
 	if (!add_node(tmp, 0, lexer_list))
 	{

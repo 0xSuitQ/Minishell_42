@@ -6,7 +6,7 @@
 /*   By: nandroso <nandroso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 19:44:39 by peta              #+#    #+#             */
-/*   Updated: 2024/04/29 19:54:00 by nandroso         ###   ########.fr       */
+/*   Updated: 2024/04/30 18:33:41 by nandroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ size_t	equal_sign(char *str)
 {
 	size_t	i;
 
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (str[++i])
 	{
-		// write(2, &?str[i], 1);
 		if (str[i] == '=')
 		{
 			if (str[i + 1] == '\0')
@@ -33,7 +32,6 @@ size_t	equal_sign(char *str)
 			else
 				return (i);
 		}
-		i++;
 	}
 	return (0);
 }
@@ -49,9 +47,9 @@ char	**whileloop_del_var(char **arr, char **rtn, char *str)
 	int	i;
 	int	j;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	while (arr[i] != NULL)	
+	while (arr[++i] != NULL)
 	{
 		if (!(ft_strncmp(arr[i], str, equal_sign(arr[i]) - 1) == 0
 				&& str[equal_sign(arr[i])] == '\0'
@@ -65,7 +63,6 @@ char	**whileloop_del_var(char **arr, char **rtn, char *str)
 			}
 			j++;
 		}
-		i++;
 	}
 	return (rtn);
 }
@@ -82,7 +79,7 @@ char	**del_var(char **arr, char *str)
 	size_t	i;
 
 	i = 0;
-	while (arr[i] != NULL)
+	while (arr[i])
 		i++;
 	rtn = ft_calloc(sizeof(char *), i + 1);
 	if (!rtn)
