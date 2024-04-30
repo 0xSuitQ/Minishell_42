@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:38:10 by peta              #+#    #+#             */
-/*   Updated: 2024/04/30 11:38:24 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/30 11:46:50 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 /**
 	@brief	Prints an error message when a fork creation fails.
 */
-void	fork_process(int *pid)
+void	fork_process(int *pid, t_main_tools *tools)
 {
 	*pid = fork();
 	if (*pid == -1)
 	{
 		ft_putendl_fd("minishell: fork: Resource temporarily unavailable", 2);
-		exit_current_prompt(NULL);
+		clear_for_continue(tools);
 	}
 }

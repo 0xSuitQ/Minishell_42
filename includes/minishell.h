@@ -6,7 +6,7 @@
 /*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/30 11:38:48 by peta             ###   ########.fr       */
+/*   Updated: 2024/04/30 11:47:03 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void			check_cmds(t_simple_cmd **cmd, t_lexer *lexer_list);
 //	HEREDOC
 int				heredoc(t_main_tools *tools, t_simple_cmd *cmd);
 void			quote_check(char **delimiter);
-void			fork_process(int *pid);
+void			fork_process(int *pid, t_main_tools *tools);
 
 //	EXECUTOR
 int				executor(t_main_tools *tools);

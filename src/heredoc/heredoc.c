@@ -70,7 +70,7 @@ void	fork_heredoc(t_main_tools *tools, t_lexer *lexer_list, char *filename)
 	int	pid;
 	int	status;
 
-	fork_process(&pid);
+	fork_process(&pid, tools);
 	if (pid == 0)
 	{
 		signal(SIGINT, handle_sigint_heredoc);
