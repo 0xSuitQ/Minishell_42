@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:56:54 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/28 21:10:14 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/30 11:38:48 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,8 @@ void			check_cmds(t_simple_cmd **cmd, t_lexer *lexer_list);
 
 //	HEREDOC
 int				heredoc(t_main_tools *tools, t_simple_cmd *cmd);
-char			*delete_quotes(char *str, char c);
+void			quote_check(char **delimiter);
+void			fork_process(int *pid);
 
 //	EXECUTOR
 int				executor(t_main_tools *tools);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:36:14 by peta              #+#    #+#             */
-/*   Updated: 2024/04/28 19:16:22 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/30 11:01:25 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,16 @@ int	wait_pids(t_main_tools *tools, int flag)
 	int	i;
 	int	status;
 
-	i = 0;
+	i = -1;
 	if (flag == 1)
 	{
-		while (tools->pid[i] != 0)
+		while (tools->pid[++i] != 0)
 		{
 			waitpid(tools->pid[i], &status, 0);
 			if (WIFEXITED(status))
 				tools->exit_status = WEXITSTATUS(status);
-			i++;
+			else if (WIFSIGNALED(status))
+				tools->exit_status = signal_exit_of_child(&status);
 		}
 	}
 	else
@@ -63,6 +64,8 @@ int	wait_pids(t_main_tools *tools, int flag)
 		waitpid(tools->pid[0], &status, 0);
 		if (WIFEXITED(status))
 			tools->exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			tools->exit_status = signal_exit_of_child(&status);
 	}
 	return (EXIT_SUCCESS);
 }

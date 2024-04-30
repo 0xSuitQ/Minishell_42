@@ -31,44 +31,6 @@ char	*gen_filename(void)
 
 /**
 	@brief:
-	delete_quotes is a function that will delete the quotes from the string
-*/
-char	*delete_quotes(char *str, char c)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	j = 0;
-	while (str[++i])
-	{
-		if (str[i] == c)
-		{
-			j = 0;
-			while (str[i + j] == c)
-				j++;
-			ft_strlcpy(&str[i], &str[i + j], j + 1);
-		}
-	}
-	return (str);
-}
-
-/**
-	@brief:
-	quote_check is a function that will check if the delimiter is a quote
-	and delete the quotes from the delimiter
-*/
-void	quote_check(char **delimiter)
-{
-	if ((*delimiter)[0] == '\'' || (*delimiter)[0] == '\"')
-	{
-		delete_quotes((*delimiter), '\'');
-		delete_quotes((*delimiter), '\"');
-	}
-}
-
-/**
-	@brief:
 	create_heredoc is a function that will create a heredoc file
 */
 void	create_heredoc(t_lexer *lexer_list, char *filename)
@@ -100,6 +62,32 @@ void	create_heredoc(t_lexer *lexer_list, char *filename)
 
 /**
 	@brief:
+	fork_heredoc is a function that will fork a child process for the heredoc
+	and wait for the child process to finish.
+*/
+void	fork_heredoc(t_main_tools *tools, t_lexer *lexer_list, char *filename)
+{
+	int	pid;
+	int	status;
+
+	fork_process(&pid);
+	if (pid == 0)
+	{
+		signal(SIGINT, handle_sigint_heredoc);
+		create_heredoc(lexer_list, filename);
+		exit_minishell(NULL, 0);
+	}
+	else
+	{
+		signal(SIGINT, handle_sigint_when_child_running);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			tools->exit_status = WEXITSTATUS(status);
+	}
+}
+
+/**
+	@brief:
 	heredoc is a function that will go through the lexer_list and check for the
 	heredoc token. If the token is found, it will create a heredoc file.
 */
@@ -120,7 +108,7 @@ int	heredoc(t_main_tools *tools, t_simple_cmd *cmd)
 			if (cmd->heredoc_filename)
 				free(cmd->heredoc_filename);
 			cmd->heredoc_filename = gen_filename();
-			create_heredoc(tmp, cmd->heredoc_filename);
+			fork_heredoc(tools, tmp, cmd->heredoc_filename);
 		}
 		tmp = tmp->next;
 	}

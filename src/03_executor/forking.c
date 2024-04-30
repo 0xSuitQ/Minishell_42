@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimcak <psimcak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: peta <peta@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 18:52:40 by psimcak           #+#    #+#             */
-/*   Updated: 2024/04/28 19:16:24 by psimcak          ###   ########.fr       */
+/*   Updated: 2024/04/30 11:04:47 by peta             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ int	forking(t_main_tools *tools, t_simple_cmd *cmd, int fd[2], int fd_in)
 	}
 	tools->pid[i] = fork();
 	if (tools->pid[i] == 0)
+	{
+		reset_signals_default();
 		pipe_dup(tools, cmd, fd, fd_in);
+	}
 	i++;
 	return (EXIT_SUCCESS);
 }
